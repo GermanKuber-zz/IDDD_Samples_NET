@@ -37,13 +37,13 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
         {
         }
 
-        public string Description { get; private set; }
+        public string Description { get; }
 
-        public string InvitationId { get; private set; }
+        public string InvitationId { get; }
 
         public DateTime StartingOn { get; private set; }
 
-        public TenantId TenantId { get; private set; }
+        public TenantId TenantId { get; }
 
         public DateTime Until { get; private set; }
 

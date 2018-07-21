@@ -15,10 +15,10 @@ namespace SaaSOvation.Collaboration.Domain.Model.Forums
             ExclusiveOwner = exclusiveOwner;
         }
 
-        public Tenant TenantId { get; private set; }
-        public ForumId ForumId { get; private set; }
-        public Moderator Moderator { get; private set; }
-        public string ExclusiveOwner { get; private set; }
+        public Tenant TenantId { get; }
+        public ForumId ForumId { get; }
+        public Moderator Moderator { get; }
+        public string ExclusiveOwner { get; }
 
         public int EventVersion { get; set; }
         public DateTime OccurredOn { get; set; }

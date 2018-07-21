@@ -41,22 +41,22 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products
             TenantId = tenantId;
         }
 
-        public DateTime Ends { get; private set; }
+        public DateTime Ends { get; }
 
         public int EventVersion { get; set; }
 
-        public string Goals { get; private set; }
+        public string Goals { get; }
 
-        public string Name { get; private set; }
+        public string Name { get; }
 
         public DateTime OccurredOn { get; set; }
 
-        public ProductId ProductId { get; private set; }
+        public ProductId ProductId { get; }
 
-        public SprintId SprintId { get; private set; }
+        public SprintId SprintId { get; }
 
-        public DateTime Starts { get; private set; }
+        public DateTime Starts { get; }
 
-        public TenantId TenantId { get; private set; }
+        public TenantId TenantId { get; }
     }
 }

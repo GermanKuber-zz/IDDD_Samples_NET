@@ -14,11 +14,11 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
             TotalRisk = totalRisk;
         }
 
-        public int TotalBenefit { get; private set; }
-        public int TotalPenalty { get; private set; }
-        public int TotalValue { get; private set; }
-        public int TotalCost { get; private set; }
-        public int TotalRisk { get; private set; }
+        public int TotalBenefit { get; }
+        public int TotalPenalty { get; }
+        public int TotalValue { get; }
+        public int TotalCost { get; }
+        public int TotalRisk { get; }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {

@@ -27,14 +27,14 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
             Until = until;
         }
 
-        public string Description { get; private set; }
+        public string Description { get; }
 
-        public string InvitationId { get; private set; }
+        public string InvitationId { get; }
 
         public DateTime StartingOn;
 
-        public string TenantId { get; private set; }
+        public string TenantId { get; }
 
-        public DateTime Until { get; private set; }
+        public DateTime Until { get; }
     }
 }

@@ -11,7 +11,7 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
             Ratings = ratings;
         }
 
-        public BusinessPriorityRatings Ratings { get; private set; }
+        public BusinessPriorityRatings Ratings { get; }
 
         public float CostPercentage(BusinessPriorityTotals totals)
         {

@@ -24,9 +24,9 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
         }
 
         public Tenants.TenantId TenantId { get; set; }
-        public TaskId TaskId { get; private set; }
+        public TaskId TaskId { get; }
 
-        public DateTime Date { get; private set; }
+        public DateTime Date { get; }
         public int HoursRemaining { get; private set; }
 
         internal bool IsMatching(DateTime date)

@@ -31,15 +31,15 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 
         protected PostalAddress() { }
 
-        public string City { get; private set; }
+        public string City { get; }
 
-        public string CountryCode { get; private set; }
+        public string CountryCode { get; }
 
-        public string PostalCode { get; private set; }
+        public string PostalCode { get; }
 
-        public string StateProvince { get; private set; }
+        public string StateProvince { get; }
 
-        public string StreetAddress { get; private set; }
+        public string StreetAddress { get; }
 
         public override string ToString()
         {

@@ -31,14 +31,14 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
             Username = username;
         }
 
-        public ContactInformation ContactInformation { get; private set; }
+        public ContactInformation ContactInformation { get; }
 
         public int EventVersion { get; set; }
 
         public DateTime OccurredOn { get; set; }
 
-        public string TenantId { get; private set; }
+        public string TenantId { get; }
 
-        public string Username { get; private set; }
+        public string Username { get; }
     }
 }

@@ -95,13 +95,13 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Access
 			public int Id { get; set; }
 		*/
 
-		public string Description { get; private set; }
+		public string Description { get; }
 
-		public string Name { get; private set; }
+		public string Name { get; }
 
-		public bool SupportsNesting { get; private set; }
+		public bool SupportsNesting { get; }
 
-		public TenantId TenantId { get; private set; }
+		public TenantId TenantId { get; }
 
 		#endregion
 

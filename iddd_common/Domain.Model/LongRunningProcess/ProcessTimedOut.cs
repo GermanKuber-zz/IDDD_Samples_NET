@@ -34,9 +34,9 @@ namespace SaaSOvation.Common.Domain.Model.LongRunningProcess
 
         public int EventVersion { get; set; }
         public DateTime OccurredOn { get; set; }
-        public ProcessId ProcessId { get; private set; }
-        public int RetryCount { get; private set; }
-        public string TenantId { get; private set; }
-        public int TotalRetriesPermitted { get; private set; }
+        public ProcessId ProcessId { get; }
+        public int RetryCount { get; }
+        public string TenantId { get; }
+        public int TotalRetriesPermitted { get; }
     }
 }

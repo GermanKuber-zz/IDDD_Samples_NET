@@ -43,9 +43,9 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products
         {
         }
 
-        public DiscussionAvailability Availability { get; private set; }
+        public DiscussionAvailability Availability { get; }
 
-        public DiscussionDescriptor Descriptor { get; private set; }
+        public DiscussionDescriptor Descriptor { get; }
 
         public ProductDiscussion NowReady(DiscussionDescriptor descriptor)
         {

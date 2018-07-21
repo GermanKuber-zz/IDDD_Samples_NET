@@ -42,22 +42,22 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.DomainEvents
             Type = backlogItemType;
         }
 
-        public BacklogItemId BacklogItemId { get; private set; }
+        public BacklogItemId BacklogItemId { get; }
 
-        public string Category { get; private set; }
+        public string Category { get; }
 
         public int EventVersion { get; set; }
 
         public DateTime OccurredOn { get; set; }
 
-        public ProductId ProductId { get; private set; }
+        public ProductId ProductId { get; }
 
-        public StoryPoints StoryPoints { get; private set; }
+        public StoryPoints StoryPoints { get; }
 
-        public string Summary { get; private set; }
+        public string Summary { get; }
 
-        public TenantId TenantId { get; private set; }
+        public TenantId TenantId { get; }
 
-        public BacklogItemType Type { get; private set; }
+        public BacklogItemType Type { get; }
     }
 }

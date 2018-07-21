@@ -14,12 +14,12 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems.Task
             HoursRemaining = hoursRemaining;
         }
 
-        public Tenants.TenantId TenantId { get; private set; }
+        public Tenants.TenantId TenantId { get; }
         public int EventVersion { get; set; }
         public DateTime OccurredOn { get; set; }
 
-        public BacklogItemId BacklogItemId { get; private set; }
-        public TaskId TaskId { get; private set; }
-        public int HoursRemaining { get; private set; }
+        public BacklogItemId BacklogItemId { get; }
+        public TaskId TaskId { get; }
+        public int HoursRemaining { get; }
     }
 }

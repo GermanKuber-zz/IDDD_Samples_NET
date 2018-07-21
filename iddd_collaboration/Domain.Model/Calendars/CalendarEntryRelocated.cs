@@ -18,10 +18,10 @@ namespace SaaSOvation.Collaboration.Domain.Model.Calendars
             Location = location;
         }
 
-        public Tenant Tenant { get; private set; }
-        public CalendarId CalendarId { get; private set; }
-        public CalendarEntryId CalendarEntryId { get; private set; }
-        public string Location { get; private set; }
+        public Tenant Tenant { get; }
+        public CalendarId CalendarId { get; }
+        public CalendarEntryId CalendarEntryId { get; }
+        public string Location { get; }
 
         public int EventVersion { get; set; }
         public DateTime OccurredOn { get; set; }

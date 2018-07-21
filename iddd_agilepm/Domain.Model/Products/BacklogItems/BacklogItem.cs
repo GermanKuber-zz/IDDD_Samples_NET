@@ -52,11 +52,11 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems.BacklogItem
 
         private readonly List<Task.Task> _tasks;
 
-        public TenantId TenantId { get; private set; }
+        public TenantId TenantId { get; }
 
-        public ProductId ProductId { get; private set; }
+        public ProductId ProductId { get; }
 
-        public BacklogItemId BacklogItemId { get; private set; }
+        public BacklogItemId BacklogItemId { get; }
 
         private string _summary;
 

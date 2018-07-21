@@ -19,7 +19,6 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products
     using System;
     using Common.Domain.Model;
     using Tenants;
-    using BacklogItems;
 
     public class ProductBacklogItem : Entity, IEquatable<ProductBacklogItem>
     {
@@ -35,11 +34,11 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products
             TenantId = tenantId;
         }
        
-        public TenantId TenantId { get; private set; }
+        public TenantId TenantId { get; }
 
-        public ProductId ProductId { get; private set; }
+        public ProductId ProductId { get; }
 
-        public BacklogItemId BacklogItemId { get; private set; }
+        public BacklogItemId BacklogItemId { get; }
 
         public int Ordering { get; private set; }
 

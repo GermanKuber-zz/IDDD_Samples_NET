@@ -59,21 +59,21 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products
 
         private readonly ISet<ProductBacklogItem> _backlogItems;
 
-        public TenantId TenantId { get; private set; } 
+        public TenantId TenantId { get; } 
         
-        public ProductId ProductId { get; private set; }
+        public ProductId ProductId { get; }
 
         public ProductOwnerId ProductOwnerId { get; private set; }
 
         
 
-        public string Description { get; private set; }
+        public string Description { get; }
 
         public ProductDiscussion Discussion { get; private set; }
 
         public string DiscussionInitiationId { get; private set; }
 
-        public string Name { get; private set; }               
+        public string Name { get; }               
 
         public ICollection<ProductBacklogItem> AllBacklogItems()
         {

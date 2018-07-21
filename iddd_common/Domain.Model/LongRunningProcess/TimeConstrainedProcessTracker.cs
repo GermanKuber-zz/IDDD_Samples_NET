@@ -38,29 +38,29 @@ namespace SaaSOvation.Common.Domain.Model.LongRunningProcess
             TotalRetriesPermitted = totalRetriesPermitted;
         }
 
-        public long AllowableDuration { get; private set; }
+        public long AllowableDuration { get; }
 
         public bool Completed { get; private set; }
 
         public int ConcurrencyVersion { get; private set; }
 
-        public string Description { get; private set; }
+        public string Description { get; }
 
-        public ProcessId ProcessId { get; private set; }
+        public ProcessId ProcessId { get; }
 
         public bool ProcessInformedOfTimeout { get; private set; }
 
-        public string ProcessTimedOutEventType { get; private set; }
+        public string ProcessTimedOutEventType { get; }
 
         public int RetryCount { get; private set; }
 
-        public string TenantId { get; private set; }
+        public string TenantId { get; }
 
-        public long TimeConstrainedProcessTrackerId { get; private set; }
+        public long TimeConstrainedProcessTrackerId { get; }
 
         public long TimeoutOccursOn { get; private set; }
 
-        public int TotalRetriesPermitted { get; private set; }
+        public int TotalRetriesPermitted { get; }
 
         public bool HasTimedOut()
         {

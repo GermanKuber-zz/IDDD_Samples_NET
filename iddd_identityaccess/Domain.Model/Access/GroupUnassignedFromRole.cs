@@ -16,12 +16,12 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Access
 
         public int EventVersion { get; set; }
 
-        public string GroupName { get; private set; }
+        public string GroupName { get; }
 
         public DateTime OccurredOn { get; set; }
 
-        public string RoleName { get; private set; }
+        public string RoleName { get; }
 
-        public TenantId TenantId { get; private set; }
+        public TenantId TenantId { get; }
     }
 }

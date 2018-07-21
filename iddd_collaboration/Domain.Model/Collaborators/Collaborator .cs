@@ -29,9 +29,9 @@ namespace SaaSOvation.Collaboration.Domain.Model.Collaborators
             EmailAddress = emailAddress;
         }
 
-        public string EmailAddress { get; private set; }
-        public string Identity { get; private set; }
-        public string Name { get; private set; }
+        public string EmailAddress { get; }
+        public string Identity { get; }
+        public string Name { get; }
 
         public int CompareTo(Collaborator collaborator)
         {

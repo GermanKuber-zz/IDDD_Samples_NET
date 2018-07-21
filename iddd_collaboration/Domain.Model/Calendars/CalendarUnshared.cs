@@ -14,10 +14,10 @@ namespace SaaSOvation.Collaboration.Domain.Model.Calendars
             UnsharedWith = unsharedWith;
         }
 
-        public Tenant Tenant { get; private set; }
-        public CalendarId CalendarId { get; private set; }
-        public string Name { get; private set; }
-        public CalendarSharer UnsharedWith { get; private set; }
+        public Tenant Tenant { get; }
+        public CalendarId CalendarId { get; }
+        public string Name { get; }
+        public CalendarSharer UnsharedWith { get; }
 
         public int EventVersion { get; set; }
         public DateTime OccurredOn { get; set; }

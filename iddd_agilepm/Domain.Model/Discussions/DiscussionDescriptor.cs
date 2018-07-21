@@ -28,7 +28,7 @@ namespace SaaSOvation.AgilePM.Domain.Model.Discussions
         {
         }
 
-        public string Id { get; private set; }
+        public string Id { get; }
 
         public bool IsUndefined
         {

@@ -71,13 +71,13 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 
 		#region [ Public Properties and Private IsInternalGroup Property ]
 
-		public TenantId TenantId { get; private set; }
+		public TenantId TenantId { get; }
 
-		public string Name { get; private set; }
+		public string Name { get; }
 
-		public string Description { get; private set; }
+		public string Description { get; }
 
-		public ISet<GroupMember> GroupMembers { get; private set; }
+		public ISet<GroupMember> GroupMembers { get; }
 
 		/// <summary>
 		/// Gets a value indicating whether this group exists only

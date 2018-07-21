@@ -88,7 +88,7 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 
 		#region [ Public Properties ]
 
-		public TenantId TenantId { get; private set; }
+		public TenantId TenantId { get; }
 
 		public bool IsEnabled
 		{
@@ -112,7 +112,7 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 
 		public string Password { get; private set; }
 
-		public Person Person { get; private set; }
+		public Person Person { get; }
 
 		public UserDescriptor UserDescriptor
 		{
@@ -125,7 +125,7 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 			}
 		}
 
-		public string Username { get; private set; }
+		public string Username { get; }
 
 		#endregion
 

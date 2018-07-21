@@ -23,9 +23,9 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems.BacklogItem
             Availability = availability;
         }        
 
-        public DiscussionDescriptor Descriptor { get; private set; }
+        public DiscussionDescriptor Descriptor { get; }
 
-        public DiscussionAvailability Availability { get; private set; }
+        public DiscussionAvailability Availability { get; }
 
         public BacklogItemDiscussion NowReady(DiscussionDescriptor descriptor)
         {

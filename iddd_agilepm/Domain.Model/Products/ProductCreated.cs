@@ -40,20 +40,20 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products
             TenantId = tenantId;
         }
 
-        public DiscussionAvailability Availability { get; private set; }
+        public DiscussionAvailability Availability { get; }
 
-        public string Description { get; private set; }
+        public string Description { get; }
 
         public int EventVersion { get; set; }
 
-        public string Name { get; private set; }
+        public string Name { get; }
 
         public DateTime OccurredOn { get; set; }
 
-        public ProductId ProductId { get; private set; }
+        public ProductId ProductId { get; }
 
-        public ProductOwnerId ProductOwnerId { get; private set; }
+        public ProductOwnerId ProductOwnerId { get; }
 
-        public TenantId TenantId { get; private set; }
+        public TenantId TenantId { get; }
     }
 }

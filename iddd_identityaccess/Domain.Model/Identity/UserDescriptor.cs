@@ -32,11 +32,11 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 
         private UserDescriptor() { }
 
-        public string EmailAddress { get; private set; }
+        public string EmailAddress { get; }
 
-        public TenantId TenantId { get; private set; }
+        public TenantId TenantId { get; }
 
-        public string Username { get; private set; }
+        public string Username { get; }
 
         protected override System.Collections.Generic.IEnumerable<object> GetEqualityComponents()
         {

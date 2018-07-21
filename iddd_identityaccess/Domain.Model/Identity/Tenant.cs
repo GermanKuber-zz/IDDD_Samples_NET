@@ -79,13 +79,13 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 
 		#region [ Public Properties ]
 
-		public TenantId TenantId { get; private set; }
+		public TenantId TenantId { get; }
 
-		public string Name { get; private set; }
+		public string Name { get; }
 
 		public bool Active { get; private set; }
 
-		public string Description { get; private set; }
+		public string Description { get; }
 
 		#endregion
 

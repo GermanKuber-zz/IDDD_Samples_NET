@@ -29,8 +29,8 @@ namespace SaaSOvation.Common.Notifications
             High = long.Parse(pts[1]);
         }
 
-        public long Low { get; private set; }
-        public long High { get; private set; }
+        public long Low { get; }
+        public long High { get; }
 
         public string Encoded
         {

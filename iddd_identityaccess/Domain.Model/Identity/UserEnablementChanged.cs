@@ -16,14 +16,14 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
             Username = username;
         }
 
-        public Enablement Enablement { get; private set; }
+        public Enablement Enablement { get; }
 
         public int EventVersion { get; set; }
 
         public DateTime OccurredOn { get; set; }
 
-        public string TenantId { get; private set; }
+        public string TenantId { get; }
 
-        public string Username { get; private set; }
+        public string Username { get; }
     }
 }

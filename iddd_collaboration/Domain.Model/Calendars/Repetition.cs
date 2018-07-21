@@ -22,9 +22,9 @@ namespace SaaSOvation.Collaboration.Domain.Model.Calendars
             Ends = ends;
         }
 
-        public RepeatType Repeats { get; private set; }
+        public RepeatType Repeats { get; }
 
-        public DateTime Ends { get; private set; }
+        public DateTime Ends { get; }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {

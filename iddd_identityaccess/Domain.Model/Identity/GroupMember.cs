@@ -74,11 +74,11 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 
 		#region [ Public Properties ]
 
-		public TenantId TenantId { get; private set; }
+		public TenantId TenantId { get; }
 
-		public string Name { get; private set; }
+		public string Name { get; }
 
-		public GroupMemberType Type { get; private set; }
+		public GroupMemberType Type { get; }
 
 		public bool IsGroup
 		{

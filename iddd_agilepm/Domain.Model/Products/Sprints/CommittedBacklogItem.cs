@@ -18,7 +18,6 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.Sprints
 {
     using System;
     using Tenants;
-    using BacklogItems;
     using Common.Domain.Model;
 
     public class CommittedBacklogItem : Entity, IEquatable<CommittedBacklogItem>
@@ -31,11 +30,11 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.Sprints
             Ordering = ordering;
         }
 
-        public TenantId TenantId { get; private set; }
+        public TenantId TenantId { get; }
 
-        public SprintId SprintId { get; private set; }
+        public SprintId SprintId { get; }
 
-        public BacklogItemId BacklogItemId { get; private set; }
+        public BacklogItemId BacklogItemId { get; }
 
         public int Ordering { get; private set; }
 

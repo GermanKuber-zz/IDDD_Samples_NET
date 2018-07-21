@@ -36,11 +36,11 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems.Task
         private string _name;
         private string _description;
 
-        public TenantId TenantId { get; private set; }
+        public TenantId TenantId { get; }
 
-        internal BacklogItemId BacklogItemId { get; private set; }
+        internal BacklogItemId BacklogItemId { get; }
 
-        internal TaskId TaskId { get; private set; }
+        internal TaskId TaskId { get; }
 
         public string Name
         {

@@ -32,16 +32,16 @@ namespace SaaSOvation.Collaboration.Domain.Model.Calendars
             Invitees = invitees;
         }
 
-        public Tenant Tenant { get; private set; }
-        public CalendarId CalendarId { get; private set; }
-        public CalendarEntryId CalendarEntryId { get; private set; }
-        public string Description { get; private set; }
-        public string Location { get; private set; }
-        public Owner Owner { get; private set; }
-        public DateRange TimeSpan { get; private set; }
-        public Repetition Repetition { get; private set; }
-        public Alarm Alarm { get; private set; }
-        public IEnumerable<Participant> Invitees { get; private set; }
+        public Tenant Tenant { get; }
+        public CalendarId CalendarId { get; }
+        public CalendarEntryId CalendarEntryId { get; }
+        public string Description { get; }
+        public string Location { get; }
+        public Owner Owner { get; }
+        public DateRange TimeSpan { get; }
+        public Repetition Repetition { get; }
+        public Alarm Alarm { get; }
+        public IEnumerable<Participant> Invitees { get; }
 
 
         public int EventVersion { get; set; }

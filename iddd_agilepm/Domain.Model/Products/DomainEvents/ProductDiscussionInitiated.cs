@@ -33,10 +33,10 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.DomainEvents
 
         public DateTime OccurredOn { get; set; }
 
-        public ProductDiscussion ProductDiscussion { get; private set; }
+        public ProductDiscussion ProductDiscussion { get; }
 
-        public ProductId ProductId { get; private set; }
+        public ProductId ProductId { get; }
 
-        public TenantId TenantId { get; private set; }
+        public TenantId TenantId { get; }
     }
 }

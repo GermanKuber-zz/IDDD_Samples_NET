@@ -35,11 +35,11 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
             StartDate = startDate;
         }
 
-        public bool Enabled { get; private set; }
+        public bool Enabled { get; }
 
-        public DateTime EndDate { get; private set; }
+        public DateTime EndDate { get; }
 
-        public DateTime StartDate { get; private set; }
+        public DateTime StartDate { get; }
 
         public bool IsEnablementEnabled()
         {

@@ -14,11 +14,11 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems.BacklogItem
             Story = story;
         }
 
-        public Tenants.TenantId TenantId { get; private set; }
+        public Tenants.TenantId TenantId { get; }
         public int EventVersion { get; set; }
         public DateTime OccurredOn { get; set; }
-        public BacklogItemId BacklogItemId { get; private set; }
+        public BacklogItemId BacklogItemId { get; }
 
-        public string Story { get; private set; }
+        public string Story { get; }
     }
 }

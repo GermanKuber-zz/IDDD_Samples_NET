@@ -23,7 +23,6 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.Sprints
     using Common.Domain.Model;
 
     using Tenants;
-    using BacklogItems;
 
     public class Sprint : Entity, IEquatable<Sprint>
     {
@@ -63,11 +62,11 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.Sprints
 
         public string Retrospective { get; private set; }
 
-        public ProductId ProductId { get; private set; }
+        public ProductId ProductId { get; }
 
-        public SprintId SprintId { get; private set; }
+        public SprintId SprintId { get; }
 
-        public TenantId TenantId { get; private set; }
+        public TenantId TenantId { get; }
 
         public ICollection<CommittedBacklogItem> AllCommittedBacklogItems()
         {

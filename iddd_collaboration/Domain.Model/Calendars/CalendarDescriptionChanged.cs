@@ -14,13 +14,13 @@ namespace SaaSOvation.Collaboration.Domain.Model.Calendars
             Description = description;
         }
 
-        public Tenant Tenant { get; private set; }
+        public Tenant Tenant { get; }
 
-        public CalendarId CalendarId { get; private set; }
+        public CalendarId CalendarId { get; }
 
-        public string Name { get; private set; }
+        public string Name { get; }
 
-        public string Description { get; private set; }
+        public string Description { get; }
 
 
         public int EventVersion { get; set; }

@@ -35,16 +35,16 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
             TenantId = tenantId.Id;
         }
 
-        public FullName AdministorName { get; private set; }
+        public FullName AdministorName { get; }
 
         public int EventVersion { get; set; }
 
-        public string Name { get; private set; }
+        public string Name { get; }
 
         public DateTime OccurredOn { get; set; }
 
-        public string TemporaryPassword { get; private set; }
+        public string TemporaryPassword { get; }
 
-        public string TenantId { get; private set; }
+        public string TenantId { get; }
     }
 }

@@ -18,10 +18,10 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
             Risk = risk;
         }
 
-        public int Benefit { get; private set; }
-        public int Penalty { get; private set; }
-        public int Cost { get; private set; }
-        public int Risk { get; private set; }
+        public int Benefit { get; }
+        public int Penalty { get; }
+        public int Cost { get; }
+        public int Risk { get; }
 
         public BusinessPriorityRatings WithAdjustedBenefit(int benefit)
         {

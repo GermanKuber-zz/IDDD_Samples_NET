@@ -18,16 +18,16 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
             Username = username;
         }
 
-        public EmailAddress EmailAddress { get; private set; }
+        public EmailAddress EmailAddress { get; }
 
         public int EventVersion { get; set; }
 
-        public FullName Name { get; private set; }
+        public FullName Name { get; }
 
         public DateTime OccurredOn { get; set; }
 
-        public string TenantId { get; private set; }
+        public string TenantId { get; }
 
-        public string Username { get; private set; }
+        public string Username { get; }
     }
 }

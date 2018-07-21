@@ -18,17 +18,17 @@ namespace SaaSOvation.Collaboration.Domain.Model.Calendars
             SharedWith = sharedWith;
         }
 
-        public Tenant Tenant { get; private set; }
+        public Tenant Tenant { get; }
 
-        public CalendarId CalendarId { get; private set; }
+        public CalendarId CalendarId { get; }
 
-        public string Name { get; private set; }
+        public string Name { get; }
 
-        public string Description { get; private set; }
+        public string Description { get; }
 
-        public Owner Owner { get; private set; }
+        public Owner Owner { get; }
 
-        public IEnumerable<CalendarSharer> SharedWith { get; private set; }
+        public IEnumerable<CalendarSharer> SharedWith { get; }
 
         public int EventVersion { get; set; }
         public DateTime OccurredOn { get; set; }

@@ -18,7 +18,7 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems.Task
             Id = id;
         }
 
-        public string Id { get; private set; }
+        public string Id { get; }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {

@@ -42,13 +42,13 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
         {
         }
 
-        public EmailAddress EmailAddress { get; private set; }
+        public EmailAddress EmailAddress { get; }
 
-        public PostalAddress PostalAddress { get; private set; }
+        public PostalAddress PostalAddress { get; }
 
-        public Telephone PrimaryTelephone { get; private set; }
+        public Telephone PrimaryTelephone { get; }
 
-        public Telephone SecondaryTelephone { get; private set; }
+        public Telephone SecondaryTelephone { get; }
 
         public ContactInformation ChangeEmailAddress(EmailAddress emailAddress)
         {

@@ -15,9 +15,9 @@ namespace SaaSOvation.AgilePM.Domain.Model.Teams
             Id = id;
         }
 
-        public Tenants.TenantId TenantId { get; private set; }
+        public Tenants.TenantId TenantId { get; }
 
-        public string Id { get; private set; }
+        public string Id { get; }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {

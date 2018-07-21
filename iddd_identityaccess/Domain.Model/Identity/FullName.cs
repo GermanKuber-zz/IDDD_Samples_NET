@@ -32,9 +32,9 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
         protected FullName() { }
 
 
-        public string FirstName { get; private set; }
+        public string FirstName { get; }
 
-        public string LastName { get; private set; }
+        public string LastName { get; }
 
         public String AsFormattedName()
         {

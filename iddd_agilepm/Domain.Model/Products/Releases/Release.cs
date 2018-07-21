@@ -44,20 +44,20 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.Releases
             _backlogItems = new HashSet<ScheduledBacklogItem>();
         }
 
-        public ProductId ProductId { get; private set; }
+        public ProductId ProductId { get; }
 
-        public ReleaseId ReleaseId { get; private set; }
+        public ReleaseId ReleaseId { get; }
 
-        public TenantId TenantId { get; private set; }
+        public TenantId TenantId { get; }
 
 
-        public DateTime Begins { get; private set; }
+        public DateTime Begins { get; }
 
-        public string Description { get; private set; }
+        public string Description { get; }
 
-        public DateTime Ends { get; private set; }
+        public DateTime Ends { get; }
 
-        public string Name { get; private set; }
+        public string Name { get; }
 
         private readonly ISet<ScheduledBacklogItem> _backlogItems;
 

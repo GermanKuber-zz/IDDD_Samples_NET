@@ -18,7 +18,6 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.Releases
 {
     using System;
     using Tenants;
-    using BacklogItems;
     using Common.Domain.Model;
 
     public class ScheduledBacklogItem : Entity, IEquatable<ScheduledBacklogItem>
@@ -31,10 +30,10 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.Releases
             Ordering = ordering;
         }
 
-        public TenantId TenantId { get; private set; }
-        public ReleaseId ReleaseId { get; private set; }
-        public BacklogItemId BacklogItemId { get; private set; }
-        public int Ordering { get; private set; }
+        public TenantId TenantId { get; }
+        public ReleaseId ReleaseId { get; }
+        public BacklogItemId BacklogItemId { get; }
+        public int Ordering { get; }
 
         public override bool Equals(object obj)
         {

@@ -14,10 +14,10 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 
         public int EventVersion { get; set; }
 
-        public string Name { get; private set; }
+        public string Name { get; }
 
         public DateTime OccurredOn { get; set; }
 
-        public string TenantId { get; private set; }
+        public string TenantId { get; }
     }
 }

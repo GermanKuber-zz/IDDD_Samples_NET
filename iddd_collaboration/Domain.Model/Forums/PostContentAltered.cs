@@ -16,12 +16,12 @@ namespace SaaSOvation.Collaboration.Domain.Model.Forums
             BodyText = bodyText;
         }
 
-        public Tenant TenantId { get; private set; }
-        public ForumId ForumId { get; private set; }
-        public DiscussionId DiscussionId { get; private set; }
-        public PostId PostId { get; private set; }
-        public string Subject { get; private set; }
-        public string BodyText { get; private set; }
+        public Tenant TenantId { get; }
+        public ForumId ForumId { get; }
+        public DiscussionId DiscussionId { get; }
+        public PostId PostId { get; }
+        public string Subject { get; }
+        public string BodyText { get; }
 
         public int EventVersion { get; set; }
         public DateTime OccurredOn { get; set; }

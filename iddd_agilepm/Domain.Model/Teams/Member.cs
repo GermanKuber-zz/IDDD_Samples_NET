@@ -43,7 +43,7 @@ namespace SaaSOvation.AgilePM.Domain.Model.Teams
         private string _firstName;
         private string _lastName;
 
-        public TenantId TenantId { get; private set; }
+        public TenantId TenantId { get; }
 
         public string Username
         {
