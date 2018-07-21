@@ -1,4 +1,5 @@
 ﻿using SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems;
+using SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems.BacklogItem;
 using SaaSOvation.AgilePM.Domain.Model.Products.Sprints;
 using SaaSOvation.AgilePM.Domain.Model.Tenants;
 

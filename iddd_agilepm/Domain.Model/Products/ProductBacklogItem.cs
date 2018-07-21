@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems.BacklogItem;
+
 namespace SaaSOvation.AgilePM.Domain.Model.Products
 {
     using System;

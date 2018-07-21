@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems.Task;
 using SaaSOvation.Common.Domain.Model;
 
 namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
