@@ -15,14 +15,13 @@
 namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 {
     using System;
-    using SaaSOvation.Common.Domain.Model;
 
     public class FullName
     {
         public FullName(string firstName, string lastName)
         {
-            this.FirstName = firstName;
-            this.LastName = lastName;
+            FirstName = firstName;
+            LastName = lastName;
         }
 
         public FullName(FullName fullName)
@@ -37,30 +36,30 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 
         public string LastName { get; private set; }
 
-        public String asFormattedName()
+        public String AsFormattedName()
         {
-            return this.FirstName + " " + this.LastName;
+            return FirstName + " " + LastName;
         }
 
         public FullName WithChangedFirstName(string firstName)
         {
-            return new FullName(firstName, this.LastName);
+            return new FullName(firstName, LastName);
         }
 
         public FullName WithChangedLastName(string lastName)
         {
-            return new FullName(this.FirstName, lastName);
+            return new FullName(FirstName, lastName);
         }
 
         public override bool Equals(object anotherObject)
         {
             bool equalObjects = false;
 
-            if (anotherObject != null && this.GetType() == anotherObject.GetType()) {
+            if (anotherObject != null && GetType() == anotherObject.GetType()) {
                 FullName typedObject = (FullName) anotherObject;
                 equalObjects =
-                    this.FirstName.Equals(typedObject.FirstName) &&
-                    this.LastName.Equals(typedObject.LastName);
+                    FirstName.Equals(typedObject.FirstName) &&
+                    LastName.Equals(typedObject.LastName);
             }
 
             return equalObjects;
@@ -70,8 +69,8 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
         {
             int hashCodeValue =
                 + (59151 * 191)
-                + this.FirstName.GetHashCode()
-                + this.LastName.GetHashCode();
+                + FirstName.GetHashCode()
+                + LastName.GetHashCode();
 
             return hashCodeValue;
         }

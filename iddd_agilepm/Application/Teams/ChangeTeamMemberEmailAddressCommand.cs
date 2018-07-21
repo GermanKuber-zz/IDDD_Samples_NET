@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace SaaSOvation.AgilePM.Application.Teams
 {
@@ -13,10 +10,10 @@ namespace SaaSOvation.AgilePM.Application.Teams
 
         public ChangeTeamMemberEmailAddressCommand(string tenantId, string username, string emailAddress, DateTime occurredOn)
         {
-            this.TenantId = tenantId;
-            this.Username = username;
-            this.EmailAddress = emailAddress;
-            this.OccurredOn = occurredOn;
+            TenantId = tenantId;
+            Username = username;
+            EmailAddress = emailAddress;
+            OccurredOn = occurredOn;
         }
 
         public string TenantId { get; set; }

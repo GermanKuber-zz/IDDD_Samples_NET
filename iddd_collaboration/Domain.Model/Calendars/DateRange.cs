@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SaaSOvation.Common.Domain.Model;
 
 namespace SaaSOvation.Collaboration.Domain.Model.Calendars
@@ -14,27 +11,27 @@ namespace SaaSOvation.Collaboration.Domain.Model.Calendars
             if (begins > ends)
                 throw new ArgumentException("Time span must not end before it begins.");
 
-            this.begins = begins;
-            this.ends = ends;
+            this._begins = begins;
+            this._ends = ends;
         }
 
-        readonly DateTime begins;
-        readonly DateTime ends;
+        private readonly DateTime _begins;
+        private readonly DateTime _ends;
 
         public DateTime Begins
         {
-            get { return this.begins; }
+            get { return _begins; }
         }
 
         public DateTime Ends
         {
-            get { return this.ends; }
+            get { return _ends; }
         }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return this.begins;
-            yield return this.ends;
+            yield return _begins;
+            yield return _ends;
         }
     }
 }

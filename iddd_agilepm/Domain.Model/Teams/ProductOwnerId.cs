@@ -14,8 +14,8 @@
 
 namespace SaaSOvation.AgilePM.Domain.Model.Teams
 {
-    using SaaSOvation.AgilePM.Domain.Model.Tenants;
-    using SaaSOvation.Common.Domain.Model;
+    using Tenants;
+    using Common.Domain.Model;
 
     public class ProductOwnerId : Identity
     {
@@ -28,7 +28,7 @@ namespace SaaSOvation.AgilePM.Domain.Model.Teams
         {
             get
             {
-                return new TenantId(this.Id.Split(':')[0]);
+                return new TenantId(Id.Split(':')[0]);
             }
         }
 
@@ -36,7 +36,7 @@ namespace SaaSOvation.AgilePM.Domain.Model.Teams
         {
             get
             {
-                return this.Id.Split(':')[1];
+                return Id.Split(':')[1];
             }
         }
     }

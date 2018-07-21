@@ -14,7 +14,7 @@
 
 namespace SaaSOvation.Collaboration.Domain.Model.Collaborators
 {
-    using SaaSOvation.Collaboration.Domain.Model.Tenants;
+    using Tenants;
 
     public interface ICollaboratorService
     {

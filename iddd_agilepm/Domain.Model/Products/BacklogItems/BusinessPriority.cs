@@ -1,8 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SaaSOvation.Common.Domain.Model;
 
 namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
@@ -12,14 +8,14 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
         public BusinessPriority(BusinessPriorityRatings ratings)
         {
             AssertionConcern.AssertArgumentNotNull(ratings, "The ratings must be provided.");
-            this.Ratings = ratings;
+            Ratings = ratings;
         }
 
         public BusinessPriorityRatings Ratings { get; private set; }
 
         public float CostPercentage(BusinessPriorityTotals totals)
         {
-            return (float)100 * this.Ratings.Cost / totals.TotalCost;
+            return (float)100 * Ratings.Cost / totals.TotalCost;
         }
 
         public float Priority(BusinessPriorityTotals totals)
@@ -30,25 +26,25 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
 
         public float RiskPercentage(BusinessPriorityTotals totals)
         {
-            return (float)100 * this.Ratings.Risk / totals.TotalRisk;
+            return (float)100 * Ratings.Risk / totals.TotalRisk;
         }
 
         public float ValuePercentage(BusinessPriorityTotals totals)
         {
-            return (float)100 * this.TotalValue / totals.TotalValue;
+            return (float)100 * TotalValue / totals.TotalValue;
         }
 
         public float TotalValue
         {
             get
             {
-                return this.Ratings.Benefit + this.Ratings.Penalty;
+                return Ratings.Benefit + Ratings.Penalty;
             }
         }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return this.Ratings;
+            yield return Ratings;
         }
     }
 }

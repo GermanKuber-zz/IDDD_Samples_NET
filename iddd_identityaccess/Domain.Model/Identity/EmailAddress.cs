@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using System.Collections.Generic;
 using SaaSOvation.Common.Domain.Model;
 
 namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
@@ -11,7 +7,7 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
     {
         public EmailAddress(string address)
         {
-            this.Address = address;
+            Address = address;
         }
 
         public EmailAddress(EmailAddress emailAddress)
@@ -21,13 +17,13 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 
         protected EmailAddress() { }
 
-        string address;
+        private string _address;
 
         public string Address
         {
             get
             {
-                return this.address;
+                return _address;
             }
             set
             {
@@ -38,7 +34,7 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
                         value,
                         "Email address format is invalid.");
 
-                this.address = value;
+                _address = value;
             }
         }
 
@@ -47,9 +43,9 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
             return "EmailAddress [address=" + Address + "]";
         }
 
-        protected override System.Collections.Generic.IEnumerable<object> GetEqualityComponents()
+        protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return address.ToUpper();
+            yield return _address.ToUpper();
         }
     }
 }

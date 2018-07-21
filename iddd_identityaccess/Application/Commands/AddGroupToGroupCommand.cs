@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace SaaSOvation.IdentityAccess.Application.Commands
+﻿namespace SaaSOvation.IdentityAccess.Application.Commands
 {
     public class AddGroupToGroupCommand
     {
@@ -13,9 +8,9 @@ namespace SaaSOvation.IdentityAccess.Application.Commands
 
         public AddGroupToGroupCommand(string tenantId, string childGroupName, string parentGroupName)
         {
-            this.TenantId = tenantId;
-            this.ChildGroupName = childGroupName;
-            this.ParentGroupName = parentGroupName;
+            TenantId = tenantId;
+            ChildGroupName = childGroupName;
+            ParentGroupName = parentGroupName;
         }
 
         public string TenantId { get; set; }

@@ -15,10 +15,10 @@
 namespace SaaSOvation.AgilePM.Domain.Model.Products
 {
     using System;
-    using SaaSOvation.AgilePM.Domain.Model.Discussions;
-    using SaaSOvation.AgilePM.Domain.Model.Teams;
-    using SaaSOvation.AgilePM.Domain.Model.Tenants;
-    using SaaSOvation.Common.Domain.Model;
+    using Discussions;
+    using Teams;
+    using Tenants;
+    using Common.Domain.Model;
 
     public class ProductCreated : IDomainEvent
     {
@@ -30,14 +30,14 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products
             string description,
             DiscussionAvailability availability)
         {
-            this.Availability = availability;
-            this.Description = description;
-            this.EventVersion = 1;
-            this.Name = name;
-            this.OccurredOn = DateTime.Now;
-            this.ProductId = productId;
-            this.ProductOwnerId = productOwnerId;
-            this.TenantId = tenantId;
+            Availability = availability;
+            Description = description;
+            EventVersion = 1;
+            Name = name;
+            OccurredOn = DateTime.Now;
+            ProductId = productId;
+            ProductOwnerId = productOwnerId;
+            TenantId = tenantId;
         }
 
         public DiscussionAvailability Availability { get; private set; }

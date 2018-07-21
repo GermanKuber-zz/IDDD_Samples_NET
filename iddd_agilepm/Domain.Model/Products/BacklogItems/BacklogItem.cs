@@ -18,12 +18,12 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
     using System.Collections.Generic;
     using System.Linq;
 
-    using SaaSOvation.Common.Domain.Model;    
-    using SaaSOvation.AgilePM.Domain.Model.Tenants;
-    using SaaSOvation.AgilePM.Domain.Model.Teams;
-    using SaaSOvation.AgilePM.Domain.Model.Products.Sprints;
-    using SaaSOvation.AgilePM.Domain.Model.Products.Releases;
-    using SaaSOvation.AgilePM.Domain.Model.Discussions;
+    using Common.Domain.Model;    
+    using Tenants;
+    using Teams;
+    using Sprints;
+    using Releases;
+    using Discussions;
 
     public class BacklogItem : EntityWithCompositeId
     {
@@ -37,19 +37,19 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
             BacklogItemStatus backlogItemStatus,
             StoryPoints storyPoints)
         {
-            this.BacklogItemId = backlogItemId;
-            this.Category = category;
-            this.ProductId = productId;
-            this.Status = backlogItemStatus;
-            this.StoryPoints = storyPoints;
-            this.Summary = summary;
-            this.TenantId = tenantId;
-            this.Type = type;
+            BacklogItemId = backlogItemId;
+            Category = category;
+            ProductId = productId;
+            Status = backlogItemStatus;
+            StoryPoints = storyPoints;
+            Summary = summary;
+            TenantId = tenantId;
+            Type = type;
 
-            this.tasks = new List<Task>();
+            _tasks = new List<Task>();
         }
 
-        readonly List<Task> tasks;
+        private readonly List<Task> _tasks;
 
         public TenantId TenantId { get; private set; }
 
@@ -57,16 +57,16 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
 
         public BacklogItemId BacklogItemId { get; private set; }
 
-        string summary;
+        private string _summary;
 
         public string Summary
         {
-            get { return this.summary; }
+            get { return _summary; }
             private set
             {
                 AssertionConcern.AssertArgumentNotEmpty(value, "The summary must be provided.");
                 AssertionConcern.AssertArgumentLength(value, 100, "The summary must be 100 characters or less.");
-                this.summary = value;
+                _summary = value;
             }
         }
 
@@ -78,17 +78,17 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
 
         public bool IsDone
         {
-            get { return this.Status == BacklogItemStatus.Done; }
+            get { return Status == BacklogItemStatus.Done; }
         }
 
         public bool IsPlanned
         {
-            get { return this.Status == BacklogItemStatus.Planned; }
+            get { return Status == BacklogItemStatus.Planned; }
         }
 
         public bool IsRemoved
         {
-            get { return this.Status == BacklogItemStatus.Removed; }
+            get { return Status == BacklogItemStatus.Removed; }
         }
 
         public StoryPoints StoryPoints { get; private set; }
@@ -97,9 +97,9 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
 
         public void AssociateWithIssue(string issueId)
         {
-            if (this.AssociatedIssueId == null)
+            if (AssociatedIssueId == null)
             {
-                this.AssociatedIssueId = issueId;
+                AssociatedIssueId = issueId;
             }
         }
 
@@ -107,29 +107,29 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
 
         public bool HasBusinessPriority
         {
-            get { return this.BusinessPriority != null; }
+            get { return BusinessPriority != null; }
         }
 
         public void AssignBusinessPriority(BusinessPriority businessPriority)
         {
-            this.BusinessPriority = businessPriority;
+            BusinessPriority = businessPriority;
             DomainEventPublisher.Instance.Publish(
-                new BusinessPriorityAssigned(this.TenantId, this.BacklogItemId, businessPriority));
+                new BusinessPriorityAssigned(TenantId, BacklogItemId, businessPriority));
         }
 
         public void AssignStoryPoints(StoryPoints storyPoints)
         {
-            this.StoryPoints = storyPoints;
+            StoryPoints = storyPoints;
             DomainEventPublisher.Instance.Publish(
-                new BacklogItemStoryPointsAssigned(this.TenantId, this.BacklogItemId, storyPoints));
+                new BacklogItemStoryPointsAssigned(TenantId, BacklogItemId, storyPoints));
         }
 
         public Task GetTask(TaskId taskId)
         {
-            return this.tasks.FirstOrDefault(x => x.TaskId.Equals(taskId));
+            return _tasks.FirstOrDefault(x => x.TaskId.Equals(taskId));
         }
 
-        Task LoadTask(TaskId taskId)
+        private Task LoadTask(TaskId taskId)
         {
             var task = GetTask(taskId);
             if (task == null)
@@ -145,9 +145,9 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
 
         public void ChangeCategory(string category)
         {
-            this.Category = category;
+            Category = category;
             DomainEventPublisher.Instance.Publish(
-                new BacklogItemCategoryChanged(this.TenantId, this.BacklogItemId, category));
+                new BacklogItemCategoryChanged(TenantId, BacklogItemId, category));
         }
 
         public void ChangeTaskStatus(TaskId taskId, TaskStatus status)
@@ -158,37 +158,37 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
 
         public void ChangeType(BacklogItemType type)
         {
-            this.Type = type;
+            Type = type;
             DomainEventPublisher.Instance.Publish(
-                new BacklogItemTypeChanged(this.TenantId, this.BacklogItemId, type));
+                new BacklogItemTypeChanged(TenantId, BacklogItemId, type));
         }
 
         public ReleaseId ReleaseId { get; private set; }
 
         public bool IsScheduledForRelease
         {
-            get { return this.ReleaseId != null; }
+            get { return ReleaseId != null; }
         }
 
         public SprintId SprintId { get; private set; }
 
         public bool IsCommittedToSprint
         {
-            get { return this.SprintId != null; }
+            get { return SprintId != null; }
         }
 
         public void CommitTo(Sprint sprint)
         {
             AssertionConcern.AssertArgumentNotNull(sprint, "Sprint must not be null.");
-            AssertionConcern.AssertArgumentEquals(sprint.TenantId, this.TenantId, "Sprint must be of same tenant.");
-            AssertionConcern.AssertArgumentEquals(sprint.ProductId, this.ProductId, "Sprint must be of same product.");
+            AssertionConcern.AssertArgumentEquals(sprint.TenantId, TenantId, "Sprint must be of same tenant.");
+            AssertionConcern.AssertArgumentEquals(sprint.ProductId, ProductId, "Sprint must be of same product.");
 
-            if (!this.IsScheduledForRelease)
+            if (!IsScheduledForRelease)
                 throw new InvalidOperationException("Must be scheduled for release to commit to sprint.");
 
-            if (this.IsCommittedToSprint)
+            if (IsCommittedToSprint)
             {
-                if (!sprint.SprintId.Equals(this.SprintId))
+                if (!sprint.SprintId.Equals(SprintId))
                 {
                     UncommittFromSprint();
                 }
@@ -196,38 +196,38 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
 
             ElevateStatusWith(BacklogItemStatus.Committed);
 
-            this.SprintId = sprint.SprintId;
+            SprintId = sprint.SprintId;
 
             DomainEventPublisher.Instance.Publish(
-                new BacklogItemCommitted(this.TenantId, this.BacklogItemId, sprint.SprintId));
+                new BacklogItemCommitted(TenantId, BacklogItemId, sprint.SprintId));
         }
 
-        void ElevateStatusWith(BacklogItemStatus status)
+        private void ElevateStatusWith(BacklogItemStatus status)
         {
-            if (this.Status == BacklogItemStatus.Scheduled)
+            if (Status == BacklogItemStatus.Scheduled)
             {
-                this.Status = BacklogItemStatus.Committed;
+                Status = BacklogItemStatus.Committed;
             }
         }
 
         public void UncommittFromSprint()
         {
-            if (!this.IsCommittedToSprint)
+            if (!IsCommittedToSprint)
                 throw new InvalidOperationException("Not currently committed.");
 
-            this.Status = BacklogItemStatus.Scheduled;
-            var uncommittedSprintId = this.SprintId;
-            this.SprintId = null;
+            Status = BacklogItemStatus.Scheduled;
+            var uncommittedSprintId = SprintId;
+            SprintId = null;
 
             DomainEventPublisher.Instance.Publish(
-                new BacklogItemUncommitted(this.TenantId, this.BacklogItemId, uncommittedSprintId));
+                new BacklogItemUncommitted(TenantId, BacklogItemId, uncommittedSprintId));
         }
 
         public void DefineTask(TeamMember volunteer, string name, string description, int hoursRemaining)
         {
             var task = new Task(
-                this.TenantId,
-                this.BacklogItemId,
+                TenantId,
+                BacklogItemId,
                 new TaskId(),
                 volunteer,
                 name,
@@ -235,10 +235,10 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
                 hoursRemaining,
                 TaskStatus.NotStarted);
 
-            this.tasks.Add(task);
+            _tasks.Add(task);
 
             DomainEventPublisher.Instance.Publish(
-                new TaskDefined(this.TenantId, this.BacklogItemId, task.TaskId, volunteer.TeamMemberId.Id, name, description));
+                new TaskDefined(TenantId, BacklogItemId, task.TaskId, volunteer.TeamMemberId.Id, name, description));
         }
 
         public void DescribeTask(TaskId taskId, string description)
@@ -251,52 +251,52 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
 
         public void FailDiscussionInitiation()
         {
-            if (this.Discussion.Availability == DiscussionAvailability.Ready)
+            if (Discussion.Availability == DiscussionAvailability.Ready)
             {
-                this.DiscussionInitiationId = null;
-                this.Discussion = BacklogItemDiscussion.FromAvailability(DiscussionAvailability.Failed);
+                DiscussionInitiationId = null;
+                Discussion = BacklogItemDiscussion.FromAvailability(DiscussionAvailability.Failed);
             }
         }
 
-        string discussionInitiationId;
+        private string _discussionInitiationId;
 
         public string DiscussionInitiationId
         {
-            get { return this.discussionInitiationId; }
+            get { return _discussionInitiationId; }
             private set
             {
                 if (value != null)
                     AssertionConcern.AssertArgumentLength(value, 100, "Discussion initiation identity must be 100 characters or less.");
-                this.discussionInitiationId = value;
+                _discussionInitiationId = value;
             }
         }
 
         public void InitiateDiscussion(DiscussionDescriptor descriptor)
         {
             AssertionConcern.AssertArgumentNotNull(descriptor, "The descriptor must not be null.");
-            if (this.Discussion.Availability == DiscussionAvailability.Requested)
+            if (Discussion.Availability == DiscussionAvailability.Requested)
             {
-                this.Discussion = this.Discussion.NowReady(descriptor);
+                Discussion = Discussion.NowReady(descriptor);
                 DomainEventPublisher.Instance.Publish(
-                    new BacklogItemDiscussionInitiated(this.TenantId, this.BacklogItemId, this.Discussion));
+                    new BacklogItemDiscussionInitiated(TenantId, BacklogItemId, Discussion));
             }
         }
 
         public void InitiateDiscussion(BacklogItemDiscussion discussion)
         {
-            this.Discussion = discussion;
+            Discussion = discussion;
             DomainEventPublisher.Instance.Publish(
-                new BacklogItemDiscussionInitiated(this.TenantId, this.BacklogItemId, discussion));
+                new BacklogItemDiscussionInitiated(TenantId, BacklogItemId, discussion));
         }
 
         public int TotalTaskHoursRemaining
         {
-            get { return this.tasks.Select(x => x.HoursRemaining).Sum(); }
+            get { return _tasks.Select(x => x.HoursRemaining).Sum(); }
         }
 
         public bool AnyTaskHoursRemaining
         {
-            get { return this.TotalTaskHoursRemaining > 0; }
+            get { return TotalTaskHoursRemaining > 0; }
         }
 
         public void EstimateTaskHoursRemaining(TaskId taskId, int hoursRemaining)
@@ -308,18 +308,18 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
 
             if (hoursRemaining == 0)
             {
-                if (!this.AnyTaskHoursRemaining)
+                if (!AnyTaskHoursRemaining)
                 {
                     changedStatus = BacklogItemStatus.Done;
                 }
             }
-            else if (this.IsDone)
+            else if (IsDone)
             {
-                if (this.IsCommittedToSprint)
+                if (IsCommittedToSprint)
                 {
                     changedStatus = BacklogItemStatus.Committed;
                 }
-                else if (this.IsScheduledForRelease)
+                else if (IsScheduledForRelease)
                 {
                     changedStatus = BacklogItemStatus.Scheduled;
                 }
@@ -331,59 +331,59 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
 
             if (changedStatus != null)
             {
-                this.Status = changedStatus.Value;
+                Status = changedStatus.Value;
                 DomainEventPublisher.Instance.Publish(
-                    new BacklogItemStatusChanged(this.TenantId, this.BacklogItemId, changedStatus.Value));
+                    new BacklogItemStatusChanged(TenantId, BacklogItemId, changedStatus.Value));
             }
         }
 
         public void MarkAsRemoved()
         {
-            if (this.IsRemoved)
+            if (IsRemoved)
                 throw new InvalidOperationException("Already removed, not outstanding.");
-            if (this.IsDone)
+            if (IsDone)
                 throw new InvalidOperationException("Already done, not outstanding.");
             
-            if (this.IsCommittedToSprint)
+            if (IsCommittedToSprint)
             {
                 UncommittFromSprint();
             }
 
-            if (this.IsScheduledForRelease)
+            if (IsScheduledForRelease)
             {
                 UnscheduleFromRelease();
             }
 
-            this.Status = BacklogItemStatus.Removed;
+            Status = BacklogItemStatus.Removed;
 
             DomainEventPublisher.Instance.Publish(
-                new BacklogItemMarkedAsRemoved(this.TenantId, this.BacklogItemId));
+                new BacklogItemMarkedAsRemoved(TenantId, BacklogItemId));
         }
 
         public void UnscheduleFromRelease()
         {
-            if (this.IsCommittedToSprint)
+            if (IsCommittedToSprint)
                 throw new InvalidOperationException("Must first uncommit.");
-            if (!this.IsScheduledForRelease)
+            if (!IsScheduledForRelease)
                 throw new InvalidOperationException("Not scheduled for release.");
 
-            this.Status = BacklogItemStatus.Planned;
-            var unscheduledReleaseId = this.ReleaseId;
-            this.ReleaseId = null;
+            Status = BacklogItemStatus.Planned;
+            var unscheduledReleaseId = ReleaseId;
+            ReleaseId = null;
 
             DomainEventPublisher.Instance.Publish(
-                new BacklogItemUnscheduled(this.TenantId, this.BacklogItemId, unscheduledReleaseId));
+                new BacklogItemUnscheduled(TenantId, BacklogItemId, unscheduledReleaseId));
         }
 
         public void RemoveTask(TaskId taskId)
         {
             var task = LoadTask(taskId);
 
-            if (!this.tasks.Remove(task))
+            if (!_tasks.Remove(task))
                 throw new InvalidOperationException("Task was not removed.");
 
             DomainEventPublisher.Instance.Publish(
-                new TaskRemoved(this.TenantId, this.BacklogItemId));
+                new TaskRemoved(TenantId, BacklogItemId));
         }
 
         public void RenameTask(TaskId taskId, string name)
@@ -394,15 +394,15 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
 
         public void RequestDiscussion(DiscussionAvailability availability)
         {
-            if (this.Discussion.Availability != DiscussionAvailability.Ready)
+            if (Discussion.Availability != DiscussionAvailability.Ready)
             {
-                this.Discussion = BacklogItemDiscussion.FromAvailability(availability);
+                Discussion = BacklogItemDiscussion.FromAvailability(availability);
 
                 DomainEventPublisher.Instance.Publish(
                     new BacklogItemDiscussionRequested(
-                        this.TenantId,
-                        this.ProductId,
-                        this.BacklogItemId,
+                        TenantId,
+                        ProductId,
+                        BacklogItemId,
                         availability == DiscussionAvailability.Requested));
 
             }
@@ -411,39 +411,39 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
         public void ScheduleFor(Release release)
         {
             AssertionConcern.AssertArgumentNotNull(release, "Release must not be null.");
-            AssertionConcern.AssertArgumentEquals(this.TenantId, release.TenantId, "Release must be of same tenant.");
-            AssertionConcern.AssertArgumentEquals(this.ProductId, release.ProductId, "Release must be of same product.");
+            AssertionConcern.AssertArgumentEquals(TenantId, release.TenantId, "Release must be of same tenant.");
+            AssertionConcern.AssertArgumentEquals(ProductId, release.ProductId, "Release must be of same product.");
 
-            if (this.IsScheduledForRelease && !this.ReleaseId.Equals(release.ReleaseId))
+            if (IsScheduledForRelease && !ReleaseId.Equals(release.ReleaseId))
             {
                 UnscheduleFromRelease();
             }
 
-            if (this.Status == BacklogItemStatus.Planned)
+            if (Status == BacklogItemStatus.Planned)
             {
-                this.Status = BacklogItemStatus.Scheduled;
+                Status = BacklogItemStatus.Scheduled;
             }
 
-            this.ReleaseId = release.ReleaseId;
+            ReleaseId = release.ReleaseId;
 
             DomainEventPublisher.Instance.Publish(
-                new BacklogItemScheduled(this.TenantId, this.BacklogItemId, release.ReleaseId));
+                new BacklogItemScheduled(TenantId, BacklogItemId, release.ReleaseId));
 
         }
 
         public void StartDiscussionInitiation(string discussionInitiationId)
         {
-            if (this.Discussion.Availability != DiscussionAvailability.Ready)
+            if (Discussion.Availability != DiscussionAvailability.Ready)
             {
-                this.DiscussionInitiationId = discussionInitiationId;
+                DiscussionInitiationId = discussionInitiationId;
             }
         }
 
         public void Summarize(string summary)
         {
-            this.Summary = summary;
+            Summary = summary;
             DomainEventPublisher.Instance.Publish(
-                new BacklogItemSummarized(this.TenantId, this.BacklogItemId, summary));
+                new BacklogItemSummarized(TenantId, BacklogItemId, summary));
         }
 
         public string Story { get; private set; }
@@ -453,17 +453,17 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
             if (story != null)
                 AssertionConcern.AssertArgumentLength(story, 65000, "The story must be 65000 characters or less.");
 
-            this.Story = story;
+            Story = story;
 
             DomainEventPublisher.Instance.Publish(
-                new BacklogItemStoryTold(this.TenantId, this.BacklogItemId, story));
+                new BacklogItemStoryTold(TenantId, BacklogItemId, story));
         }
 
         protected override IEnumerable<object> GetIdentityComponents()
         {
-            yield return this.TenantId;
-            yield return this.ProductId;
-            yield return this.BacklogItemId;
+            yield return TenantId;
+            yield return ProductId;
+            yield return BacklogItemId;
         }
     }
 }

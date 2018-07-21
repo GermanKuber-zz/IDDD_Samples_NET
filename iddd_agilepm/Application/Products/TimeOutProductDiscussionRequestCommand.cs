@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace SaaSOvation.AgilePM.Application.Products
 {
@@ -13,9 +10,9 @@ namespace SaaSOvation.AgilePM.Application.Products
 
         public TimeOutProductDiscussionRequestCommand(string tenantId, string processId, DateTime timeOutDate)
         {
-            this.TenantId = tenantId;
-            this.ProcessId = processId;
-            this.TimeOutDate = timeOutDate;
+            TenantId = tenantId;
+            ProcessId = processId;
+            TimeOutDate = timeOutDate;
         }
 
         public string TenantId { get; set; }

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SaaSOvation.AgilePM.Domain.Model.Tenants;
 
 namespace SaaSOvation.AgilePM.Domain.Model.Teams
@@ -19,14 +16,14 @@ namespace SaaSOvation.AgilePM.Domain.Model.Teams
             get 
             {
                 // TODO: consider length restrictions on TeamMemberId.Id
-                return new TeamMemberId(this.TenantId, this.Username); 
+                return new TeamMemberId(TenantId, Username); 
             }
         }
 
         protected override IEnumerable<object> GetIdentityComponents()
         {
-            yield return this.TenantId;
-            yield return this.Username;
+            yield return TenantId;
+            yield return Username;
         }
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using System.Collections.Generic;
 using SaaSOvation.Common.Domain.Model;
 using SaaSOvation.Collaboration.Domain.Model.Tenants;
 using SaaSOvation.Collaboration.Domain.Model.Collaborators;
@@ -16,23 +12,23 @@ namespace SaaSOvation.Collaboration.Domain.Model.Forums
         {
         }
 
-        Tenant tenantId; 
-        ForumId forumId; 
-        DiscussionId discussionId; 
-        PostId postId; 
-        Author author; 
-        string subject; 
-        string bodyText; 
-        PostId replyToPostId;
+        private Tenant _tenantId;
+        private ForumId _forumId;
+        private DiscussionId _discussionId;
+        private PostId _postId;
+        private Author _author;
+        private string _subject;
+        private string _bodyText;
+        private PostId _replyToPostId;
 
         public ForumId ForumId
         {
-            get { return this.forumId; }
+            get { return _forumId; }
         }
 
         public PostId PostId
         {
-            get { return this.postId; }
+            get { return _postId; }
         }
 
         public Post(Tenant tenantId, ForumId forumId, DiscussionId discussionId, PostId postId, Author author, string subject, string bodyText, PostId replyToPostId = null)
@@ -47,19 +43,19 @@ namespace SaaSOvation.Collaboration.Domain.Model.Forums
             Apply(new PostedToDiscussion(tenantId, forumId, discussionId, postId, author, subject, bodyText, replyToPostId));
         }
 
-        void When(PostedToDiscussion e)
+        private void When(PostedToDiscussion e)
         {
-            this.tenantId = e.TenantId;
-            this.forumId = e.ForumId;
-            this.discussionId = e.DiscussionId;
-            this.postId = e.PostId;
-            this.author = e.Author;
-            this.subject = e.Subject;
-            this.bodyText = e.BodyText;
-            this.replyToPostId = e.ReplyToPostId;
+            _tenantId = e.TenantId;
+            _forumId = e.ForumId;
+            _discussionId = e.DiscussionId;
+            _postId = e.PostId;
+            _author = e.Author;
+            _subject = e.Subject;
+            _bodyText = e.BodyText;
+            _replyToPostId = e.ReplyToPostId;
         }
 
-        void AssertPostContent(string subject, string bodyText)
+        private void AssertPostContent(string subject, string bodyText)
         {
             AssertionConcern.AssertArgumentNotEmpty(subject, "The subject must be provided.");
             AssertionConcern.AssertArgumentNotEmpty(bodyText, "The body text must be provided.");
@@ -69,22 +65,22 @@ namespace SaaSOvation.Collaboration.Domain.Model.Forums
         internal void AlterPostContent(string subject, string bodyText)
         {
             AssertPostContent(subject, bodyText);
-            Apply(new PostedContentAltered(this.tenantId, this.forumId, this.discussionId, this.postId, subject, bodyText));
+            Apply(new PostedContentAltered(_tenantId, _forumId, _discussionId, _postId, subject, bodyText));
         }
 
-        void When(PostedContentAltered e)
+        private void When(PostedContentAltered e)
         {
-            this.subject = e.Subject;
-            this.bodyText = e.BodyText;
+            _subject = e.Subject;
+            _bodyText = e.BodyText;
         }
         
 
         protected override IEnumerable<object> GetIdentityComponents()
         {
-            yield return this.tenantId;
-            yield return this.forumId;
-            yield return this.discussionId;
-            yield return this.postId;
+            yield return _tenantId;
+            yield return _forumId;
+            yield return _discussionId;
+            yield return _postId;
         }
     }
 }

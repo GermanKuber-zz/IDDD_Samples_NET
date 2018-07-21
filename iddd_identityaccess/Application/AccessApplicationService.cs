@@ -2,17 +2,17 @@
 {
 	using System;
 
-	using SaaSOvation.IdentityAccess.Application.Commands;
-	using SaaSOvation.IdentityAccess.Domain.Model.Access;
-	using SaaSOvation.IdentityAccess.Domain.Model.Identity;
+	using Commands;
+	using Domain.Model.Access;
+	using Domain.Model.Identity;
 
 	[CLSCompliant(true)]
 	public sealed class AccessApplicationService
 	{
-		private readonly IGroupRepository groupRepository;
-		private readonly IRoleRepository roleRepository;
-		private readonly ITenantRepository tenantRepository;
-		private readonly IUserRepository userRepository;
+		private readonly IGroupRepository _groupRepository;
+		private readonly IRoleRepository _roleRepository;
+		private readonly ITenantRepository _tenantRepository;
+		private readonly IUserRepository _userRepository;
 
 		public AccessApplicationService(
 			IGroupRepository groupRepository,
@@ -20,19 +20,19 @@
 			ITenantRepository tenantRepository,
 			IUserRepository userRepository)
 		{
-			this.groupRepository = groupRepository;
-			this.roleRepository = roleRepository;
-			this.tenantRepository = tenantRepository;
-			this.userRepository = userRepository;
+			this._groupRepository = groupRepository;
+			this._roleRepository = roleRepository;
+			this._tenantRepository = tenantRepository;
+			this._userRepository = userRepository;
 		}
 
 		public void AssignUserToRole(AssignUserToRoleCommand command)
 		{
 			var tenantId = new TenantId(command.TenantId);
-			var user = this.userRepository.UserWithUsername(tenantId, command.Username);
+			var user = _userRepository.UserWithUsername(tenantId, command.Username);
 			if (user != null)
 			{
-				var role = this.roleRepository.RoleNamed(tenantId, command.RoleName);
+				var role = _roleRepository.RoleNamed(tenantId, command.RoleName);
 				if (role != null)
 				{
 					role.AssignUser(user);
@@ -48,13 +48,13 @@
 		public User UserInRole(string tenantId, string userName, string roleName)
 		{
 			var id = new TenantId(tenantId);
-			var user = this.userRepository.UserWithUsername(id, userName);
+			var user = _userRepository.UserWithUsername(id, userName);
 			if (user != null)
 			{
-				var role = this.roleRepository.RoleNamed(id, roleName);
+				var role = _roleRepository.RoleNamed(id, roleName);
 				if (role != null)
 				{
-					if (role.IsInRole(user, new GroupMemberService(this.userRepository, this.groupRepository)))
+					if (role.IsInRole(user, new GroupMemberService(_userRepository, _groupRepository)))
 					{
 						return user;
 					}
@@ -67,9 +67,9 @@
 		public void ProvisionRole(ProvisionRoleCommand command)
 		{
 			var tenantId = new TenantId(command.TenantId);
-			var tenant = this.tenantRepository.Get(tenantId);
+			var tenant = _tenantRepository.Get(tenantId);
 			var role = tenant.ProvisionRole(command.RoleName, command.Description, command.SupportsNesting);
-			this.roleRepository.Add(role);
+			_roleRepository.Add(role);
 		}
 	}
 }

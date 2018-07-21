@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace SaaSOvation.AgilePM.Application.Products
+﻿namespace SaaSOvation.AgilePM.Application.Products
 {
     public class RetryProductDiscussionRequestCommand
     {
@@ -13,8 +8,8 @@ namespace SaaSOvation.AgilePM.Application.Products
 
         public RetryProductDiscussionRequestCommand(string tenantId, string processId)
         {
-            this.TenantId = tenantId;
-            this.ProcessId = processId;
+            TenantId = tenantId;
+            ProcessId = processId;
         }
 
         public string TenantId { get; set; }

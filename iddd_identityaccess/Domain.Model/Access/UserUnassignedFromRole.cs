@@ -1,21 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SaaSOvation.IdentityAccess.Domain.Model.Identity;
 
 namespace SaaSOvation.IdentityAccess.Domain.Model.Access
 {
-    public class UserUnassignedFromRole : SaaSOvation.Common.Domain.Model.IDomainEvent
+    public class UserUnassignedFromRole : Common.Domain.Model.IDomainEvent
     {
         public UserUnassignedFromRole(TenantId tenantId, string roleName, string username)
         {
-            this.EventVersion = 1;
-            this.OccurredOn = DateTime.Now;
-            this.RoleName = roleName;
-            this.TenantId = tenantId;
-            this.Username = username;
+            EventVersion = 1;
+            OccurredOn = DateTime.Now;
+            RoleName = roleName;
+            TenantId = tenantId;
+            Username = username;
         }
 
         public int EventVersion { get; set; }

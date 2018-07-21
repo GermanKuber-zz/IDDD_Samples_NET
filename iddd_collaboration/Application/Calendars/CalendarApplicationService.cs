@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SaaSOvation.Collaboration.Domain.Model.Calendars;
 using SaaSOvation.Collaboration.Domain.Model.Collaborators;
 using SaaSOvation.Collaboration.Domain.Model.Tenants;
@@ -15,46 +12,46 @@ namespace SaaSOvation.Collaboration.Application.Calendars
     {
         public CalendarApplicationService(ICalendarRepository calendarRepository, ICalendarEntryRepository calendarEntryRepository, CalendarIdentityService calendarIdentityService, ICollaboratorService collaboratorService)
         {
-            this.calendarRepository = calendarRepository;
-            this.calendarEntryRepository = calendarEntryRepository;
-            this.calendarIdentityService = calendarIdentityService;
-            this.collaboratorService = collaboratorService;
+            this._calendarRepository = calendarRepository;
+            this._calendarEntryRepository = calendarEntryRepository;
+            this._calendarIdentityService = calendarIdentityService;
+            this._collaboratorService = collaboratorService;
         }
 
-        readonly ICalendarRepository calendarRepository;
-        readonly ICalendarEntryRepository calendarEntryRepository;
-        readonly CalendarIdentityService calendarIdentityService;
-        readonly ICollaboratorService collaboratorService;
+        private readonly ICalendarRepository _calendarRepository;
+        private readonly ICalendarEntryRepository _calendarEntryRepository;
+        private readonly CalendarIdentityService _calendarIdentityService;
+        private readonly ICollaboratorService _collaboratorService;
 
         public void ChangeCalendarDescription(string tenantId, string calendarId, string description)
         {
-            var calendar = this.calendarRepository.Get(new Tenant(tenantId), new CalendarId(calendarId));
+            var calendar = _calendarRepository.Get(new Tenant(tenantId), new CalendarId(calendarId));
 
             calendar.ChangeDescription(description);
 
-            this.calendarRepository.Save(calendar);
+            _calendarRepository.Save(calendar);
         }
 
         public void CreateCalendar(string tenantId, string name, string description, string ownerId, ISet<string> participantsToShareWith, ICalendarCommandResult calendarCommandResult)
         {
             var tenant = new Tenant(tenantId);
-            var owner = this.collaboratorService.GetOwnerFrom(tenant, ownerId);
+            var owner = _collaboratorService.GetOwnerFrom(tenant, ownerId);
             var sharers = GetSharersFrom(tenant, participantsToShareWith);
 
-            var calendar = new Calendar(tenant, this.calendarRepository.GetNextIdentity(), name, description, owner, sharers);
+            var calendar = new Calendar(tenant, _calendarRepository.GetNextIdentity(), name, description, owner, sharers);
 
-            this.calendarRepository.Save(calendar);
+            _calendarRepository.Save(calendar);
 
             calendarCommandResult.SetResultingCalendarId(calendar.CalendarId.Id);
         }
 
         public void RenameCalendar(string tenantId, string calendarId, string name)
         {
-            var calendar = this.calendarRepository.Get(new Tenant(tenantId), new CalendarId(calendarId));
+            var calendar = _calendarRepository.Get(new Tenant(tenantId), new CalendarId(calendarId));
 
             calendar.Rename(name);
 
-            this.calendarRepository.Save(calendar);
+            _calendarRepository.Save(calendar);
         }
 
         public void ScheduleCalendarEntry(string tenantId, string calendarId, string description, string location, string ownerId, DateTime timeSpanBegins, DateTime timeSpanEnds,
@@ -62,19 +59,19 @@ namespace SaaSOvation.Collaboration.Application.Calendars
         {
             var tenant = new Tenant(tenantId);
 
-            var calendar = this.calendarRepository.Get(tenant, new CalendarId(calendarId));
+            var calendar = _calendarRepository.Get(tenant, new CalendarId(calendarId));
 
             var calendarEntry = calendar.ScheduleCalendarEntry(
-                this.calendarIdentityService,
+                _calendarIdentityService,
                 description,
                 location,
-                this.collaboratorService.GetOwnerFrom(tenant, ownerId),
+                _collaboratorService.GetOwnerFrom(tenant, ownerId),
                 new DateRange(timeSpanBegins, timeSpanEnds),
                 new Repetition((RepeatType)Enum.Parse(typeof(RepeatType), repeatType), repeatEndsOn),
                 new Alarm((AlarmUnitsType)Enum.Parse(typeof(AlarmUnitsType), alarmType), alarmUnits),
                 GetInviteesFrom(tenant, participantsToInvite));
 
-            this.calendarEntryRepository.Save(calendarEntry);
+            _calendarEntryRepository.Save(calendarEntry);
 
             calendarCommandResult.SetResultingCalendarId(calendar.CalendarId.Id);
             calendarCommandResult.SetResultingCalendarEntryId(calendarEntry.CalendarEntryId.Id);
@@ -83,46 +80,46 @@ namespace SaaSOvation.Collaboration.Application.Calendars
         public void ShareCalendarWith(string tenantId, string calendarId, ISet<string> participantsToShareWith)
         {
             var tenant = new Tenant(tenantId);
-            var calendar = this.calendarRepository.Get(tenant, new CalendarId(calendarId));
+            var calendar = _calendarRepository.Get(tenant, new CalendarId(calendarId));
 
             foreach (var sharer in GetSharersFrom(tenant, participantsToShareWith))
             {
                 calendar.ShareCalendarWith(sharer);
             }
 
-            this.calendarRepository.Save(calendar);
+            _calendarRepository.Save(calendar);
         }
 
         public void UnshareCalendarWith(string tenantId, string calendarId, ISet<string> participantsToShareWith)
         {
             var tenant = new Tenant(tenantId);
-            var calendar = this.calendarRepository.Get(tenant, new CalendarId(calendarId));
+            var calendar = _calendarRepository.Get(tenant, new CalendarId(calendarId));
 
             foreach (var sharer in GetSharersFrom(tenant, participantsToShareWith))
             {
                 calendar.UnshareCalendarWith(sharer);
             }
 
-            this.calendarRepository.Save(calendar);
+            _calendarRepository.Save(calendar);
         }
 
-        ISet<Participant> GetInviteesFrom(Tenant tenant, ISet<string> participantsToInvite)
+        private ISet<Participant> GetInviteesFrom(Tenant tenant, ISet<string> participantsToInvite)
         {
             var invitees = new HashSet<Participant>();
             foreach (string participatnId in participantsToInvite)
             {
-                var participant = this.collaboratorService.GetParticipantFrom(tenant, participatnId);
+                var participant = _collaboratorService.GetParticipantFrom(tenant, participatnId);
                 invitees.Add(participant);
             }
             return invitees;
         }
 
-        ISet<CalendarSharer> GetSharersFrom(Tenant tenant, ISet<string> participantsToShareWith)
+        private ISet<CalendarSharer> GetSharersFrom(Tenant tenant, ISet<string> participantsToShareWith)
         {
             var sharers = new HashSet<CalendarSharer>();
             foreach (var participatnId in participantsToShareWith)
             {
-                var participant = this.collaboratorService.GetParticipantFrom(tenant, participatnId);
+                var participant = _collaboratorService.GetParticipantFrom(tenant, participatnId);
                 sharers.Add(new CalendarSharer(participant));
             }
             return sharers;

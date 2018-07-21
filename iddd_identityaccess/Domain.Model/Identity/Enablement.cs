@@ -30,9 +30,9 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
                 throw new InvalidOperationException("Enablement start and/or end date is invalid.");
             }
 
-            this.Enabled = enabled;
-            this.EndDate = endDate;
-            this.StartDate = startDate;
+            Enabled = enabled;
+            EndDate = endDate;
+            StartDate = startDate;
         }
 
         public bool Enabled { get; private set; }
@@ -45,9 +45,9 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
         {
             bool enabled = false;
 
-            if (this.Enabled)
+            if (Enabled)
             {
-                if (!this.IsTimeExpired())
+                if (!IsTimeExpired())
                 {
                     enabled = true;
                 }
@@ -56,14 +56,14 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
             return enabled;
         }
 
-        bool IsTimeExpired()
+        private bool IsTimeExpired()
         {
             bool timeExpired = false;
 
-            if (this.StartDate != DateTime.MinValue && this.EndDate != DateTime.MinValue)
+            if (StartDate != DateTime.MinValue && EndDate != DateTime.MinValue)
             {
                 DateTime now = DateTime.Now;
-                if (now < this.StartDate || now > this.EndDate)
+                if (now < StartDate || now > EndDate)
                 {
                     timeExpired = true;
                 }
@@ -76,13 +76,13 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
         {
             bool equalObjects = false;
 
-            if (anotherObject != null && this.GetType() == anotherObject.GetType())
+            if (anotherObject != null && GetType() == anotherObject.GetType())
             {
                 Enablement typedObject = (Enablement)anotherObject;
                 equalObjects =
-                    this.Enabled == typedObject.Enabled &&
-                    this.StartDate == typedObject.StartDate &&
-                    this.EndDate == typedObject.EndDate;
+                    Enabled == typedObject.Enabled &&
+                    StartDate == typedObject.StartDate &&
+                    EndDate == typedObject.EndDate;
             }
 
             return equalObjects;
@@ -92,9 +92,9 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
         {
             int hashCodeValue =
                 + (19563 * 181)
-                + (this.Enabled ? 1:0)
-                + (this.StartDate == null ? 0:this.StartDate.GetHashCode())
-                + (this.EndDate == null ? 0:this.EndDate.GetHashCode());
+                + (Enabled ? 1:0)
+                + (StartDate == null ? 0:StartDate.GetHashCode())
+                + (EndDate == null ? 0:EndDate.GetHashCode());
 
             return hashCodeValue;
         }

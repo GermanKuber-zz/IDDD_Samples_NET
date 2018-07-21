@@ -16,7 +16,7 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 {
 	using System;
 
-	using SaaSOvation.Common.Domain.Model;
+	using Common.Domain.Model;
 
 	/// <summary>
 	/// A domain service which generates passwords
@@ -80,7 +80,7 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 
 				if (generatedPassword.Length >= 7)
 				{
-					isStrong = this.IsStrong(generatedPassword);
+					isStrong = IsStrong(generatedPassword);
 				}
 			}
 

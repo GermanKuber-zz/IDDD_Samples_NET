@@ -15,9 +15,9 @@
 namespace SaaSOvation.AgilePM.Domain.Model.Products
 {
     using System;
-    using SaaSOvation.Common.Domain.Model;
-    using SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems;
-    using SaaSOvation.AgilePM.Domain.Model.Tenants;
+    using Common.Domain.Model;
+    using BacklogItems;
+    using Tenants;
 
     public class ProductBacklogItemPlanned : IDomainEvent
     {
@@ -27,18 +27,18 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products
             BacklogItemId backlogItemId,
             string summary,
             string category,
-            BacklogItems.BacklogItemType backlogItemType,
-            BacklogItems.StoryPoints storyPoints)
+            BacklogItemType backlogItemType,
+            StoryPoints storyPoints)
         {
-            this.BacklogItemId = backlogItemId;
-            this.Category = category;
-            this.EventVersion = 1;
-            this.OccurredOn = DateTime.Now;
-            this.ProductId = productId;
-            this.StoryPoints = storyPoints;
-            this.Summary = summary;
-            this.TenantId = tenantId;
-            this.Type = backlogItemType;
+            BacklogItemId = backlogItemId;
+            Category = category;
+            EventVersion = 1;
+            OccurredOn = DateTime.Now;
+            ProductId = productId;
+            StoryPoints = storyPoints;
+            Summary = summary;
+            TenantId = tenantId;
+            Type = backlogItemType;
         }
 
         public BacklogItemId BacklogItemId { get; private set; }

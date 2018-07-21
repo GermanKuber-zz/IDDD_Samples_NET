@@ -15,8 +15,8 @@
 namespace SaaSOvation.AgilePM.Domain.Model.Teams
 {
     using System;
-    using SaaSOvation.AgilePM.Domain.Model.Tenants;
-    using SaaSOvation.Common.Domain.Model;
+    using Tenants;
+    using Common.Domain.Model;
 
     public abstract class Member : EntityWithCompositeId
     {
@@ -30,104 +30,104 @@ namespace SaaSOvation.AgilePM.Domain.Model.Teams
         {
             AssertionConcern.AssertArgumentNotNull(tenantId, "The tenant id must be provided.");
 
-            this.TenantId = tenantId;
-            this.EmailAddress = emailAddress;
-            this.Enabled = true;
-            this.FirstName = firstName;
-            this.LastName = lastName;
-            this.changeTracker = new MemberChangeTracker(initializedOn, initializedOn, initializedOn);
+            TenantId = tenantId;
+            EmailAddress = emailAddress;
+            Enabled = true;
+            FirstName = firstName;
+            LastName = lastName;
+            _changeTracker = new MemberChangeTracker(initializedOn, initializedOn, initializedOn);
         }
 
-        string userName;
-        string emailAddress;        
-        string firstName;
-        string lastName;
+        private string _userName;
+        private string _emailAddress;
+        private string _firstName;
+        private string _lastName;
 
         public TenantId TenantId { get; private set; }
 
         public string Username
         {
-            get { return this.userName; }
+            get { return _userName; }
             private set
             {
                 AssertionConcern.AssertArgumentNotEmpty(value, "The username must be provided.");
                 AssertionConcern.AssertArgumentLength(value, 250, "The username must be 250 characters or less.");
-                this.userName = value;
+                _userName = value;
             }
         }
 
         public string EmailAddress
         {
-            get { return this.emailAddress; }
+            get { return _emailAddress; }
             private set
             {
                 if (value != null)
-                    AssertionConcern.AssertArgumentLength(emailAddress, 100, "Email address must be 100 characters or less.");
-                this.emailAddress = value;
+                    AssertionConcern.AssertArgumentLength(_emailAddress, 100, "Email address must be 100 characters or less.");
+                _emailAddress = value;
             }
         }        
 
         public string FirstName
         {
-            get { return this.firstName; }
+            get { return _firstName; }
             private set
             {
                 if (value != null)
                     AssertionConcern.AssertArgumentLength(value, 50, "First name must be 50 characters or less.");
-                this.firstName = value;
+                _firstName = value;
             }
         }
 
         public string LastName
         {
-            get { return this.lastName; }
+            get { return _lastName; }
             private set
             {
                 if (value != null)
                     AssertionConcern.AssertArgumentLength(value, 50, "Last name must be 50 characters or less.");
-                this.lastName = value;
+                _lastName = value;
             }
         }
 
         public bool Enabled { get; private set; }
 
-        MemberChangeTracker changeTracker;
+        private MemberChangeTracker _changeTracker;
 
         public void ChangeEmailAddress(string emailAddress, DateTime asOfDate)
         {
-            if (this.changeTracker.CanChangeEmailAddress(asOfDate) 
-                && !this.EmailAddress.Equals(emailAddress))
+            if (_changeTracker.CanChangeEmailAddress(asOfDate) 
+                && !EmailAddress.Equals(emailAddress))
             {
-                this.EmailAddress = emailAddress;
-                this.changeTracker = this.changeTracker.EmailAddressChangedOn(asOfDate);
+                EmailAddress = emailAddress;
+                _changeTracker = _changeTracker.EmailAddressChangedOn(asOfDate);
             }
         }
 
         public void ChangeName(string firstName, string lastName, DateTime asOfDate)
         {
-            if (this.changeTracker.CanChangeName(asOfDate))
+            if (_changeTracker.CanChangeName(asOfDate))
             {
-                this.FirstName = firstName;
-                this.LastName = lastName;
-                this.changeTracker = this.changeTracker.NameChangedOn(asOfDate);
+                FirstName = firstName;
+                LastName = lastName;
+                _changeTracker = _changeTracker.NameChangedOn(asOfDate);
             }
         }
 
         public void Disable(DateTime asOfDate)
         {
-            if (this.changeTracker.CanToggleEnabling(asOfDate))
+            if (_changeTracker.CanToggleEnabling(asOfDate))
             {
-                this.Enabled = false;
-                this.changeTracker = this.changeTracker.EnablingOn(asOfDate);
+                Enabled = false;
+                _changeTracker = _changeTracker.EnablingOn(asOfDate);
             }
         }
 
         public void Enable(DateTime asOfDate)
         {
-            if (this.changeTracker.CanToggleEnabling(asOfDate))
+            if (_changeTracker.CanToggleEnabling(asOfDate))
             {
-                this.Enabled = true;
-                this.changeTracker = this.changeTracker.EnablingOn(asOfDate);
+                Enabled = true;
+                _changeTracker = _changeTracker.EnablingOn(asOfDate);
             }
         }
     }

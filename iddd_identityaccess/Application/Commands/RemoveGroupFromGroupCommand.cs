@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace SaaSOvation.IdentityAccess.Application.Commands
 {
@@ -13,9 +10,9 @@ namespace SaaSOvation.IdentityAccess.Application.Commands
 
         public RemoveGroupFromGroupCommand(String tenantId, String parentGroupName, String childGroupName)
         {
-            this.TenantId = tenantId;
-            this.ParentGroupName = parentGroupName;
-            this.ChildGroupName = childGroupName;
+            TenantId = tenantId;
+            ParentGroupName = parentGroupName;
+            ChildGroupName = childGroupName;
         }
 
         public string TenantId { get; set; }

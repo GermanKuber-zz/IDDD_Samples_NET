@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace SaaSOvation.IdentityAccess.Application.Commands
+﻿namespace SaaSOvation.IdentityAccess.Application.Commands
 {
     public class AssignUserToGroupCommand
     {
@@ -13,9 +8,9 @@ namespace SaaSOvation.IdentityAccess.Application.Commands
 
         public AssignUserToGroupCommand(string tenantId, string groupName, string userName)
         {
-            this.TenantId = tenantId;
-            this.GroupName = groupName;
-            this.Username = userName;
+            TenantId = tenantId;
+            GroupName = groupName;
+            Username = userName;
         }
 
         public string TenantId { get; set; }

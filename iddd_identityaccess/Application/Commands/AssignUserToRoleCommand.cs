@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace SaaSOvation.IdentityAccess.Application.Commands
+﻿namespace SaaSOvation.IdentityAccess.Application.Commands
 {
     public class AssignUserToRoleCommand
     {
@@ -13,9 +8,9 @@ namespace SaaSOvation.IdentityAccess.Application.Commands
 
         public AssignUserToRoleCommand(string tenantId, string userName, string roleName)
         {
-            this.TenantId = tenantId;
-            this.Username = userName;
-            this.RoleName = roleName;
+            TenantId = tenantId;
+            Username = userName;
+            RoleName = roleName;
         }
 
         public string TenantId { get; set; }

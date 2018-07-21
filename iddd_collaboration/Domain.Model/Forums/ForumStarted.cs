@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SaaSOvation.Common.Domain.Model;
 using SaaSOvation.Collaboration.Domain.Model.Tenants;
 using SaaSOvation.Collaboration.Domain.Model.Collaborators;
@@ -13,13 +9,13 @@ namespace SaaSOvation.Collaboration.Domain.Model.Forums
     {
         public ForumStarted(Tenant tenantId, ForumId forumId, Creator creator, Moderator moderator, string subject, string description, string exclusiveOwner)
         {
-            this.TenantId = tenantId;
-            this.ForumId = forumId;
-            this.Creator = creator;
-            this.Moderator = moderator;
-            this.Subject = subject;
-            this.Description = description;
-            this.ExclusiveOwner = exclusiveOwner;
+            TenantId = tenantId;
+            ForumId = forumId;
+            Creator = creator;
+            Moderator = moderator;
+            Subject = subject;
+            Description = description;
+            ExclusiveOwner = exclusiveOwner;
         }
 
         public Tenant TenantId { get; private set; }

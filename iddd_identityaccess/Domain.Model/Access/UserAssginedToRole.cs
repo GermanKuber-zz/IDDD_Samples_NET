@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SaaSOvation.IdentityAccess.Domain.Model.Identity;
 
 namespace SaaSOvation.IdentityAccess.Domain.Model.Access
 {
-    public class UserAssignedToRole : SaaSOvation.Common.Domain.Model.IDomainEvent
+    public class UserAssignedToRole : Common.Domain.Model.IDomainEvent
     {
         public UserAssignedToRole(
             TenantId tenantId,
@@ -17,14 +13,14 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Access
             string lastName,
             string emailAddress)
         {
-            this.EmailAddress = emailAddress;
-            this.EventVersion = 1;
-            this.FirstName = firstName;
-            this.LastName = lastName;
-            this.OccurredOn = DateTime.Now;
-            this.RoleName = roleName;
-            this.TenantId = tenantId;
-            this.Username = username;
+            EmailAddress = emailAddress;
+            EventVersion = 1;
+            FirstName = firstName;
+            LastName = lastName;
+            OccurredOn = DateTime.Now;
+            RoleName = roleName;
+            TenantId = tenantId;
+            Username = username;
         }
 
         public string EmailAddress { get; private set; }

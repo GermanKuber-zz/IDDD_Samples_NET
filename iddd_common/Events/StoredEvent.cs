@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SaaSOvation.Common.Domain.Model;
 
 namespace SaaSOvation.Common.Events
@@ -17,38 +13,38 @@ namespace SaaSOvation.Common.Events
             AssertionConcern.AssertArgumentNotEmpty(eventBody, "The event body is required.");
             AssertionConcern.AssertArgumentLength(eventBody, 65000, "The event body must be 65000 characters or less.");
 
-            this.typeName = typeName;
-            this.occurredOn = occurredOn;
-            this.eventBody = eventBody;
-            this.eventId = eventId;
+            this._typeName = typeName;
+            this._occurredOn = occurredOn;
+            this._eventBody = eventBody;
+            this._eventId = eventId;
         }
 
-        readonly string typeName;
+        private readonly string _typeName;
 
         public string TypeName
         {
-            get { return typeName; }
+            get { return _typeName; }
         }
 
-        readonly DateTime occurredOn;
+        private readonly DateTime _occurredOn;
 
         public DateTime OccurredOn
         {
-            get { return occurredOn; }
+            get { return _occurredOn; }
         }
 
-        readonly string eventBody;
+        private readonly string _eventBody;
 
         public string EventBody
         {
-            get { return eventBody; }
+            get { return _eventBody; }
         }
 
-        readonly long eventId;
+        private readonly long _eventId;
 
         public long EventId
         {
-            get { return eventId; }
+            get { return _eventId; }
         }
 
         public IDomainEvent ToDomainEvent()
@@ -62,21 +58,21 @@ namespace SaaSOvation.Common.Events
             var eventType = default(Type);
             try
             {
-                eventType = Type.GetType(this.typeName);
+                eventType = Type.GetType(_typeName);
             }
             catch (Exception ex)
             {
                 throw new InvalidOperationException(
                     string.Format("Class load error, because: {0}", ex));
             }
-            return (TEvent)EventSerializer.Instance.Deserialize(this.eventBody, eventType);
+            return (TEvent)EventSerializer.Instance.Deserialize(_eventBody, eventType);
         }
 
         public bool Equals(StoredEvent other)
         {
-            if (object.ReferenceEquals(this, other)) return true;
-            if (object.ReferenceEquals(null, other)) return false;
-            return this.eventId.Equals(other.eventId);
+            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other)) return false;
+            return _eventId.Equals(other._eventId);
         }
 
         public override bool Equals(object obj)
@@ -86,7 +82,7 @@ namespace SaaSOvation.Common.Events
 
         public override int GetHashCode()
         {
-            return this.eventId.GetHashCode();
+            return _eventId.GetHashCode();
         }
     }
 }

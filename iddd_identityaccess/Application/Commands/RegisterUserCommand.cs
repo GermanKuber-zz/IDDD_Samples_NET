@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace SaaSOvation.IdentityAccess.Application.Commands
 {
@@ -17,23 +14,23 @@ namespace SaaSOvation.IdentityAccess.Application.Commands
             String addressPostalCode, String addressCountryCode)
         {
 
-            this.TenantId = tenantId;
-            this.InvitationIdentifier = invitationIdentifier;
-            this.Username = username;
-            this.Password = password;
-            this.FirstName = firstName;
-            this.LastName = lastName;
-            this.Enabled = enabled;
-            this.StartDate = startDate;
-            this.EndDate = endDate;
-            this.EmailAddress = emailAddress;
-            this.PrimaryTelephone = primaryTelephone;
-            this.SecondaryTelephone = secondaryTelephone;
-            this.AddressStreetAddress = addressStreetAddress;
-            this.AddressCity = addressCity;
-            this.AddressStateProvince = addressStateProvince;
-            this.AddressPostalCode = addressPostalCode;
-            this.AddressCountryCode = addressCountryCode;
+            TenantId = tenantId;
+            InvitationIdentifier = invitationIdentifier;
+            Username = username;
+            Password = password;
+            FirstName = firstName;
+            LastName = lastName;
+            Enabled = enabled;
+            StartDate = startDate;
+            EndDate = endDate;
+            EmailAddress = emailAddress;
+            PrimaryTelephone = primaryTelephone;
+            SecondaryTelephone = secondaryTelephone;
+            AddressStreetAddress = addressStreetAddress;
+            AddressCity = addressCity;
+            AddressStateProvince = addressStateProvince;
+            AddressPostalCode = addressPostalCode;
+            AddressCountryCode = addressCountryCode;
         }
 
         public string TenantId { get; set; }

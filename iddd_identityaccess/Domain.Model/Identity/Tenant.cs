@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Linq;
+
 namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 {
 	using System;
 	using System.Collections.Generic;
-	using System.Linq;
-
-	using SaaSOvation.Common.Domain.Model;
-	using SaaSOvation.IdentityAccess.Domain.Model.Access;
+	using Common.Domain.Model;
+	using Access;
 
 	/// <summary>
 	/// An entity representing a tenant in a multi-tenant
@@ -34,7 +34,7 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 	{
 		#region [ Fields and Constructor Overloads ]
 
-		private readonly ISet<RegistrationInvitation> registrationInvitations;
+		private readonly ISet<RegistrationInvitation> _registrationInvitations;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Tenant"/> class.
@@ -59,12 +59,12 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 			AssertionConcern.AssertArgumentNotEmpty(description, "The tenant description is required.");
 			AssertionConcern.AssertArgumentLength(description, 1, 100, "The name description be 100 characters or less.");
 
-			this.TenantId = tenantId;
-			this.Name = name;
-			this.Description = description;
-			this.Active = active;
+			TenantId = tenantId;
+			Name = name;
+			Description = description;
+			Active = active;
 
-			this.registrationInvitations = new HashSet<RegistrationInvitation>();
+			_registrationInvitations = new HashSet<RegistrationInvitation>();
 		}
 
 		/// <summary>
@@ -93,71 +93,71 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 
 		public void Activate()
 		{
-			if (!this.Active)
+			if (!Active)
 			{
-				this.Active = true;
-				DomainEventPublisher.Instance.Publish(new TenantActivated(this.TenantId));
+				Active = true;
+				DomainEventPublisher.Instance.Publish(new TenantActivated(TenantId));
 			}
 		}
 
 		public void Deactivate()
 		{
-			if (this.Active)
+			if (Active)
 			{
-				this.Active = false;
+				Active = false;
 
-				DomainEventPublisher.Instance.Publish(new TenantDeactivated(this.TenantId));
+				DomainEventPublisher.Instance.Publish(new TenantDeactivated(TenantId));
 			}
 		}
 
 		public bool IsRegistrationAvailableThrough(string invitationIdentifier)
 		{
-			AssertionConcern.AssertStateTrue(this.Active, "Tenant is not active.");
+			AssertionConcern.AssertStateTrue(Active, "Tenant is not active.");
 
-			RegistrationInvitation invitation = this.GetInvitation(invitationIdentifier);
+			RegistrationInvitation invitation = GetInvitation(invitationIdentifier);
 	
 			return ((invitation != null) && invitation.IsAvailable());
 		}
 
 		public RegistrationInvitation OfferRegistrationInvitation(string description)
 		{
-			AssertionConcern.AssertStateTrue(this.Active, "Tenant is not active.");
-			AssertionConcern.AssertArgumentTrue(this.IsRegistrationAvailableThrough(description), "Invitation already exists.");
+			AssertionConcern.AssertStateTrue(Active, "Tenant is not active.");
+			AssertionConcern.AssertArgumentTrue(IsRegistrationAvailableThrough(description), "Invitation already exists.");
 
-			RegistrationInvitation invitation = new RegistrationInvitation(this.TenantId, new Guid().ToString(), description);
+			RegistrationInvitation invitation = new RegistrationInvitation(TenantId, new Guid().ToString(), description);
 
-			AssertionConcern.AssertStateTrue(this.registrationInvitations.Add(invitation), "The invitation should have been added.");
+			AssertionConcern.AssertStateTrue(_registrationInvitations.Add(invitation), "The invitation should have been added.");
 
 			return invitation;
 		}
 
 		public Group ProvisionGroup(string name, string description)
 		{
-			AssertionConcern.AssertStateTrue(this.Active, "Tenant is not active.");
+			AssertionConcern.AssertStateTrue(Active, "Tenant is not active.");
 
-			Group group = new Group(this.TenantId, name, description);
+			Group group = new Group(TenantId, name, description);
 
-			DomainEventPublisher.Instance.Publish(new GroupProvisioned(this.TenantId, name));
+			DomainEventPublisher.Instance.Publish(new GroupProvisioned(TenantId, name));
 
 			return group;
 		}
 
 		public Role ProvisionRole(string name, string description, bool supportsNesting = false)
 		{
-			AssertionConcern.AssertStateTrue(this.Active, "Tenant is not active.");
+			AssertionConcern.AssertStateTrue(Active, "Tenant is not active.");
 
-			Role role = new Role(this.TenantId, name, description, supportsNesting);
+			Role role = new Role(TenantId, name, description, supportsNesting);
 
-			DomainEventPublisher.Instance.Publish(new RoleProvisioned(this.TenantId, name));
+			DomainEventPublisher.Instance.Publish(new RoleProvisioned(TenantId, name));
 
 			return role;
 		}
 
 		public RegistrationInvitation RedefineRegistrationInvitationAs(string invitationIdentifier)
 		{
-			AssertionConcern.AssertStateTrue(this.Active, "Tenant is not active.");
+			AssertionConcern.AssertStateTrue(Active, "Tenant is not active.");
 
-			RegistrationInvitation invitation = this.GetInvitation(invitationIdentifier);
+			RegistrationInvitation invitation = GetInvitation(invitationIdentifier);
 			if (invitation != null)
 			{
 				invitation.RedefineAs().OpenEnded();
@@ -168,14 +168,14 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 
 		public User RegisterUser(string invitationIdentifier, string username, string password, Enablement enablement, Person person)
 		{
-			AssertionConcern.AssertStateTrue(this.Active, "Tenant is not active.");
+			AssertionConcern.AssertStateTrue(Active, "Tenant is not active.");
 
 			User user = null;
-			if (this.IsRegistrationAvailableThrough(invitationIdentifier))
+			if (IsRegistrationAvailableThrough(invitationIdentifier))
 			{
 				// ensure same tenant
-				person.TenantId = this.TenantId;
-				user = new User(this.TenantId, username, password, enablement, person);
+				person.TenantId = TenantId;
+				user = new User(TenantId, username, password, enablement, person);
 			}
 
 			return user;
@@ -183,10 +183,10 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 
 		public void WithdrawInvitation(string invitationIdentifier)
 		{
-			RegistrationInvitation invitation = this.GetInvitation(invitationIdentifier);
+			RegistrationInvitation invitation = GetInvitation(invitationIdentifier);
 			if (invitation != null)
 			{
-				this.registrationInvitations.Remove(invitation);
+				_registrationInvitations.Remove(invitation);
 			}
 		}
 
@@ -196,16 +196,16 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 
 		public ICollection<InvitationDescriptor> AllAvailableRegistrationInvitations()
 		{
-			AssertionConcern.AssertStateTrue(this.Active, "Tenant is not active.");
+			AssertionConcern.AssertStateTrue(Active, "Tenant is not active.");
 
-			return this.AllRegistrationInvitationsFor(true);
+			return AllRegistrationInvitationsFor(true);
 		}
 
 		public ICollection<InvitationDescriptor> AllUnavailableRegistrationInvitations()
 		{
-			AssertionConcern.AssertStateTrue(this.Active, "Tenant is not active.");
+			AssertionConcern.AssertStateTrue(Active, "Tenant is not active.");
 
-			return this.AllRegistrationInvitationsFor(false);
+			return AllRegistrationInvitationsFor(false);
 		}
 
 		/// <summary>
@@ -216,8 +216,8 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 		/// </returns>
 		public override string ToString()
 		{
-			const string Format = "Tenant [tenantId={0}, name={1}, description={2}, active={3}]";
-			return string.Format(Format, this.TenantId, this.Name, this.Description, this.Active);
+			const string format = "Tenant [tenantId={0}, name={1}, description={2}, active={3}]";
+			return string.Format(format, TenantId, Name, Description, Active);
 		}
 
 		/// <summary>
@@ -229,13 +229,13 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 		/// </returns>
 		protected override IEnumerable<object> GetIdentityComponents()
 		{
-			yield return this.TenantId;
-			yield return this.Name;
+			yield return TenantId;
+			yield return Name;
 		}
 
 		private List<InvitationDescriptor> AllRegistrationInvitationsFor(bool isAvailable)
 		{
-			return this.registrationInvitations
+			return _registrationInvitations
 				.Where(x => (x.IsAvailable() == isAvailable))
 				.Select(x => x.ToDescriptor())
 				.ToList();
@@ -243,7 +243,7 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 
 		private RegistrationInvitation GetInvitation(string invitationIdentifier)
 		{
-			return this.registrationInvitations.FirstOrDefault(x => x.IsIdentifiedBy(invitationIdentifier));
+			return _registrationInvitations.FirstOrDefault(x => x.IsIdentifiedBy(invitationIdentifier));
 		}
 
 		#endregion

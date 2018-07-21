@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace SaaSOvation.IdentityAccess.Application.Commands
+﻿namespace SaaSOvation.IdentityAccess.Application.Commands
 {
     public class ChangeUserPasswordCommand
     {
@@ -13,10 +8,10 @@ namespace SaaSOvation.IdentityAccess.Application.Commands
 
         public ChangeUserPasswordCommand(string tenantId, string userName, string currentPassword, string changedPassword)
         {
-            this.TenantId = tenantId;
-            this.Username = userName;
-            this.CurrentPassword = currentPassword;
-            this.ChangedPassword = changedPassword;
+            TenantId = tenantId;
+            Username = userName;
+            CurrentPassword = currentPassword;
+            ChangedPassword = changedPassword;
         }
 
         public string TenantId { get; set; }

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SaaSOvation.Common.Domain.Model;
 
 namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
@@ -11,12 +7,12 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
     {
         public BacklogItemUnscheduled(Tenants.TenantId tenantId, BacklogItemId backlogItemId, Releases.ReleaseId unscheduledReleaseId)
         {
-            this.TenantId = tenantId;
-            this.EventVersion = 1;
-            this.OccurredOn = DateTime.UtcNow;
-            this.BacklogItemId = backlogItemId;
+            TenantId = tenantId;
+            EventVersion = 1;
+            OccurredOn = DateTime.UtcNow;
+            BacklogItemId = backlogItemId;
 
-            this.UnscheduledReleaseId = unscheduledReleaseId;
+            UnscheduledReleaseId = unscheduledReleaseId;
         }
 
         public Tenants.TenantId TenantId { get; private set; }

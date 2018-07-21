@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SaaSOvation.Common.Domain.Model;
 using SaaSOvation.AgilePM.Domain.Model.Discussions;
 
@@ -16,14 +13,14 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
                 throw new ArgumentException("Cannot be created ready.");
 
             return new BacklogItemDiscussion(
-                new DiscussionDescriptor(DiscussionDescriptor.UNDEFINED_ID),
+                new DiscussionDescriptor(DiscussionDescriptor.UndefinedId),
                 availability);
         }
 
         public BacklogItemDiscussion(DiscussionDescriptor descriptor, DiscussionAvailability availability)
         {
-            this.Descriptor = descriptor;
-            this.Availability = availability;
+            Descriptor = descriptor;
+            Availability = availability;
         }        
 
         public DiscussionDescriptor Descriptor { get; private set; }
@@ -35,7 +32,7 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
             if (descriptor == null || descriptor.IsUndefined)
                 throw new InvalidOperationException("The discussion descriptor must be defined.");
 
-            if (this.Availability != DiscussionAvailability.Requested)
+            if (Availability != DiscussionAvailability.Requested)
                 throw new InvalidOperationException("The discussion must be requested first.");
 
             return new BacklogItemDiscussion(descriptor, DiscussionAvailability.Ready);
@@ -43,8 +40,8 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return this.Availability;
-            yield return this.Descriptor;
+            yield return Availability;
+            yield return Descriptor;
         }
     }
 }

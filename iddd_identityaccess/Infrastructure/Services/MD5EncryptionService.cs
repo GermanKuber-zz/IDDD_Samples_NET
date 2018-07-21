@@ -18,8 +18,8 @@ namespace SaaSOvation.IdentityAccess.Infrastructure.Services
 	using System.Security.Cryptography;
 	using System.Text;
 
-	using SaaSOvation.Common.Domain.Model;
-	using SaaSOvation.IdentityAccess.Domain.Model.Identity;
+	using Common.Domain.Model;
+	using Domain.Model.Identity;
 
 	/// <summary>
 	/// Implementation of <see cref="IEncryptionService"/>
@@ -27,7 +27,7 @@ namespace SaaSOvation.IdentityAccess.Infrastructure.Services
 	/// one-way hash of a plain text string.
 	/// </summary>
 	[CLSCompliant(true)]
-	public class MD5EncryptionService : IEncryptionService
+	public class Md5EncryptionService : IEncryptionService
 	{
 		/// <summary>
 		/// Creates a one-way MD5 has of a given plain text string.

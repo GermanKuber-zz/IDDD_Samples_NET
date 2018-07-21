@@ -14,19 +14,19 @@
 
 namespace SaaSOvation.AgilePM.Domain.Model.Products
 {
-    using SaaSOvation.AgilePM.Domain.Model.Tenants;
-    using SaaSOvation.Common.Domain.Model;
+    using Tenants;
+    using Common.Domain.Model;
     using System;
     
     public class ProductDiscussionInitiated : IDomainEvent
     {
         public ProductDiscussionInitiated(TenantId tenantId, ProductId productId, ProductDiscussion productDiscussion)
         {
-            this.EventVersion = 1;
-            this.OccurredOn = DateTime.Now;
-            this.ProductDiscussion = productDiscussion;
-            this.ProductId = productId;
-            this.TenantId = tenantId;
+            EventVersion = 1;
+            OccurredOn = DateTime.Now;
+            ProductDiscussion = productDiscussion;
+            ProductId = productId;
+            TenantId = tenantId;
         }
 
         public int EventVersion { get; set; }

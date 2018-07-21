@@ -15,18 +15,18 @@
 namespace SaaSOvation.IdentityAccess.Domain.Model.Access
 {
     using System;
-    using SaaSOvation.Common.Domain.Model;
-    using SaaSOvation.IdentityAccess.Domain.Model.Identity;
+    using Common.Domain.Model;
+    using Identity;
 
     public class GroupAssignedToRole : IDomainEvent
     {
         public GroupAssignedToRole(TenantId tenantId, string roleName, string groupName)
         {
-            this.EventVersion = 1;
-            this.GroupName = groupName;
-            this.OccurredOn = DateTime.Now;
-            this.RoleName = roleName;
-            this.TenantId = tenantId;
+            EventVersion = 1;
+            GroupName = groupName;
+            OccurredOn = DateTime.Now;
+            RoleName = roleName;
+            TenantId = tenantId;
         }
 
         public int EventVersion { get; set; }

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SaaSOvation.Common.Domain.Model;
 
 namespace SaaSOvation.Common.Notifications
@@ -14,47 +11,47 @@ namespace SaaSOvation.Common.Notifications
         {
             AssertionConcern.AssertArgumentNotNull(domainEvent, "The event is required.");
 
-            this.notificationId = notificationId;
-            this.domainEvent = domainEvent;
-            this.occurredOn = domainEvent.OccurredOn;
-            this.version = domainEvent.EventVersion;
-            this.typeName = domainEvent.GetType().FullName;
+            this._notificationId = notificationId;
+            this._domainEvent = domainEvent;
+            _occurredOn = domainEvent.OccurredOn;
+            _version = domainEvent.EventVersion;
+            _typeName = domainEvent.GetType().FullName;
         }
 
-        readonly long notificationId;
-        readonly IDomainEvent domainEvent;
-        readonly DateTime occurredOn;
-        readonly string typeName;
-        readonly int version;
+        private readonly long _notificationId;
+        private readonly IDomainEvent _domainEvent;
+        private readonly DateTime _occurredOn;
+        private readonly string _typeName;
+        private readonly int _version;
 
         public TEvent GetEvent<TEvent>() where TEvent : IDomainEvent
         {
-            return (TEvent)this.domainEvent;
+            return (TEvent)_domainEvent;
         }
 
         public long NotificationId
         {
-            get { return this.notificationId; }
+            get { return _notificationId; }
         }
 
         public DateTime OccurredOn
         {
-            get { return this.occurredOn; }
+            get { return _occurredOn; }
         }
 
         public int Version
         {
-            get { return this.version; }
+            get { return _version; }
         }
 
         public string TypeName
         {
-            get { return this.typeName; }
+            get { return _typeName; }
         }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return this.notificationId;
+            yield return _notificationId;
         }
     }
 }

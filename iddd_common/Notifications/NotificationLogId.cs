@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace SaaSOvation.Common.Notifications
 {
@@ -20,15 +18,15 @@ namespace SaaSOvation.Common.Notifications
 
         public NotificationLogId(long lowId, long highId)
         {
-            this.Low = lowId;
-            this.High = highId;
+            Low = lowId;
+            High = highId;
         }
 
         public NotificationLogId(string notificationlogId)
         {
             var pts = notificationlogId.Split(',');
-            this.Low = long.Parse(pts[0]);
-            this.High = long.Parse(pts[1]);
+            Low = long.Parse(pts[0]);
+            High = long.Parse(pts[1]);
         }
 
         public long Low { get; private set; }
@@ -36,12 +34,12 @@ namespace SaaSOvation.Common.Notifications
 
         public string Encoded
         {
-            get { return this.Low + "," + this.High; }
+            get { return Low + "," + High; }
         }
 
         public NotificationLogId Next(int notificationsPerLog)
         {
-            var nextLow = this.High + 1;
+            var nextLow = High + 1;
             var nextHigh = nextLow + notificationsPerLog;
             var next = new NotificationLogId(nextLow, nextHigh);
             if (Equals(next))
@@ -51,7 +49,7 @@ namespace SaaSOvation.Common.Notifications
 
         public NotificationLogId Previous(int notificationsPerLog)
         {
-            var previousLow = Math.Max(this.Low - notificationsPerLog, 1);
+            var previousLow = Math.Max(Low - notificationsPerLog, 1);
             var previousHigh = previousLow + notificationsPerLog - 1;
             var previous = new NotificationLogId(previousLow, previousHigh);
             if (Equals(previous))
@@ -61,8 +59,8 @@ namespace SaaSOvation.Common.Notifications
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return this.Low;
-            yield return this.High;
+            yield return Low;
+            yield return High;
         }
     }
 }

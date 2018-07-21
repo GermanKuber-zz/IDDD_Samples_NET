@@ -28,9 +28,9 @@ namespace SaaSOvation.Common.Domain.Model
 
         public override bool Equals(object obj)
         {
-            if (object.ReferenceEquals(this, obj)) return true;
-            if (object.ReferenceEquals(null, obj)) return false;
-            if (this.GetType() != obj.GetType()) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (ReferenceEquals(null, obj)) return false;
+            if (GetType() != obj.GetType()) return false;
             var vo = obj as ValueObject;
             return GetEqualityComponents().SequenceEqual(vo.GetEqualityComponents());
         }
@@ -50,21 +50,21 @@ namespace SaaSOvation.Common.Domain.Model
             return new NonGenericComparable<T>(comparable);
         }
 
-        class NonGenericComparable<T> : IComparable
+        private class NonGenericComparable<T> : IComparable
         {
             public NonGenericComparable(IComparable<T> comparable)
             {
-                this.comparable = comparable;
+                this._comparable = comparable;
             }
 
-            readonly IComparable<T> comparable;
+            private readonly IComparable<T> _comparable;
 
             public int CompareTo(object obj)
             {
-                if (object.ReferenceEquals(this.comparable, obj)) return 0;
-                if (object.ReferenceEquals(null, obj))
+                if (ReferenceEquals(_comparable, obj)) return 0;
+                if (ReferenceEquals(null, obj))
                     throw new ArgumentNullException();
-                return this.comparable.CompareTo((T)obj);
+                return _comparable.CompareTo((T)obj);
             }
         }
 
@@ -96,8 +96,8 @@ namespace SaaSOvation.Common.Domain.Model
 
         public int CompareTo(object obj)
         {
-            if (object.ReferenceEquals(this, obj)) return 0;
-            if (object.ReferenceEquals(null, obj)) return 1;
+            if (ReferenceEquals(this, obj)) return 0;
+            if (ReferenceEquals(null, obj)) return 1;
 
             if (GetType() != obj.GetType())
                 throw new InvalidOperationException();

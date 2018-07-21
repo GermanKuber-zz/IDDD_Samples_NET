@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SaaSOvation.Common.Domain.Model;
 
 namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
@@ -11,15 +7,15 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
     {
         public TaskDefined(Tenants.TenantId tenantId, BacklogItemId backlogItemId, TaskId taskId, string volunteerMemberId, string name, string description)
         {
-            this.TenantId = tenantId;
-            this.EventVersion = 1;
-            this.OccurredOn = DateTime.UtcNow;
-            this.BacklogItemId = backlogItemId;
+            TenantId = tenantId;
+            EventVersion = 1;
+            OccurredOn = DateTime.UtcNow;
+            BacklogItemId = backlogItemId;
 
-            this.TaskId = taskId;
-            this.VolunteerMemberId = volunteerMemberId;
-            this.Name = name;
-            this.Description = description;
+            TaskId = taskId;
+            VolunteerMemberId = volunteerMemberId;
+            Name = name;
+            Description = description;
         }
 
         public Tenants.TenantId TenantId { get; private set; }

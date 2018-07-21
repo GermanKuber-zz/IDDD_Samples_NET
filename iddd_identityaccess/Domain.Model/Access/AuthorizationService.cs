@@ -16,8 +16,8 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Access
 {
 	using System;
 
-	using SaaSOvation.Common.Domain.Model;
-	using SaaSOvation.IdentityAccess.Domain.Model.Identity;
+	using Common.Domain.Model;
+	using Identity;
 
 	/// <summary>
 	/// A domain service providing methods to determine
@@ -28,9 +28,9 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Access
 	{
 		#region [ ReadOnly Fields and Constructor ]
 
-		private readonly IUserRepository userRepository;
-		private readonly IGroupRepository groupRepository;
-		private readonly IRoleRepository roleRepository;
+		private readonly IUserRepository _userRepository;
+		private readonly IGroupRepository _groupRepository;
+		private readonly IRoleRepository _roleRepository;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="AuthorizationService"/> class.
@@ -49,9 +49,9 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Access
 			IGroupRepository groupRepository,
 			IRoleRepository roleRepository)
 		{
-			this.groupRepository = groupRepository;
-			this.roleRepository = roleRepository;
-			this.userRepository = userRepository;
+			this._groupRepository = groupRepository;
+			this._roleRepository = roleRepository;
+			this._userRepository = userRepository;
 		}
 
 		#endregion
@@ -80,8 +80,8 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Access
 			AssertionConcern.AssertArgumentNotEmpty(username, "Username must not be provided.");
 			AssertionConcern.AssertArgumentNotEmpty(roleName, "Role name must not be null.");
 
-			User user = this.userRepository.UserWithUsername(tenantId, username);
-			return ((user != null) && this.IsUserInRole(user, roleName));
+			User user = _userRepository.UserWithUsername(tenantId, username);
+			return ((user != null) && IsUserInRole(user, roleName));
 		}
 
 		/// <summary>
@@ -106,10 +106,10 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Access
 			bool authorized = false;
 			if (user.IsEnabled)
 			{
-				Role role = this.roleRepository.RoleNamed(user.TenantId, roleName);
+				Role role = _roleRepository.RoleNamed(user.TenantId, roleName);
 				if (role != null)
 				{
-					authorized = role.IsInRole(user, new GroupMemberService(this.userRepository, this.groupRepository));
+					authorized = role.IsInRole(user, new GroupMemberService(_userRepository, _groupRepository));
 				}
 			}
 

@@ -15,8 +15,8 @@
 namespace SaaSOvation.AgilePM.Domain.Model.Products
 {
     using System;
-    using SaaSOvation.Common.Domain.Model;
-    using SaaSOvation.AgilePM.Domain.Model.Discussions;
+    using Common.Domain.Model;
+    using Discussions;
 
     public class ProductDiscussion : ValueObject
     {
@@ -26,7 +26,7 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products
             if (availability == DiscussionAvailability.Ready)
                 throw new InvalidOperationException("Cannot be created ready.");
 
-            var descriptor = new DiscussionDescriptor(DiscussionDescriptor.UNDEFINED_ID);
+            var descriptor = new DiscussionDescriptor(DiscussionDescriptor.UndefinedId);
 
             return new ProductDiscussion(descriptor, availability);
         }
@@ -34,8 +34,8 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products
         public ProductDiscussion(DiscussionDescriptor descriptor, DiscussionAvailability availability)
         {
             AssertionConcern.AssertArgumentNotNull(descriptor, "The descriptor must be provided.");
-            this.Availability = availability;
-            this.Descriptor = descriptor;
+            Availability = availability;
+            Descriptor = descriptor;
         }
 
         public ProductDiscussion(ProductDiscussion productDiscussion)
@@ -51,15 +51,15 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products
         {
             if (descriptor == null || descriptor.IsUndefined)
                 throw new ArgumentException("The discussion descriptor must be defined.");
-            if (this.Availability != DiscussionAvailability.Requested)
+            if (Availability != DiscussionAvailability.Requested)
                 throw new InvalidOperationException("The discussion must be requested first.");
             return new ProductDiscussion(descriptor, DiscussionAvailability.Ready);
         }
 
         protected override System.Collections.Generic.IEnumerable<object> GetEqualityComponents()
         {
-            yield return this.Availability;
-            yield return this.Descriptor;
+            yield return Availability;
+            yield return Descriptor;
         }
     }
 }

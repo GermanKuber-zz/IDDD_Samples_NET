@@ -15,18 +15,18 @@
 namespace SaaSOvation.AgilePM.Domain.Model.Products.Releases
 {
     using System;
-    using SaaSOvation.AgilePM.Domain.Model.Tenants;
-    using SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems;
-    using SaaSOvation.Common.Domain.Model;
+    using Tenants;
+    using BacklogItems;
+    using Common.Domain.Model;
 
     public class ScheduledBacklogItem : Entity, IEquatable<ScheduledBacklogItem>
     {
         public ScheduledBacklogItem(TenantId tenantId, ReleaseId releaseId, BacklogItemId backlogItemId, int ordering = 0)
         {
-            this.TenantId = tenantId;
-            this.ReleaseId = releaseId;
-            this.BacklogItemId = backlogItemId;
-            this.Ordering = ordering;
+            TenantId = tenantId;
+            ReleaseId = releaseId;
+            BacklogItemId = backlogItemId;
+            Ordering = ordering;
         }
 
         public TenantId TenantId { get; private set; }
@@ -41,21 +41,21 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.Releases
 
         public bool Equals(ScheduledBacklogItem other)
         {
-            if (object.ReferenceEquals(this, other)) return true;
-            if (object.ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other)) return false;
 
-            return this.TenantId.Equals(other.TenantId)
-                && this.ReleaseId.Equals(other.ReleaseId)
-                && this.BacklogItemId.Equals(other.BacklogItemId);
+            return TenantId.Equals(other.TenantId)
+                && ReleaseId.Equals(other.ReleaseId)
+                && BacklogItemId.Equals(other.BacklogItemId);
         }
 
         public override int GetHashCode()
         {
             return
                 +(73281 * 47)
-                + this.TenantId.GetHashCode()
-                + this.ReleaseId.GetHashCode()
-                + this.BacklogItemId.GetHashCode();
+                + TenantId.GetHashCode()
+                + ReleaseId.GetHashCode()
+                + BacklogItemId.GetHashCode();
         }
     }
 }

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SaaSOvation.Common.Domain.Model;
 using SaaSOvation.Collaboration.Domain.Model.Tenants;
 using SaaSOvation.Collaboration.Domain.Model.Collaborators;
@@ -23,16 +20,16 @@ namespace SaaSOvation.Collaboration.Domain.Model.Calendars
             Alarm alarm,
             IEnumerable<Participant> invitees)
         {
-            this.Tenant = tenant;
-            this.CalendarId = calendarId;
-            this.CalendarEntryId = calendarEntryId;
-            this.Description = description;
-            this.Location = location;
-            this.Owner = owner;
-            this.TimeSpan = timeSpan;
-            this.Repetition = repetition;
-            this.Alarm = alarm;
-            this.Invitees = invitees;
+            Tenant = tenant;
+            CalendarId = calendarId;
+            CalendarEntryId = calendarEntryId;
+            Description = description;
+            Location = location;
+            Owner = owner;
+            TimeSpan = timeSpan;
+            Repetition = repetition;
+            Alarm = alarm;
+            Invitees = invitees;
         }
 
         public Tenant Tenant { get; private set; }

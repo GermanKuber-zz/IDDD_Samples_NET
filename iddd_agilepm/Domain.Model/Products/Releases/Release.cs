@@ -15,8 +15,8 @@
 namespace SaaSOvation.AgilePM.Domain.Model.Products.Releases
 {
     using System;
-    using SaaSOvation.AgilePM.Domain.Model.Tenants;
-    using SaaSOvation.Common.Domain.Model;
+    using Tenants;
+    using Common.Domain.Model;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
 
@@ -34,14 +34,14 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.Releases
             if (ends.Ticks < begins.Ticks)
                 throw new InvalidOperationException("Release must not end before it begins.");
             
-            this.Begins = begins;
-            this.Description = description;
-            this.Ends = ends;
-            this.Name = name;
-            this.ProductId = productId;
-            this.ReleaseId = releaseId;
-            this.TenantId = tenantId;
-            this.backlogItems = new HashSet<ScheduledBacklogItem>();
+            Begins = begins;
+            Description = description;
+            Ends = ends;
+            Name = name;
+            ProductId = productId;
+            ReleaseId = releaseId;
+            TenantId = tenantId;
+            _backlogItems = new HashSet<ScheduledBacklogItem>();
         }
 
         public ProductId ProductId { get; private set; }
@@ -57,13 +57,13 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.Releases
 
         public DateTime Ends { get; private set; }
 
-        public string Name { get; private set; }        
+        public string Name { get; private set; }
 
-        readonly ISet<ScheduledBacklogItem> backlogItems;
+        private readonly ISet<ScheduledBacklogItem> _backlogItems;
 
         public ICollection<ScheduledBacklogItem> AllScheduledBacklogItems()
         {
-            return new ReadOnlyCollection<ScheduledBacklogItem>(new List<ScheduledBacklogItem>(this.backlogItems));
+            return new ReadOnlyCollection<ScheduledBacklogItem>(new List<ScheduledBacklogItem>(_backlogItems));
         }
     }
 }

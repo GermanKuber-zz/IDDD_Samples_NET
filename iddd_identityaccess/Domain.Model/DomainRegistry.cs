@@ -16,7 +16,7 @@ namespace SaaSOvation.IdentityAccess.Domain.Model
 {
 	using System;
 
-	using SaaSOvation.IdentityAccess.Domain.Model.Identity;
+	using Identity;
 
 	/// <summary>
 	/// Holds static references to domain services
@@ -36,7 +36,7 @@ namespace SaaSOvation.IdentityAccess.Domain.Model
 				// this is not a desirable dependency since it
 				// references port adapters, but it doesn't
 				// require an IoC container
-				return new Infrastructure.Services.MD5EncryptionService();
+				return new Infrastructure.Services.Md5EncryptionService();
 			}
 		}
 

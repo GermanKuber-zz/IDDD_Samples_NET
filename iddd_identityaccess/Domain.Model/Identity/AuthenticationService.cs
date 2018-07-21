@@ -16,7 +16,7 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 {
 	using System;
 
-	using SaaSOvation.Common.Domain.Model;
+	using Common.Domain.Model;
 
 	/// <summary>
 	/// A domain service providing a method
@@ -27,9 +27,9 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 	{
 		#region [ ReadOnly Fields and Constructor ]
 
-		private readonly ITenantRepository tenantRepository;
-		private readonly IUserRepository userRepository;
-		private readonly IEncryptionService encryptionService;
+		private readonly ITenantRepository _tenantRepository;
+		private readonly IUserRepository _userRepository;
+		private readonly IEncryptionService _encryptionService;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="AuthenticationService"/> class.
@@ -48,9 +48,9 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 			IUserRepository userRepository,
 			IEncryptionService encryptionService)
 		{
-			this.encryptionService = encryptionService;
-			this.tenantRepository = tenantRepository;
-			this.userRepository = userRepository;
+			this._encryptionService = encryptionService;
+			this._tenantRepository = tenantRepository;
+			this._userRepository = userRepository;
 		}
 
 		#endregion
@@ -83,11 +83,11 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 			AssertionConcern.AssertArgumentNotEmpty(password, "Password must be provided.");
 
 			UserDescriptor userDescriptor = UserDescriptor.NullDescriptorInstance();
-			Tenant tenant = this.tenantRepository.Get(tenantId);
+			Tenant tenant = _tenantRepository.Get(tenantId);
 			if ((tenant != null) && tenant.Active)
 			{
-				string encryptedPassword = this.encryptionService.EncryptedValue(password);
-				User user = this.userRepository.UserFromAuthenticCredentials(tenantId, username, encryptedPassword);
+				string encryptedPassword = _encryptionService.EncryptedValue(password);
+				User user = _userRepository.UserFromAuthenticCredentials(tenantId, username, encryptedPassword);
 				if ((user != null) && user.IsEnabled)
 				{
 					userDescriptor = user.UserDescriptor;

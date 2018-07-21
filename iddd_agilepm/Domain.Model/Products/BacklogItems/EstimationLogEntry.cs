@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SaaSOvation.Common.Domain.Model;
 
 namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
@@ -14,10 +11,10 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
             AssertionConcern.AssertArgumentNotNull(tenantId, "The tenant id must be provided.");
             AssertionConcern.AssertArgumentNotNull(taskId, "The task id must be provided.");
 
-            this.TenantId = tenantId;
-            this.TaskId = taskId;
-            this.Date = date.Date;
-            this.HoursRemaining = hoursRemaining;
+            TenantId = tenantId;
+            TaskId = taskId;
+            Date = date.Date;
+            HoursRemaining = hoursRemaining;
         }
 
         public static DateTime CurrentLogDate
@@ -33,14 +30,14 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
 
         internal bool IsMatching(DateTime date)
         {
-            return this.Date.Equals(date);
+            return Date.Equals(date);
         }
 
         internal bool UpdateHoursRemainingWhenDateMatches(int hoursRemaining, DateTime date)
         {
             if (IsMatching(date))
             {
-                this.HoursRemaining = hoursRemaining;
+                HoursRemaining = hoursRemaining;
                 return true;
             }
             return false;
@@ -48,10 +45,10 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
 
         protected override IEnumerable<object> GetIdentityComponents()
         {
-            yield return this.TenantId;
-            yield return this.TaskId;
-            yield return this.Date;
-            yield return this.HoursRemaining;
+            yield return TenantId;
+            yield return TaskId;
+            yield return Date;
+            yield return HoursRemaining;
         }        
     }
 }

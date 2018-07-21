@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace SaaSOvation.AgilePM.Application.Products
+﻿namespace SaaSOvation.AgilePM.Application.Products
 {
     public class InitiateDiscussionCommand
     {
@@ -13,9 +8,9 @@ namespace SaaSOvation.AgilePM.Application.Products
 
         public InitiateDiscussionCommand(string tenantId, string discussionId, string productId)
         {
-            this.TenantId = tenantId;
-            this.DiscussionId = discussionId;
-            this.ProductId = productId;
+            TenantId = tenantId;
+            DiscussionId = discussionId;
+            ProductId = productId;
         }
 
         public string TenantId { get; set; }

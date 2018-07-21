@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using SaaSOvation.Collaboration.Domain.Model.Forums;
+﻿using SaaSOvation.Collaboration.Domain.Model.Forums;
 using SaaSOvation.Collaboration.Domain.Model.Collaborators;
 using SaaSOvation.Collaboration.Domain.Model.Tenants;
 using SaaSOvation.Collaboration.Application.Forums.Data;
@@ -18,35 +13,35 @@ namespace SaaSOvation.Collaboration.Application.Forums
             IPostRepository postRepository,
             ICollaboratorService collaboratorService)
         {
-            this.discussionRepository = discussionRepository;
-            this.forumIdentityService = forumIdentityService;
-            this.postRepository = postRepository;
-            this.collaboratorService = collaboratorService;
+            this._discussionRepository = discussionRepository;
+            this._forumIdentityService = forumIdentityService;
+            this._postRepository = postRepository;
+            this._collaboratorService = collaboratorService;
         }
 
-        readonly ICollaboratorService collaboratorService;
-        readonly IDiscussionRepository discussionRepository;
-        readonly ForumIdentityService forumIdentityService;
-        readonly IPostRepository postRepository;
+        private readonly ICollaboratorService _collaboratorService;
+        private readonly IDiscussionRepository _discussionRepository;
+        private readonly ForumIdentityService _forumIdentityService;
+        private readonly IPostRepository _postRepository;
 
         public void CloseDiscussion(string tenantId, string discussionId)
         {
-            var discussion = this.discussionRepository.Get(new Tenant(tenantId), new DiscussionId(discussionId));
+            var discussion = _discussionRepository.Get(new Tenant(tenantId), new DiscussionId(discussionId));
 
             discussion.Close();
 
-            this.discussionRepository.Save(discussion);
+            _discussionRepository.Save(discussion);
         }
 
         public void PostToDiscussion(string tenantId, string discussionId, string authorId, string subject, string bodyText, IDiscussionCommandResult discussionCommandResult)
         {
-            var discussion = this.discussionRepository.Get(new Tenant(tenantId), new DiscussionId(discussionId));
+            var discussion = _discussionRepository.Get(new Tenant(tenantId), new DiscussionId(discussionId));
 
-            var author = this.collaboratorService.GetAuthorFrom(new Tenant(tenantId), authorId);
+            var author = _collaboratorService.GetAuthorFrom(new Tenant(tenantId), authorId);
 
-            var post = discussion.Post(this.forumIdentityService, author, subject, bodyText);
+            var post = discussion.Post(_forumIdentityService, author, subject, bodyText);
 
-            this.postRepository.Save(post);
+            _postRepository.Save(post);
 
             discussionCommandResult.SetResultingDiscussionId(discussionId);
             discussionCommandResult.SetResultingPostId(post.PostId.Id);
@@ -55,13 +50,13 @@ namespace SaaSOvation.Collaboration.Application.Forums
         public void PostToDiscussionInReplyTo(string tenantId, string discussionId, string replyToPostId, string authorId,
             string subject, string bodyText, IDiscussionCommandResult discussionCommandResult)
         {
-            var discussion = this.discussionRepository.Get(new Tenant(tenantId), new DiscussionId(discussionId));
+            var discussion = _discussionRepository.Get(new Tenant(tenantId), new DiscussionId(discussionId));
 
-            var author = this.collaboratorService.GetAuthorFrom(new Tenant(tenantId), authorId);
+            var author = _collaboratorService.GetAuthorFrom(new Tenant(tenantId), authorId);
 
-            var post = discussion.Post(this.forumIdentityService, author, subject, bodyText, new PostId(replyToPostId));
+            var post = discussion.Post(_forumIdentityService, author, subject, bodyText, new PostId(replyToPostId));
 
-            this.postRepository.Save(post);
+            _postRepository.Save(post);
 
             discussionCommandResult.SetResultingDiscussionId(discussionId);
             discussionCommandResult.SetResultingPostId(post.PostId.Id);
@@ -70,11 +65,11 @@ namespace SaaSOvation.Collaboration.Application.Forums
 
         public void ReOpenDiscussion(string tenantId, string discussionId)
         {
-            var discussion = this.discussionRepository.Get(new Tenant(tenantId), new DiscussionId(discussionId));
+            var discussion = _discussionRepository.Get(new Tenant(tenantId), new DiscussionId(discussionId));
 
             discussion.ReOpen();
 
-            this.discussionRepository.Save(discussion);
+            _discussionRepository.Save(discussion);
         }
     }
 }

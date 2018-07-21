@@ -15,9 +15,9 @@
 namespace SaaSOvation.AgilePM.Domain.Model.Products
 {
     using System;
-    using SaaSOvation.Common.Domain.Model;
-    using SaaSOvation.AgilePM.Domain.Model.Tenants;
-    using SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems;
+    using Common.Domain.Model;
+    using Tenants;
+    using BacklogItems;
 
     public class ProductBacklogItem : Entity, IEquatable<ProductBacklogItem>
     {
@@ -27,10 +27,10 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products
             BacklogItemId backlogItem,
             int ordering)
         {
-            this.BacklogItemId = backlogItem;
-            this.Ordering = ordering;
-            this.ProductId = productId;
-            this.TenantId = tenantId;
+            BacklogItemId = backlogItem;
+            Ordering = ordering;
+            ProductId = productId;
+            TenantId = tenantId;
         }
        
         public TenantId TenantId { get; private set; }
@@ -43,24 +43,24 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products
 
         internal void ReorderFrom(BacklogItemId id, int ordering)
         {
-            if (this.BacklogItemId.Equals(id))
+            if (BacklogItemId.Equals(id))
             {
-                this.Ordering = ordering;
+                Ordering = ordering;
             }
-            else if (this.Ordering >= ordering)
+            else if (Ordering >= ordering)
             {
-                this.Ordering = this.Ordering + 1;
+                Ordering = Ordering + 1;
             }
         }
 
         public bool Equals(ProductBacklogItem other)
         {
-            if (object.ReferenceEquals(this, other)) return true;
-            if (object.ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other)) return false;
 
-            return this.TenantId.Equals(other.TenantId)
-                && this.ProductId.Equals(other.ProductId)
-                && this.BacklogItemId.Equals(other.BacklogItemId);
+            return TenantId.Equals(other.TenantId)
+                && ProductId.Equals(other.ProductId)
+                && BacklogItemId.Equals(other.BacklogItemId);
         }
 
         public override bool Equals(object anotherObject)
@@ -72,9 +72,9 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products
         {
             return
                 + (15389 * 97)
-                + this.TenantId.GetHashCode()
-                + this.ProductId.GetHashCode()
-                + this.BacklogItemId.GetHashCode();
+                + TenantId.GetHashCode()
+                + ProductId.GetHashCode()
+                + BacklogItemId.GetHashCode();
         }
 
         public override string ToString()

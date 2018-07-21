@@ -1,36 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace SaaSOvation.Collaboration.Domain.Model.Forums
+﻿namespace SaaSOvation.Collaboration.Domain.Model.Forums
 {
     public class ForumIdentityService
     {
         public ForumIdentityService(IDiscussionRepository discussionRepository, IForumRepository forumRepository, IPostRepository postRepository)
         {
-            this.discussionRepository = discussionRepository;
-            this.forumRepository = forumRepository;
-            this.postRepository = postRepository;
+            this._discussionRepository = discussionRepository;
+            this._forumRepository = forumRepository;
+            this._postRepository = postRepository;
         }
 
-        readonly IDiscussionRepository discussionRepository;
-        readonly IForumRepository forumRepository;
-        readonly IPostRepository postRepository;
+        private readonly IDiscussionRepository _discussionRepository;
+        private readonly IForumRepository _forumRepository;
+        private readonly IPostRepository _postRepository;
 
         public DiscussionId GetNextDiscussionId()
         {
-            return this.discussionRepository.GetNextIdentity();
+            return _discussionRepository.GetNextIdentity();
         }
 
         public ForumId GetNextForumId()
         {
-            return this.forumRepository.GetNextIdentity();
+            return _forumRepository.GetNextIdentity();
         }
 
         public PostId GetNexPostId()
         {
-            return this.postRepository.GetNextIdentity();
+            return _postRepository.GetNextIdentity();
         }
     }
 }

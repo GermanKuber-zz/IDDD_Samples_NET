@@ -15,7 +15,7 @@
 namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 {
     using System;
-    using SaaSOvation.Common.Domain.Model;
+    using Common.Domain.Model;
 
     public class PersonContactInformationChanged : IDomainEvent
     {
@@ -24,11 +24,11 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
                 String username,
                 ContactInformation contactInformation)
         {
-            this.ContactInformation = contactInformation;
-            this.EventVersion = 1;
-            this.OccurredOn = DateTime.Now;
-            this.TenantId = tenantId.Id;
-            this.Username = username;
+            ContactInformation = contactInformation;
+            EventVersion = 1;
+            OccurredOn = DateTime.Now;
+            TenantId = tenantId.Id;
+            Username = username;
         }
 
         public ContactInformation ContactInformation { get; private set; }

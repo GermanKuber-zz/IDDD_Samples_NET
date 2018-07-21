@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using SaaSOvation.Common.Notifications;
+﻿using SaaSOvation.Common.Notifications;
 using SaaSOvation.Common.Events;
 
 namespace SaaSOvation.IdentityAccess.Application
@@ -12,28 +7,28 @@ namespace SaaSOvation.IdentityAccess.Application
     {
         public NotificationApplicationService(IEventStore eventStore, INotificationPublisher notificationPublisher)
         {
-            this.eventStore = eventStore;
-            this.notificationPublisher = notificationPublisher;
+            this._eventStore = eventStore;
+            this._notificationPublisher = notificationPublisher;
         }
 
-        readonly IEventStore eventStore;
-        readonly INotificationPublisher notificationPublisher;
+        private readonly IEventStore _eventStore;
+        private readonly INotificationPublisher _notificationPublisher;
 
         public NotificationLog GetCurrentNotificationLog()
         {
-            return new NotificationLogFactory(this.eventStore)
+            return new NotificationLogFactory(_eventStore)
                 .CreateCurrentNotificationLog();
         }
 
         public NotificationLog GetNotificationLog(string notificationLogId)
         {
-            return new NotificationLogFactory(this.eventStore)
+            return new NotificationLogFactory(_eventStore)
                 .CreateNotificationLog(new NotificationLogId(notificationLogId));
         }
 
         public void PublishNotifications()
         {
-            this.notificationPublisher.PublishNotifications();
+            _notificationPublisher.PublishNotifications();
         }
     }
 }

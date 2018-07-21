@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SaaSOvation.Common.Domain.Model;
 using SaaSOvation.Collaboration.Domain.Model.Tenants;
-using SaaSOvation.Collaboration.Domain.Model.Collaborators;
 
 namespace SaaSOvation.Collaboration.Domain.Model.Forums
 {
@@ -13,12 +8,12 @@ namespace SaaSOvation.Collaboration.Domain.Model.Forums
     {
         public PostedContentAltered(Tenant tenantId, ForumId forumId, DiscussionId discussionId, PostId postId, string subject, string bodyText)
         {
-            this.TenantId = tenantId;
-            this.ForumId = forumId;
-            this.DiscussionId = discussionId;
-            this.PostId = postId;
-            this.Subject = subject;
-            this.BodyText = bodyText;
+            TenantId = tenantId;
+            ForumId = forumId;
+            DiscussionId = discussionId;
+            PostId = postId;
+            Subject = subject;
+            BodyText = bodyText;
         }
 
         public Tenant TenantId { get; private set; }

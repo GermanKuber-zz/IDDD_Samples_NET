@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SaaSOvation.Common.Domain.Model;
 
 namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
@@ -11,10 +7,10 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
     {
         public BacklogItemMarkedAsRemoved(Tenants.TenantId tenantId, BacklogItemId backlogItemId)
         {
-            this.TenantId = tenantId;
-            this.EventVersion = 1;
-            this.OccurredOn = DateTime.UtcNow;
-            this.BacklogItemId = backlogItemId;
+            TenantId = tenantId;
+            EventVersion = 1;
+            OccurredOn = DateTime.UtcNow;
+            BacklogItemId = backlogItemId;
         }
 
         public Tenants.TenantId TenantId { get; private set; }

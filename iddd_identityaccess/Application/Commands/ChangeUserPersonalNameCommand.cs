@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace SaaSOvation.IdentityAccess.Application.Commands
+﻿namespace SaaSOvation.IdentityAccess.Application.Commands
 {
     public class ChangeUserPersonalNameCommand
     {
@@ -13,10 +8,10 @@ namespace SaaSOvation.IdentityAccess.Application.Commands
 
         public ChangeUserPersonalNameCommand(string tenantId, string userName, string firstName, string lastName)
         {
-            this.TenantId = tenantId;
-            this.Username = userName;
-            this.FirstName = firstName;
-            this.LastName = lastName;
+            TenantId = tenantId;
+            Username = userName;
+            FirstName = firstName;
+            LastName = lastName;
         }
 
         public string TenantId { get; set; }

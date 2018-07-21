@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using System.Collections.Generic;
 using SaaSOvation.Common.Domain.Model;
 
 namespace SaaSOvation.AgilePM.Domain.Model.Teams
@@ -15,8 +11,8 @@ namespace SaaSOvation.AgilePM.Domain.Model.Teams
             AssertionConcern.AssertArgumentNotEmpty(id, "The id must be provided.");
             AssertionConcern.AssertArgumentLength(id, 36, "The id must be 36 characters or less.");
 
-            this.TenantId = tenantId;
-            this.Id = id;
+            TenantId = tenantId;
+            Id = id;
         }
 
         public Tenants.TenantId TenantId { get; private set; }
@@ -25,8 +21,8 @@ namespace SaaSOvation.AgilePM.Domain.Model.Teams
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return this.TenantId;
-            yield return this.Id;
+            yield return TenantId;
+            yield return Id;
         }
     }
 }

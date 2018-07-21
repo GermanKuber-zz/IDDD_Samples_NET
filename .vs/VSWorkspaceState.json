@@ -1,0 +1,25 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\iddd_agilepm",
+    "\\iddd_agilepm\\Application",
+    "\\iddd_agilepm\\Application\\Notifications",
+    "\\iddd_agilepm\\Application\\Products",
+    "\\iddd_agilepm\\Application\\Products\\BacklogItems",
+    "\\iddd_collaboration",
+    "\\iddd_collaboration\\Application",
+    "\\iddd_collaboration\\Application\\Calendars",
+    "\\iddd_collaboration\\Application\\Calendars\\Data",
+    "\\iddd_collaboration\\Application\\Forums",
+    "\\iddd_collaboration\\Application\\Forums\\Data",
+    "\\iddd_identityaccess",
+    "\\iddd_identityaccess\\Application",
+    "\\iddd_identityaccess\\Application\\Commands",
+    "\\iddd_identityaccess\\Domain.Model",
+    "\\iddd_identityaccess\\Domain.Model\\Access",
+    "\\iddd_identityaccess\\Infrastructure",
+    "\\iddd_identityaccess\\Infrastructure\\Services"
+  ],
+  "SelectedNode": "\\iddd_collaboration\\Application\\Calendars\\Data\\CalendarEntryData.cs",
+  "PreviewInSolutionExplorer": false
+}

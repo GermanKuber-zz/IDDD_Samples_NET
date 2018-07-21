@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SaaSOvation.Common.Domain.Model;
 
 namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
@@ -16,11 +13,11 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
                 String postalCode,
                 String countryCode)
         {
-            this.City = city;
-            this.CountryCode = countryCode;
-            this.PostalCode = postalCode;
-            this.StateProvince = stateProvince;
-            this.StreetAddress = streetAddress;
+            City = city;
+            CountryCode = countryCode;
+            PostalCode = postalCode;
+            StateProvince = stateProvince;
+            StreetAddress = streetAddress;
         }
 
         public PostalAddress(PostalAddress postalAddress)
@@ -52,13 +49,13 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
                     + ", countryCode=" + CountryCode + "]";
         }
 
-        protected override System.Collections.Generic.IEnumerable<object> GetEqualityComponents()
+        protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return this.StreetAddress;
-            yield return this.City;
-            yield return this.StateProvince;
-            yield return this.PostalCode;
-            yield return this.CountryCode;
+            yield return StreetAddress;
+            yield return City;
+            yield return StateProvince;
+            yield return PostalCode;
+            yield return CountryCode;
         }
     }
 }

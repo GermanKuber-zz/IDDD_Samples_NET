@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SaaSOvation.Common.Domain.Model;
 
 namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
@@ -11,10 +7,10 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
     {
         public TaskStatusChanged(Tenants.TenantId tenantId, BacklogItemId backlogItemId, TaskId taskId, TaskStatus status)
         {
-            this.TenantId = tenantId;
-            this.BacklogItemId = backlogItemId;
-            this.TaskId = taskId;
-            this.Status = status;
+            TenantId = tenantId;
+            BacklogItemId = backlogItemId;
+            TaskId = taskId;
+            Status = status;
         }
 
         public Tenants.TenantId TenantId { get; private set; }

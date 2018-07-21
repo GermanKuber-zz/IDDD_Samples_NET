@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace SaaSOvation.IdentityAccess.Application.Commands
+﻿namespace SaaSOvation.IdentityAccess.Application.Commands
 {
     public class ProvisionTenantCommand
     {
@@ -16,18 +11,18 @@ namespace SaaSOvation.IdentityAccess.Application.Commands
             string addressStreetAddress, string addressCity, string addressStateProvince, string addressPostalCode,
             string addressCountryCode)
         {
-            this.TenantName = tenantName;
-            this.TenantDescription = tenantDescription;
-            this.AdministorFirstName = administorFirstName;
-            this.AdministorLastName = administorLastName;
-            this.EmailAddress = emailAddress;
-            this.PrimaryTelephone = primaryTelephone;
-            this.SecondaryTelephone = secondaryTelephone;
-            this.AddressStreetAddress = addressStreetAddress;
-            this.AddressCity = addressCity;
-            this.AddressStateProvince = addressStateProvince;
-            this.AddressPostalCode = addressPostalCode;
-            this.AddressCountryCode = addressCountryCode;
+            TenantName = tenantName;
+            TenantDescription = tenantDescription;
+            AdministorFirstName = administorFirstName;
+            AdministorLastName = administorLastName;
+            EmailAddress = emailAddress;
+            PrimaryTelephone = primaryTelephone;
+            SecondaryTelephone = secondaryTelephone;
+            AddressStreetAddress = addressStreetAddress;
+            AddressCity = addressCity;
+            AddressStateProvince = addressStateProvince;
+            AddressPostalCode = addressPostalCode;
+            AddressCountryCode = addressCountryCode;
         }
 
         public string TenantName { get; set; }

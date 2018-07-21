@@ -15,7 +15,6 @@
 namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 {
     using System;
-    using SaaSOvation.Common.Domain.Model;
 
     public class RegistrationInvitation
     {
@@ -26,11 +25,11 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
             DateTime startingOn,
             DateTime until)
         {
-            this.Description = description;
-            this.InvitationId = invitationId;
-            this.StartingOn = startingOn;
-            this.TenantId = tenantId;
-            this.Until = until;
+            Description = description;
+            InvitationId = invitationId;
+            StartingOn = startingOn;
+            TenantId = tenantId;
+            Until = until;
         }
 
         public RegistrationInvitation(TenantId tenantId, string invitationId, string description)
@@ -52,14 +51,14 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
         {
             var isAvailable = false;
 
-            if (this.StartingOn == DateTime.MinValue && this.Until == DateTime.MinValue)
+            if (StartingOn == DateTime.MinValue && Until == DateTime.MinValue)
             {
                 isAvailable = true;
             }
             else
             {
                 var time = (DateTime.Now).Ticks;
-                if (time >= this.StartingOn.Ticks && time <= this.Until.Ticks)
+                if (time >= StartingOn.Ticks && time <= Until.Ticks)
                 {
                     isAvailable = true;
                 }
@@ -70,11 +69,11 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 
         public bool IsIdentifiedBy(string invitationIdentifier)
         {
-            var isIdentified = this.InvitationId.Equals(invitationIdentifier);
+            var isIdentified = InvitationId.Equals(invitationIdentifier);
 
-            if (!isIdentified && this.Description != null)
+            if (!isIdentified && Description != null)
             {
-                isIdentified = this.Description.Equals(invitationIdentifier);
+                isIdentified = Description.Equals(invitationIdentifier);
             }
 
             return isIdentified;
@@ -82,52 +81,52 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 
         public RegistrationInvitation OpenEnded()
         {
-            this.StartingOn = DateTime.MinValue;
-            this.Until = DateTime.MinValue;
+            StartingOn = DateTime.MinValue;
+            Until = DateTime.MinValue;
             return this;
         }
 
         public RegistrationInvitation RedefineAs()
         {
-            this.StartingOn = DateTime.MinValue;
-            this.Until = DateTime.MinValue;
+            StartingOn = DateTime.MinValue;
+            Until = DateTime.MinValue;
             return this;
         }
 
         public InvitationDescriptor ToDescriptor()
         {
             return new InvitationDescriptor(
-                this.TenantId,
-                this.InvitationId,
-                this.Description,
-                this.StartingOn,
-                this.Until);
+                TenantId,
+                InvitationId,
+                Description,
+                StartingOn,
+                Until);
         }
 
         public RegistrationInvitation WillStartOn(DateTime date)
         {
-            if (this.Until != DateTime.MinValue)
+            if (Until != DateTime.MinValue)
             {
                 throw new InvalidOperationException("Cannot set starting-on date after until date.");
             }
 
-            this.StartingOn = date;
+            StartingOn = date;
 
             // temporary if Until set properly follows, but
             // prevents illegal state if Until set doesn't follow
-            this.Until = new DateTime(date.Ticks + 86400000);
+            Until = new DateTime(date.Ticks + 86400000);
 
             return this;
         }
 
         public RegistrationInvitation LastingUntil(DateTime date)
         {
-            if (this.StartingOn == DateTime.MinValue)
+            if (StartingOn == DateTime.MinValue)
             {
                 throw new InvalidOperationException("Cannot set until date before setting starting-on date.");
             }
 
-            this.Until = date;
+            Until = date;
 
             return this;
         }
@@ -136,12 +135,12 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
         {
             var equalObjects = false;
 
-            if (anotherObject != null && this.GetType() == anotherObject.GetType())
+            if (anotherObject != null && GetType() == anotherObject.GetType())
             {
                 var typedObject = (RegistrationInvitation) anotherObject;
                 equalObjects =
-                    this.TenantId.Equals(typedObject.TenantId) &&
-                    this.InvitationId.Equals(typedObject.InvitationId);
+                    TenantId.Equals(typedObject.TenantId) &&
+                    InvitationId.Equals(typedObject.InvitationId);
             }
 
             return equalObjects;
@@ -151,8 +150,8 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
         {
             return
                 + (6325 * 233)
-                + this.TenantId.GetHashCode()
-                + this.InvitationId.GetHashCode();
+                + TenantId.GetHashCode()
+                + InvitationId.GetHashCode();
         }
 
         public override string ToString()

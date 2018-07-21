@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace SaaSOvation.IdentityAccess.Application.Commands
+﻿namespace SaaSOvation.IdentityAccess.Application.Commands
 {
     public class ProvisionRoleCommand
     {
@@ -13,10 +8,10 @@ namespace SaaSOvation.IdentityAccess.Application.Commands
 
         public ProvisionRoleCommand(string tenantId, string roleName, string description, bool supportsNesting)
         {
-            this.TenantId = tenantId;
-            this.RoleName = roleName;
-            this.Description = description;
-            this.SupportsNesting = supportsNesting;
+            TenantId = tenantId;
+            RoleName = roleName;
+            Description = description;
+            SupportsNesting = supportsNesting;
         }
 
         public string TenantId { get; set; }

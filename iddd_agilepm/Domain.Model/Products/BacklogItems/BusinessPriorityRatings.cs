@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using System.Collections.Generic;
 using SaaSOvation.Common.Domain.Model;
 
 namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
@@ -16,10 +12,10 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
             AssertionConcern.AssertArgumentRange(cost, 1, 9, "Relative cost must be between 1 and 9.");
             AssertionConcern.AssertArgumentRange(risk, 1, 9, "Relative risk must be between 1 and 9.");
 
-            this.Benefit = benefit;
-            this.Penalty = penalty;
-            this.Cost = cost;
-            this.Risk = risk;
+            Benefit = benefit;
+            Penalty = penalty;
+            Cost = cost;
+            Risk = risk;
         }
 
         public int Benefit { get; private set; }
@@ -29,30 +25,30 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
 
         public BusinessPriorityRatings WithAdjustedBenefit(int benefit)
         {
-            return new BusinessPriorityRatings(benefit, this.Penalty, this.Cost, this.Risk);
+            return new BusinessPriorityRatings(benefit, Penalty, Cost, Risk);
         }
 
         public BusinessPriorityRatings WithAdjustedCost(int cost)
         {
-            return new BusinessPriorityRatings(this.Benefit, this.Penalty, cost, this.Risk);
+            return new BusinessPriorityRatings(Benefit, Penalty, cost, Risk);
         }
 
         public BusinessPriorityRatings WithAdjustedPentality(int penalty)
         {
-            return new BusinessPriorityRatings(this.Benefit, penalty, this.Cost, this.Risk);
+            return new BusinessPriorityRatings(Benefit, penalty, Cost, Risk);
         }
 
         public BusinessPriorityRatings WithAdjustedRisk(int risk)
         {
-            return new BusinessPriorityRatings(this.Benefit, this.Penalty, this.Cost, risk);
+            return new BusinessPriorityRatings(Benefit, Penalty, Cost, risk);
         }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return this.Benefit;
-            yield return this.Penalty;
-            yield return this.Cost;
-            yield return this.Risk;
+            yield return Benefit;
+            yield return Penalty;
+            yield return Cost;
+            yield return Risk;
         }
     }
 }

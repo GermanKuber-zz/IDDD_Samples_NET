@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using System.Collections.Generic;
 using SaaSOvation.Common.Domain.Model;
 
 namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
@@ -11,7 +7,7 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
     {
         public Telephone(string number)
         {
-            this.Number = number;
+            Number = number;
         }
 
         public Telephone(Telephone telephone)
@@ -21,13 +17,13 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 
         protected Telephone() { }
 
-        string number;
+        private string _number;
 
         public string Number
         {
             get
             {
-                return this.number;
+                return _number;
             }
             set
             {
@@ -38,7 +34,7 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
                         value,
                         "Telephone number or its format is invalid.");
 
-                this.number = value;
+                _number = value;
             }
         }
 
@@ -47,9 +43,9 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
             return "Telephone [number=" + Number + "]";
         }
 
-        protected override System.Collections.Generic.IEnumerable<object> GetEqualityComponents()
+        protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return this.Number;
+            yield return Number;
         }
     }
 }

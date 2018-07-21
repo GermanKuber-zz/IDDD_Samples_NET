@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using System.Collections.Generic;
 using SaaSOvation.Common.Domain.Model;
 
 namespace SaaSOvation.Collaboration.Domain.Model.Calendars
@@ -11,27 +7,27 @@ namespace SaaSOvation.Collaboration.Domain.Model.Calendars
     {
         public Alarm(AlarmUnitsType alarmUnitsType, int alarmUnits)
         {
-            this.alarmUnitsType = alarmUnitsType;
-            this.alarmUnits = alarmUnits;
+            this._alarmUnitsType = alarmUnitsType;
+            this._alarmUnits = alarmUnits;
         }
 
-        readonly int alarmUnits;
-        readonly AlarmUnitsType alarmUnitsType;
+        private readonly int _alarmUnits;
+        private readonly AlarmUnitsType _alarmUnitsType;
 
         public AlarmUnitsType AlarmUnitsType
         {
-            get { return this.alarmUnitsType; }
+            get { return _alarmUnitsType; }
         }
 
         public int AlarmUnits
         {
-            get { return this.alarmUnits; }
+            get { return _alarmUnits; }
         }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return this.alarmUnits;
-            yield return this.alarmUnitsType;
+            yield return _alarmUnits;
+            yield return _alarmUnitsType;
         }
     }
 }

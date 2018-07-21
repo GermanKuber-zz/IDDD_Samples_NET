@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
 using SaaSOvation.Common.Domain.Model;
 using SaaSOvation.Collaboration.Domain.Model.Tenants;
 using SaaSOvation.Collaboration.Domain.Model.Collaborators;
@@ -39,25 +36,25 @@ namespace SaaSOvation.Collaboration.Domain.Model.Calendars
             AssertTimeSpans(repetition, timeSpan);
 
             Apply(new CalendarEntryScheduled(tenant, calendarId, calendarEntryId, description, location, owner, timeSpan, repetition, alarm, invitees));
-        }        
+        }
 
-        Tenant tenant;
-        CalendarId calendarId;
-        CalendarEntryId calendarEntryId;
-        string description;
-        string location;
-        Owner owner;
-        DateRange timeSpan;
-        Repetition repetition;
-        Alarm alarm;
-        HashSet<Participant> invitees;
+        private Tenant _tenant;
+        private CalendarId _calendarId;
+        private CalendarEntryId _calendarEntryId;
+        private string _description;
+        private string _location;
+        private Owner _owner;
+        private DateRange _timeSpan;
+        private Repetition _repetition;
+        private Alarm _alarm;
+        private HashSet<Participant> _invitees;
 
         public CalendarEntryId CalendarEntryId
         {
-            get { return this.CalendarEntryId; }
+            get { return CalendarEntryId; }
         }
 
-        void AssertTimeSpans(Repetition repetition, DateRange timeSpan)
+        private void AssertTimeSpans(Repetition repetition, DateRange timeSpan)
         {
             if (repetition.Repeats == RepeatType.DoesNotRepeat)
             {
@@ -69,18 +66,18 @@ namespace SaaSOvation.Collaboration.Domain.Model.Calendars
             }
         }
 
-        void When(CalendarEntryScheduled e)
+        private void When(CalendarEntryScheduled e)
         {
-            this.tenant = e.Tenant;
-            this.calendarId = e.CalendarId;
-            this.calendarEntryId = e.CalendarEntryId;
-            this.description = e.Description;
-            this.location = e.Location;
-            this.owner = e.Owner;
-            this.timeSpan = e.TimeSpan;
-            this.repetition = e.Repetition;
-            this.alarm = e.Alarm;
-            this.invitees = new HashSet<Participant>(e.Invitees ?? Enumerable.Empty<Participant>());
+            _tenant = e.Tenant;
+            _calendarId = e.CalendarId;
+            _calendarEntryId = e.CalendarEntryId;
+            _description = e.Description;
+            _location = e.Location;
+            _owner = e.Owner;
+            _timeSpan = e.TimeSpan;
+            _repetition = e.Repetition;
+            _alarm = e.Alarm;
+            _invitees = new HashSet<Participant>(e.Invitees ?? Enumerable.Empty<Participant>());
         }
 
 
@@ -93,30 +90,30 @@ namespace SaaSOvation.Collaboration.Domain.Model.Calendars
 
             description = description.Trim();
 
-            if (!string.IsNullOrEmpty(description) && !this.description.Equals(description))
+            if (!string.IsNullOrEmpty(description) && !this._description.Equals(description))
             {
-                Apply(new CalendarEntryDescriptionChanged(this.tenant, this.calendarId, this.calendarEntryId, description));
+                Apply(new CalendarEntryDescriptionChanged(_tenant, _calendarId, _calendarEntryId, description));
             }
         }
 
-        void When(CalendarEntryDescriptionChanged e)
+        private void When(CalendarEntryDescriptionChanged e)
         {
-            this.description = e.Description;
+            _description = e.Description;
         }
         
 
         public void Invite(Participant participant)
         {
             AssertionConcern.AssertArgumentNotNull(participant, "The participant must be provided.");
-            if (!this.invitees.Contains(participant))
+            if (!_invitees.Contains(participant))
             {
-                Apply(new CalendarEntryParticipantInvited(this.tenant, this.calendarId, this.calendarEntryId, participant));
+                Apply(new CalendarEntryParticipantInvited(_tenant, _calendarId, _calendarEntryId, participant));
             }
         }
 
-        void When(CalendarEntryParticipantInvited e)
+        private void When(CalendarEntryParticipantInvited e)
         {
-            this.invitees.Add(e.Participant);
+            _invitees.Add(e.Participant);
         }
 
 
@@ -128,15 +125,15 @@ namespace SaaSOvation.Collaboration.Domain.Model.Calendars
             }
 
             location = location.Trim();
-            if (!string.IsNullOrEmpty(location) && !this.location.Equals(location))
+            if (!string.IsNullOrEmpty(location) && !this._location.Equals(location))
             {
-                Apply(new CalendarEntryRelocated(this.tenant, this.calendarId, this.calendarEntryId, location));
+                Apply(new CalendarEntryRelocated(_tenant, _calendarId, _calendarEntryId, location));
             }
         }
 
-        void When(CalendarEntryRelocated e)
+        private void When(CalendarEntryRelocated e)
         {
-            this.location = e.Location;
+            _location = e.Location;
         }
 
 
@@ -154,14 +151,14 @@ namespace SaaSOvation.Collaboration.Domain.Model.Calendars
             ChangeDescription(description);
             Relocate(location);
 
-            Apply(new CalendarEntryRescheduled(this.tenant, this.calendarId, this.calendarEntryId, timeSpan, repetition, alarm));
+            Apply(new CalendarEntryRescheduled(_tenant, _calendarId, _calendarEntryId, timeSpan, repetition, alarm));
         }
 
-        void When(CalendarEntryRescheduled e)
+        private void When(CalendarEntryRescheduled e)
         {
-            this.timeSpan = e.TimeSpan;
-            this.repetition = e.Repetition;
-            this.alarm = e.Alarm;
+            _timeSpan = e.TimeSpan;
+            _repetition = e.Repetition;
+            _alarm = e.Alarm;
         }
 
 
@@ -169,22 +166,22 @@ namespace SaaSOvation.Collaboration.Domain.Model.Calendars
         {
             AssertionConcern.AssertArgumentNotNull(participant, "The participant must be provided.");
 
-            if (this.invitees.Contains(participant))
+            if (_invitees.Contains(participant))
             {
-                Apply(new CalendarEntryParticipantUninvited(this.tenant, this.calendarId, this.calendarEntryId, participant));
+                Apply(new CalendarEntryParticipantUninvited(_tenant, _calendarId, _calendarEntryId, participant));
             }
         }
 
-        void When(CalendarEntryParticipantUninvited e)
+        private void When(CalendarEntryParticipantUninvited e)
         {
-            this.invitees.Remove(e.Participant);
+            _invitees.Remove(e.Participant);
         }
 
         protected override IEnumerable<object> GetIdentityComponents()
         {
-            yield return this.tenant;
-            yield return this.calendarId;
-            yield return this.calendarEntryId;
+            yield return _tenant;
+            yield return _calendarId;
+            yield return _calendarEntryId;
         }
     }
 }

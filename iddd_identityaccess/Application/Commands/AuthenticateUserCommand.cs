@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace SaaSOvation.IdentityAccess.Application.Commands
+﻿namespace SaaSOvation.IdentityAccess.Application.Commands
 {
     public class AuthenticateUserCommand
     {
@@ -13,9 +8,9 @@ namespace SaaSOvation.IdentityAccess.Application.Commands
 
         public AuthenticateUserCommand(string tenantId, string userName, string password)
         {
-            this.TenantId = tenantId;
-            this.Username = userName;
-            this.Password = password;
+            TenantId = tenantId;
+            Username = userName;
+            Password = password;
         }
 
         public string TenantId { get; set; }

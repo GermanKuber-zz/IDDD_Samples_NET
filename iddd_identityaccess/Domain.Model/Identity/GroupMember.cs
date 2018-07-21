@@ -17,7 +17,7 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 	using System;
 	using System.Collections.Generic;
 
-	using SaaSOvation.Common.Domain.Model;
+	using Common.Domain.Model;
 
 	/// <summary>
 	/// A value object, based on either <see cref="User"/> or <see cref="Group"/>,
@@ -57,9 +57,9 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 			AssertionConcern.AssertArgumentNotEmpty(name, "Member name is required.");
 			AssertionConcern.AssertArgumentLength(name, 1, 100, "Member name must be 100 characters or less.");
 
-			this.Name = name;
-			this.TenantId = tenantId;
-			this.Type = type;
+			Name = name;
+			TenantId = tenantId;
+			Type = type;
 		}
 
 		/// <summary>
@@ -82,12 +82,12 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 
 		public bool IsGroup
 		{
-			get { return this.Type == GroupMemberType.Group; }
+			get { return Type == GroupMemberType.Group; }
 		}
 
 		public bool IsUser
 		{
-			get { return this.Type == GroupMemberType.User; }
+			get { return Type == GroupMemberType.User; }
 		}
 
 		#endregion
@@ -102,8 +102,8 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 		/// </returns>
 		public override string ToString()
 		{
-			const string Format = "GroupMember [tenantId={0}, name={1}, type={2:G}]";
-			return string.Format(Format, this.TenantId, this.Name, this.Type);
+			const string format = "GroupMember [tenantId={0}, name={1}, type={2:G}]";
+			return string.Format(format, TenantId, Name, Type);
 		}
 
 		/// <summary>
@@ -116,9 +116,9 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 		/// </returns>
 		protected override IEnumerable<object> GetEqualityComponents()
 		{
-			yield return this.TenantId;
-			yield return this.Name;
-			yield return this.Type;
+			yield return TenantId;
+			yield return Name;
+			yield return Type;
 		}
 
 		#endregion

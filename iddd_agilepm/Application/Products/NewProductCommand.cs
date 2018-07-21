@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace SaaSOvation.AgilePM.Application.Products
+﻿namespace SaaSOvation.AgilePM.Application.Products
 {
     public class NewProductCommand
     {
@@ -13,10 +8,10 @@ namespace SaaSOvation.AgilePM.Application.Products
 
         public NewProductCommand(string tenantId, string productOwnerId, string name, string description)
         {
-            this.TenantId = tenantId;
-            this.ProductOwnerId = productOwnerId;
-            this.Name = name;
-            this.Description = description;
+            TenantId = tenantId;
+            ProductOwnerId = productOwnerId;
+            Name = name;
+            Description = description;
         }
 
         public string TenantId { get; set; }

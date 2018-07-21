@@ -2,8 +2,8 @@
 {
 	using System;
 
-	using SaaSOvation.IdentityAccess.Application.Commands;
-	using SaaSOvation.IdentityAccess.Domain.Model.Identity;
+	using Commands;
+	using Domain.Model.Identity;
 
 	/// <summary>
 	/// Coordinates interactions among entities in the "Domain.Model.Identity" namespace.
@@ -11,12 +11,12 @@
 	[CLSCompliant(true)]
     public class IdentityApplicationService
     {
-        readonly AuthenticationService authenticationService;
-        readonly GroupMemberService groupMemberService;
-        readonly IGroupRepository groupRepository;
-        readonly TenantProvisioningService tenantProvisioningService;
-        readonly ITenantRepository tenantRepository;
-        readonly IUserRepository userRepository;
+        private readonly AuthenticationService _authenticationService;
+        private readonly GroupMemberService _groupMemberService;
+        private readonly IGroupRepository _groupRepository;
+        private readonly TenantProvisioningService _tenantProvisioningService;
+        private readonly ITenantRepository _tenantRepository;
+        private readonly IUserRepository _userRepository;
 
         public void ActivateTenant(ActivateTenantCommand command)
         {
@@ -28,7 +28,7 @@
         {
             var parentGroup = GetExistingGroup(command.TenantId, command.ParentGroupName);
             var childGroup = GetExistingGroup(command.TenantId, command.ChildGroupName);
-            parentGroup.AddGroup(childGroup, this.groupMemberService);
+            parentGroup.AddGroup(childGroup, _groupMemberService);
         }
 
         public void AddUserToGroup(AddUserToGroupCommand command)
@@ -40,7 +40,7 @@
 
         public UserDescriptor AuthenticateUser(AuthenticateUserCommand command)
         {
-            return this.authenticationService.Authenticate(new TenantId(command.TenantId), command.Username, command.Password);
+            return _authenticationService.Authenticate(new TenantId(command.TenantId), command.Username, command.Password);
         }
 
         public void DeactivateTenant(DeactivateTenantCommand command)
@@ -117,27 +117,27 @@
 
         public Group GetGroup(string tenantId, string groupName)
         {
-            return this.groupRepository.GroupNamed(new TenantId(tenantId), groupName);
+            return _groupRepository.GroupNamed(new TenantId(tenantId), groupName);
         }
 
         public bool IsGroupMember(string tenantId, string groupName, string userName)
         {
             var group = GetExistingGroup(tenantId, groupName);
             var user = GetExistingUser(tenantId, userName);
-            return group.IsMember(user, this.groupMemberService);
+            return group.IsMember(user, _groupMemberService);
         }
 
         public Group ProvisionGroup(ProvisionGroupCommand command)
         {
             var tenant = GetExistingTenant(command.TenantId);
             var group = tenant.ProvisionGroup(command.GroupName, command.Description);
-            this.groupRepository.Add(group);
+            _groupRepository.Add(group);
             return group;
         }
 
         public Tenant ProvisionTenant(ProvisionTenantCommand command)
         {
-            return this.tenantProvisioningService.ProvisionTenant(
+            return _tenantProvisioningService.ProvisionTenant(
                 command.TenantName,
                 command.TenantDescription,
                 new FullName(command.AdministorFirstName, command.AdministorLastName),
@@ -177,7 +177,7 @@
             if (user == null)
                 throw new InvalidOperationException("User not registered.");
 
-            this.userRepository.Add(user);
+            _userRepository.Add(user);
 
             return user;
         }
@@ -198,10 +198,10 @@
 
         public User GetUser(string tenantId, string userName)
         {
-            return this.userRepository.UserWithUsername(new TenantId(tenantId), userName);
+            return _userRepository.UserWithUsername(new TenantId(tenantId), userName);
         }
 
-        User GetExistingUser(string tenantId, string userName)
+        private User GetExistingUser(string tenantId, string userName)
         {
             var user = GetUser(tenantId, userName);
             if (user == null)
@@ -210,7 +210,7 @@
             return user;
         }
 
-        Group GetExistingGroup(string tenantId, string groupName)
+        private Group GetExistingGroup(string tenantId, string groupName)
         {
             var group = GetGroup(tenantId, groupName);
             if (group == null)
@@ -221,10 +221,10 @@
 
         public Tenant GetTenant(string tenantId)
         {
-            return this.tenantRepository.Get(new TenantId(tenantId));
+            return _tenantRepository.Get(new TenantId(tenantId));
         }
 
-        Tenant GetExistingTenant(string tenantId)
+        private Tenant GetExistingTenant(string tenantId)
         {
             var tenant = GetTenant(tenantId);
             if (tenant == null)

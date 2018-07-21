@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SaaSOvation.Common.Notifications;
 
 namespace SaaSOvation.AgilePM.Application.Notifications
@@ -11,17 +7,17 @@ namespace SaaSOvation.AgilePM.Application.Notifications
     {
         public NotificationApplicationService(INotificationPublisher notificationPublisher)
         {
-            this.notificationPublisher = notificationPublisher;
+            this._notificationPublisher = notificationPublisher;
         }
 
-        readonly INotificationPublisher notificationPublisher;
+        private readonly INotificationPublisher _notificationPublisher;
 
         public void PublishNotifications()
         {
             ApplicationServiceLifeCycle.Begin(false);
             try
             {
-                this.notificationPublisher.PublishNotifications();
+                _notificationPublisher.PublishNotifications();
                 ApplicationServiceLifeCycle.Success();
             }
             catch (Exception ex)

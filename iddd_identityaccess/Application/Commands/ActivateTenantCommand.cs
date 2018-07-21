@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace SaaSOvation.IdentityAccess.Application.Commands
+﻿namespace SaaSOvation.IdentityAccess.Application.Commands
 {
     public class ActivateTenantCommand
     {
@@ -11,7 +6,7 @@ namespace SaaSOvation.IdentityAccess.Application.Commands
 
         public ActivateTenantCommand(string tenantId)
         {
-            this.TenantId = tenantId;
+            TenantId = tenantId;
         }
 
         public string TenantId { get; set; }

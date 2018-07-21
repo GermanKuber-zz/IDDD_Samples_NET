@@ -24,12 +24,12 @@ namespace SaaSOvation.Common.Domain.Model.LongRunningProcess
                 int totalRetriesPermitted,
                 int retryCount)
         {
-            this.EventVersion = 1;
-            this.OccurredOn = DateTime.Now;
-            this.ProcessId = processId;
-            this.RetryCount = retryCount;
-            this.TenantId = tenantId;
-            this.TotalRetriesPermitted = totalRetriesPermitted;
+            EventVersion = 1;
+            OccurredOn = DateTime.Now;
+            ProcessId = processId;
+            RetryCount = retryCount;
+            TenantId = tenantId;
+            TotalRetriesPermitted = totalRetriesPermitted;
         }
 
         public int EventVersion { get; set; }

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SaaSOvation.Common.Domain.Model;
 using SaaSOvation.Collaboration.Domain.Model.Tenants;
 using SaaSOvation.Collaboration.Domain.Model.Collaborators;
@@ -28,40 +25,40 @@ namespace SaaSOvation.Collaboration.Domain.Model.Forums
             Apply(new ForumStarted(tenantId, forumId, creator, moderator, subject, description, exclusiveOwner));
         }
 
-        void When(ForumStarted e)
+        private void When(ForumStarted e)
         {
-            this.tenantId = e.TenantId;
-            this.forumId = e.ForumId;
-            this.creator = e.Creator;
-            this.moderator = e.Moderator;
-            this.subject = e.Subject;
-            this.description = e.Description;
-            this.exclusiveOwner = e.ExclusiveOwner;
+            _tenantId = e.TenantId;
+            _forumId = e.ForumId;
+            _creator = e.Creator;
+            _moderator = e.Moderator;
+            _subject = e.Subject;
+            _description = e.Description;
+            _exclusiveOwner = e.ExclusiveOwner;
         }
 
-        Tenant tenantId;
-        ForumId forumId;
-        Creator creator;
-        Moderator moderator;
-        string subject;
-        string description;
-        string exclusiveOwner;
-        bool closed;
+        private Tenant _tenantId;
+        private ForumId _forumId;
+        private Creator _creator;
+        private Moderator _moderator;
+        private string _subject;
+        private string _description;
+        private string _exclusiveOwner;
+        private bool _closed;
 
         public ForumId ForumId
         {
-            get { return this.forumId; }
+            get { return _forumId; }
         }
 
-        void AssertOpen()
+        private void AssertOpen()
         {
-            if (this.closed)
+            if (_closed)
                 throw new InvalidOperationException("Forum is closed.");
         }
 
-        void AssertClosed()
+        private void AssertClosed()
         {
-            if (!this.closed)
+            if (!_closed)
                 throw new InvalidOperationException("Forum is open.");
         }
 
@@ -69,12 +66,12 @@ namespace SaaSOvation.Collaboration.Domain.Model.Forums
         {
             AssertOpen();
             AssertionConcern.AssertArgumentNotNull(moderator, "The moderator must be provided.");
-            Apply(new ForumModeratorChanged(this.tenantId, this.forumId, moderator, this.exclusiveOwner));
+            Apply(new ForumModeratorChanged(_tenantId, _forumId, moderator, _exclusiveOwner));
         }
 
-        void When(ForumModeratorChanged e)
+        private void When(ForumModeratorChanged e)
         {
-            this.moderator = e.Moderator;
+            _moderator = e.Moderator;
         }
 
 
@@ -82,12 +79,12 @@ namespace SaaSOvation.Collaboration.Domain.Model.Forums
         {
             AssertOpen();
             AssertionConcern.AssertArgumentNotEmpty(description, "The description must be provided.");
-            Apply(new ForumDescriptionChanged(this.tenantId, this.forumId, description, this.exclusiveOwner));
+            Apply(new ForumDescriptionChanged(_tenantId, _forumId, description, _exclusiveOwner));
         }
 
-        void When(ForumDescriptionChanged e)
+        private void When(ForumDescriptionChanged e)
         {
-            this.description = e.Description;
+            _description = e.Description;
         }
 
 
@@ -95,24 +92,24 @@ namespace SaaSOvation.Collaboration.Domain.Model.Forums
         {
             AssertOpen();
             AssertionConcern.AssertArgumentNotEmpty(subject, "The subject must be provided.");
-            Apply(new ForumSubjectChanged(this.tenantId, this.forumId, subject, this.exclusiveOwner));
+            Apply(new ForumSubjectChanged(_tenantId, _forumId, subject, _exclusiveOwner));
         }
 
-        void When(ForumSubjectChanged e)
+        private void When(ForumSubjectChanged e)
         {
-            this.subject = e.Subject;
+            _subject = e.Subject;
         }
 
 
         public void Close()
         {
             AssertOpen();
-            Apply(new ForumClosed(this.tenantId, this.forumId, this.exclusiveOwner));
+            Apply(new ForumClosed(_tenantId, _forumId, _exclusiveOwner));
         }
 
-        void When(ForumClosed e)
+        private void When(ForumClosed e)
         {
-            this.closed = true;
+            _closed = true;
         }
 
 
@@ -120,7 +117,7 @@ namespace SaaSOvation.Collaboration.Domain.Model.Forums
         {
             AssertOpen();
             AssertionConcern.AssertArgumentNotNull(post, "Post may not be null.");
-            AssertionConcern.AssertArgumentEquals(this.forumId, post.ForumId, "Not a post of this forum.");
+            AssertionConcern.AssertArgumentEquals(_forumId, post.ForumId, "Not a post of this forum.");
             AssertionConcern.AssertArgumentTrue(IsModeratedBy(moderator), "Not the moderator of this forum.");
             post.AlterPostContent(subject, bodyText);
         }
@@ -129,20 +126,20 @@ namespace SaaSOvation.Collaboration.Domain.Model.Forums
         public void ReOpen()
         {
             AssertClosed();
-            Apply(new ForumReopened(this.tenantId, this.forumId, this.exclusiveOwner));
+            Apply(new ForumReopened(_tenantId, _forumId, _exclusiveOwner));
         }
 
-        void When(ForumReopened e)
+        private void When(ForumReopened e)
         {
-            this.closed = false;
+            _closed = false;
         }
 
         public Discussion StartDiscussionFor(ForumIdentityService forumIdService, Author author, string subject, string exclusiveOwner = null)
         {
             AssertOpen();
             return new Discussion(
-                this.tenantId,
-                this.forumId,
+                _tenantId,
+                _forumId,
                 forumIdService.GetNextDiscussionId(),
                 author,
                 subject,
@@ -152,13 +149,13 @@ namespace SaaSOvation.Collaboration.Domain.Model.Forums
 
         public bool IsModeratedBy(Moderator moderator)
         {
-            return this.moderator.Equals(moderator);
+            return this._moderator.Equals(moderator);
         }
 
         protected override IEnumerable<object> GetIdentityComponents()
         {
-            yield return this.tenantId;
-            yield return this.forumId;
+            yield return _tenantId;
+            yield return _forumId;
         }
     }
 }

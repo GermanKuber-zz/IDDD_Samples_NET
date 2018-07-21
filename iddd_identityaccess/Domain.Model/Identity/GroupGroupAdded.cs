@@ -15,17 +15,17 @@
 namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 {
     using System;
-    using SaaSOvation.Common.Domain.Model;
+    using Common.Domain.Model;
 
     public class GroupGroupAdded : IDomainEvent
     {
         public GroupGroupAdded(TenantId tenantId, string groupName, string nestedGroupName)
         {
-            this.EventVersion = 1;
-            this.GroupName = groupName;
-            this.NestedGroupName = nestedGroupName;
-            this.OccurredOn = DateTime.Now;
-            this.TenantId = tenantId.Id;
+            EventVersion = 1;
+            GroupName = groupName;
+            NestedGroupName = nestedGroupName;
+            OccurredOn = DateTime.Now;
+            TenantId = tenantId.Id;
         }
 
         public int EventVersion { get; set; }

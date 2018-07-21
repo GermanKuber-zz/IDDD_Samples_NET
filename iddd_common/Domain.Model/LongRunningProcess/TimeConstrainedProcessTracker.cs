@@ -15,7 +15,6 @@
 namespace SaaSOvation.Common.Domain.Model.LongRunningProcess
 {
     using System;
-    using System.Reflection;
 
     public class TimeConstrainedProcessTracker
     {
@@ -28,15 +27,15 @@ namespace SaaSOvation.Common.Domain.Model.LongRunningProcess
                 int totalRetriesPermitted,
                 string processTimedOutEventType)
         {
-            this.AllowableDuration = allowableDuration;
-            this.Description = description;
-            this.ProcessId = processId;
-            this.ProcessInformedOfTimeout = false;
-            this.ProcessTimedOutEventType = processTimedOutEventType;
-            this.TenantId = tenantId;
-            this.TimeConstrainedProcessTrackerId = -1L;
-            this.TimeoutOccursOn = originalStartTime.Ticks + allowableDuration;
-            this.TotalRetriesPermitted = totalRetriesPermitted;
+            AllowableDuration = allowableDuration;
+            Description = description;
+            ProcessId = processId;
+            ProcessInformedOfTimeout = false;
+            ProcessTimedOutEventType = processTimedOutEventType;
+            TenantId = tenantId;
+            TimeConstrainedProcessTrackerId = -1L;
+            TimeoutOccursOn = originalStartTime.Ticks + allowableDuration;
+            TotalRetriesPermitted = totalRetriesPermitted;
         }
 
         public long AllowableDuration { get; private set; }
@@ -65,7 +64,7 @@ namespace SaaSOvation.Common.Domain.Model.LongRunningProcess
 
         public bool HasTimedOut()
         {
-            long timeout = this.TimeoutOccursOn;
+            long timeout = TimeoutOccursOn;
             long now = DateTime.Now.Ticks;
 
             return (timeout <= now);
@@ -73,29 +72,29 @@ namespace SaaSOvation.Common.Domain.Model.LongRunningProcess
 
         public void InformProcessTimedOut()
         {
-            if (!this.ProcessInformedOfTimeout && this.HasTimedOut())
+            if (!ProcessInformedOfTimeout && HasTimedOut())
             {
                 ProcessTimedOut processTimedOut = null;
 
-                if (this.TotalRetriesPermitted == 0)
+                if (TotalRetriesPermitted == 0)
                 {
-                    processTimedOut = this.ProcessTimedOutEvent();
+                    processTimedOut = ProcessTimedOutEvent();
 
-                    this.ProcessInformedOfTimeout = true;
+                    ProcessInformedOfTimeout = true;
                 }
                 else
                 {
-                    this.IncrementRetryCount();
+                    IncrementRetryCount();
 
-                    processTimedOut = this.ProcessTimedOutEventWithRetries();
+                    processTimedOut = ProcessTimedOutEventWithRetries();
 
-                    if (this.TotalRetriesReached())
+                    if (TotalRetriesReached())
                     {
-                        this.ProcessInformedOfTimeout = true;
+                        ProcessInformedOfTimeout = true;
                     }
                     else
                     {
-                        this.TimeoutOccursOn = this.TimeoutOccursOn + this.AllowableDuration;
+                        TimeoutOccursOn = TimeoutOccursOn + AllowableDuration;
                     }
                 }
 
@@ -105,19 +104,19 @@ namespace SaaSOvation.Common.Domain.Model.LongRunningProcess
 
         public void MarkProcessCompleted()
         {
-            this.Completed = true;
+            Completed = true;
         }
 
         public override bool Equals(object anotherObject)
         {
             bool equalObjects = false;
 
-            if (anotherObject != null && this.GetType() == anotherObject.GetType())
+            if (anotherObject != null && GetType() == anotherObject.GetType())
             {
                 TimeConstrainedProcessTracker typedObject = (TimeConstrainedProcessTracker)anotherObject;
                 equalObjects =
-                    this.TenantId.Equals(typedObject.TenantId) &&
-                    this.ProcessId.Equals(typedObject.ProcessId);
+                    TenantId.Equals(typedObject.TenantId) &&
+                    ProcessId.Equals(typedObject.ProcessId);
             }
 
             return equalObjects;
@@ -127,8 +126,8 @@ namespace SaaSOvation.Common.Domain.Model.LongRunningProcess
         {
             int hashCodeValue =
                 + (79157 * 107)
-                + this.TenantId.GetHashCode()
-                + this.ProcessId.GetHashCode();
+                + TenantId.GetHashCode()
+                + ProcessId.GetHashCode();
 
             return hashCodeValue;
         }
@@ -142,17 +141,17 @@ namespace SaaSOvation.Common.Domain.Model.LongRunningProcess
                     + ", timeoutOccursOn=" + TimeoutOccursOn + ", totalRetriesPermitted=" + TotalRetriesPermitted + "]";
         }
 
-        void IncrementRetryCount()
+        private void IncrementRetryCount()
         {
-            this.RetryCount = this.RetryCount + 1;
+            RetryCount = RetryCount + 1;
         }
 
-        ProcessTimedOut ProcessTimedOutEvent()
+        private ProcessTimedOut ProcessTimedOutEvent()
         {
             try
             {
-                var type = Type.GetType(this.ProcessTimedOutEventType);
-                return (ProcessTimedOut)Activator.CreateInstance(type, new [] { this.ProcessId });
+                var type = Type.GetType(ProcessTimedOutEventType);
+                return (ProcessTimedOut)Activator.CreateInstance(type, new [] { ProcessId });
             }
             catch (Exception e)
             {
@@ -162,13 +161,13 @@ namespace SaaSOvation.Common.Domain.Model.LongRunningProcess
             }
         }
 
-        ProcessTimedOut ProcessTimedOutEventWithRetries()
+        private ProcessTimedOut ProcessTimedOutEventWithRetries()
         {
             try
             {
-                var type = Type.GetType(this.ProcessTimedOutEventType);
+                var type = Type.GetType(ProcessTimedOutEventType);
 
-                return (ProcessTimedOut)Activator.CreateInstance(type, new object[] { this.ProcessId, this.TotalRetriesPermitted, this.RetryCount } );
+                return (ProcessTimedOut)Activator.CreateInstance(type, new object[] { ProcessId, TotalRetriesPermitted, RetryCount } );
             }
             catch (Exception e)
             {
@@ -178,9 +177,9 @@ namespace SaaSOvation.Common.Domain.Model.LongRunningProcess
             }
         }
 
-        bool TotalRetriesReached()
+        private bool TotalRetriesReached()
         {
-            return this.RetryCount >= this.TotalRetriesPermitted;
+            return RetryCount >= TotalRetriesPermitted;
         }
     }
 }

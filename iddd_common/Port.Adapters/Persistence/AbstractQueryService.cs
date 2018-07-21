@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Data.SqlClient;
 
 namespace SaaSOvation.Common.Port.Adapters.Persistence
 {
@@ -15,12 +11,12 @@ namespace SaaSOvation.Common.Port.Adapters.Persistence
     {
         public AbstractQueryService(string connectionString, string providerName)
         {
-            this.providerFactory = DbProviderFactories.GetFactory(providerName);
-            this.connectionString = connectionString;
+            _providerFactory = DbProviderFactories.GetFactory(providerName);
+            this._connectionString = connectionString;
         }
 
-        readonly DbProviderFactory providerFactory;
-        readonly string connectionString;
+        private readonly DbProviderFactory _providerFactory;
+        private readonly string _connectionString;
 
         protected T QueryObject<T>(string query, JoinOn joinOn, params object[] arguments)
         {
@@ -72,7 +68,7 @@ namespace SaaSOvation.Common.Port.Adapters.Persistence
             }
         }
 
-        DbCommand CreateCommand(DbConnection conn, string query, object[] args)
+        private DbCommand CreateCommand(DbConnection conn, string query, object[] args)
         {
             var command = conn.CreateCommand();
             command.CommandType = CommandType.Text;
@@ -92,10 +88,10 @@ namespace SaaSOvation.Common.Port.Adapters.Persistence
             return command;
         }
 
-        DbConnection CreateOpenConnection()
+        private DbConnection CreateOpenConnection()
         {
-            var conn = this.providerFactory.CreateConnection();
-            conn.ConnectionString = this.connectionString;
+            var conn = _providerFactory.CreateConnection();
+            conn.ConnectionString = _connectionString;
             conn.Open();
             return conn;
         }

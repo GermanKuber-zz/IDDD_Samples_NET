@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using SaaSOvation.Collaboration.Domain.Model.Forums;
+﻿using SaaSOvation.Collaboration.Domain.Model.Forums;
 using SaaSOvation.Collaboration.Domain.Model.Collaborators;
 using SaaSOvation.Collaboration.Domain.Model.Tenants;
 using SaaSOvation.Collaboration.Application.Forums.Data;
@@ -20,68 +15,68 @@ namespace SaaSOvation.Collaboration.Application.Forums
             IDiscussionRepository discussionRepository,
             ICollaboratorService collaboratorService)
         {
-            this.forumQueryService = forumQueryService;
-            this.forumRepository = forumRepository;
-            this.forumIdentityService = forumIdentityService;
-            this.discussionQueryService = discussionQueryService;
-            this.discussionRepository = discussionRepository;
-            this.collaboratorService = collaboratorService;
+            this._forumQueryService = forumQueryService;
+            this._forumRepository = forumRepository;
+            this._forumIdentityService = forumIdentityService;
+            this._discussionQueryService = discussionQueryService;
+            this._discussionRepository = discussionRepository;
+            this._collaboratorService = collaboratorService;
         }
 
-        readonly ForumQueryService forumQueryService;
-        readonly IForumRepository forumRepository;
-        readonly ForumIdentityService forumIdentityService;
-        readonly DiscussionQueryService discussionQueryService;
-        readonly IDiscussionRepository discussionRepository;
-        readonly ICollaboratorService collaboratorService;
+        private readonly ForumQueryService _forumQueryService;
+        private readonly IForumRepository _forumRepository;
+        private readonly ForumIdentityService _forumIdentityService;
+        private readonly DiscussionQueryService _discussionQueryService;
+        private readonly IDiscussionRepository _discussionRepository;
+        private readonly ICollaboratorService _collaboratorService;
 
         public void AssignModeratorToForum(string tenantId, string forumId, string moderatorId)
         {
             var tenant = new Tenant(tenantId);
 
-            var forum = this.forumRepository.Get(tenant, new ForumId(forumId));
+            var forum = _forumRepository.Get(tenant, new ForumId(forumId));
 
-            var moderator = this.collaboratorService.GetModeratorFrom(tenant, moderatorId);
+            var moderator = _collaboratorService.GetModeratorFrom(tenant, moderatorId);
 
             forum.AssignModerator(moderator);
 
-            this.forumRepository.Save(forum);
+            _forumRepository.Save(forum);
         }
 
         public void ChangeForumDescription(string tenantId, string forumId, string description)
         {
-            var forum = this.forumRepository.Get(new Tenant(tenantId), new ForumId(forumId));
+            var forum = _forumRepository.Get(new Tenant(tenantId), new ForumId(forumId));
 
             forum.ChangeDescription(description);
 
-            this.forumRepository.Save(forum);
+            _forumRepository.Save(forum);
         }
 
         public void ChangeForumSubject(string tenantId, string forumId, string subject)
         {
-            var forum = this.forumRepository.Get(new Tenant(tenantId), new ForumId(forumId));
+            var forum = _forumRepository.Get(new Tenant(tenantId), new ForumId(forumId));
 
             forum.ChangeSubject(subject);
 
-            this.forumRepository.Save(forum);
+            _forumRepository.Save(forum);
         }
 
         public void CloseForum(string tenantId, string forumId)
         {
-            var forum = this.forumRepository.Get(new Tenant(tenantId), new ForumId(forumId));
+            var forum = _forumRepository.Get(new Tenant(tenantId), new ForumId(forumId));
 
             forum.Close();
 
-            this.forumRepository.Save(forum);
+            _forumRepository.Save(forum);
         }
 
         public void ReOpenForum(string tenantId, string forumId)
         {
-            var forum = this.forumRepository.Get(new Tenant(tenantId), new ForumId(forumId));
+            var forum = _forumRepository.Get(new Tenant(tenantId), new ForumId(forumId));
 
             forum.ReOpen();
 
-            this.forumRepository.Save(forum);
+            _forumRepository.Save(forum);
         }
 
         public void StartForum(string tenantId, string creatorId, string moderatorId, string subject, string description, IForumCommandResult result = null)
@@ -100,10 +95,10 @@ namespace SaaSOvation.Collaboration.Application.Forums
 
             Forum forum = null;
 
-            var forumId = this.forumQueryService.GetForumIdByExclusiveOwner(tenantId, exclusiveOwner);
+            var forumId = _forumQueryService.GetForumIdByExclusiveOwner(tenantId, exclusiveOwner);
             if (forumId != null)
             {
-                forum = this.forumRepository.Get(tenant, new ForumId(forumId));
+                forum = _forumRepository.Get(tenant, new ForumId(forumId));
             }
 
             if (forum == null)
@@ -133,10 +128,10 @@ namespace SaaSOvation.Collaboration.Application.Forums
 
             Forum forum = null;
 
-            var forumId = this.forumQueryService.GetForumIdByExclusiveOwner(tenantId, exclusiveOwner);
+            var forumId = _forumQueryService.GetForumIdByExclusiveOwner(tenantId, exclusiveOwner);
             if (forumId != null)
             {
-                forum = this.forumRepository.Get(tenant, new ForumId(forumId));
+                forum = _forumRepository.Get(tenant, new ForumId(forumId));
             }
 
             if (forum == null)
@@ -146,19 +141,19 @@ namespace SaaSOvation.Collaboration.Application.Forums
 
             Discussion discussion = null;
 
-            var discussionId = this.discussionQueryService.GetDiscussionIdByExclusiveOwner(tenantId, exclusiveOwner);
+            var discussionId = _discussionQueryService.GetDiscussionIdByExclusiveOwner(tenantId, exclusiveOwner);
             if (discussionId != null)
             {
-                discussion = this.discussionRepository.Get(tenant, new DiscussionId(discussionId));
+                discussion = _discussionRepository.Get(tenant, new DiscussionId(discussionId));
             }
 
             if (discussion == null)
             {
-                var author = this.collaboratorService.GetAuthorFrom(tenant, authorId);
+                var author = _collaboratorService.GetAuthorFrom(tenant, authorId);
 
-                discussion = forum.StartDiscussionFor(this.forumIdentityService, author, discussionSubject, exclusiveOwner);
+                discussion = forum.StartDiscussionFor(_forumIdentityService, author, discussionSubject, exclusiveOwner);
 
-                this.discussionRepository.Save(discussion);
+                _discussionRepository.Save(discussion);
             }
 
             if (result != null)
@@ -168,7 +163,7 @@ namespace SaaSOvation.Collaboration.Application.Forums
             }
         }
 
-        Forum StartNewForum(
+        private Forum StartNewForum(
             Tenant tenant,
             string creatorId,
             string moderatorId,
@@ -176,20 +171,20 @@ namespace SaaSOvation.Collaboration.Application.Forums
             string description,
             string exclusiveOwner)
         {
-            var creator = this.collaboratorService.GetCreatorFrom(tenant, creatorId);
+            var creator = _collaboratorService.GetCreatorFrom(tenant, creatorId);
 
-            var moderator = this.collaboratorService.GetModeratorFrom(tenant, moderatorId);
+            var moderator = _collaboratorService.GetModeratorFrom(tenant, moderatorId);
 
             var newForum = new Forum(
                         tenant,
-                        this.forumRepository.GetNextIdentity(),
+                        _forumRepository.GetNextIdentity(),
                         creator,
                         moderator,
                         subject,
                         description,
                         exclusiveOwner);
 
-            this.forumRepository.Save(newForum);
+            _forumRepository.Save(newForum);
 
             return newForum;
         }

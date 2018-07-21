@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SaaSOvation.Common.Domain.Model;
 using SaaSOvation.Collaboration.Domain.Model.Tenants;
-using SaaSOvation.Collaboration.Domain.Model.Collaborators;
 
 namespace SaaSOvation.Collaboration.Domain.Model.Forums
 {
@@ -13,9 +8,9 @@ namespace SaaSOvation.Collaboration.Domain.Model.Forums
     {
         public ForumReopened(Tenant tenantId, ForumId forumId, string exclusiveOwner)
         {
-            this.TenantId = tenantId;
-            this.ForumId = forumId;
-            this.ExclusiveOwner = exclusiveOwner;
+            TenantId = tenantId;
+            ForumId = forumId;
+            ExclusiveOwner = exclusiveOwner;
         }
 
         public Tenant TenantId { get; private set; }

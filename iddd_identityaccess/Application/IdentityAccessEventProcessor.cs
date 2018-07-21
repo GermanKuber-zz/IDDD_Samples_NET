@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using SaaSOvation.Common.Events;
+﻿using SaaSOvation.Common.Events;
 using SaaSOvation.Common.Domain.Model;
 
 namespace SaaSOvation.IdentityAccess.Application
@@ -12,14 +7,14 @@ namespace SaaSOvation.IdentityAccess.Application
     {
         public IdentityAccessEventProcessor(IEventStore eventStore)
         {
-            this.eventStore = eventStore;
+            this._eventStore = eventStore;
         }
 
-        readonly IEventStore eventStore;
+        private readonly IEventStore _eventStore;
 
         public void Listen()
         {
-            DomainEventPublisher.Instance.Subscribe(domainEvent => this.eventStore.Append(domainEvent));
+            DomainEventPublisher.Instance.Subscribe(domainEvent => _eventStore.Append(domainEvent));
         }
     }
 }

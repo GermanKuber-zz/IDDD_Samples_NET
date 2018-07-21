@@ -17,8 +17,8 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Access
 	using System;
 	using System.Collections.Generic;
 
-	using SaaSOvation.Common.Domain.Model;
-	using SaaSOvation.IdentityAccess.Domain.Model.Identity;
+	using Common.Domain.Model;
+	using Identity;
 
 	/// <summary>
 	/// An entity representing an authentication role for a
@@ -47,7 +47,7 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Access
 		/// which provides functionality for assigning
 		/// users and groups to this role.
 		/// </summary>
-		private readonly Group internalGroup;
+		private readonly Group _internalGroup;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Role"/> class.
@@ -67,12 +67,12 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Access
 		public Role(TenantId tenantId, string name, string description, bool supportsNesting)
 		{
 			// Defer validation to the property setters.
-			this.Description = description;
-			this.Name = name;
-			this.SupportsNesting = supportsNesting;
-			this.TenantId = tenantId;
+			Description = description;
+			Name = name;
+			SupportsNesting = supportsNesting;
+			TenantId = tenantId;
 
-			this.internalGroup = this.CreateInternalGroup();
+			_internalGroup = CreateInternalGroup();
 		}
 
 		/// <summary>
@@ -109,32 +109,32 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Access
 
 		public void AssignGroup(Group group, GroupMemberService groupMemberService)
 		{
-			AssertionConcern.AssertStateTrue(this.SupportsNesting, "This role does not support group nesting.");
+			AssertionConcern.AssertStateTrue(SupportsNesting, "This role does not support group nesting.");
 			AssertionConcern.AssertArgumentNotNull(group, "Group must not be null.");
-			AssertionConcern.AssertArgumentEquals(this.TenantId, group.TenantId, "Wrong tenant for this group.");
+			AssertionConcern.AssertArgumentEquals(TenantId, group.TenantId, "Wrong tenant for this group.");
 
-			this.internalGroup.AddGroup(group, groupMemberService);
+			_internalGroup.AddGroup(group, groupMemberService);
 
 			DomainEventPublisher
 				.Instance
 				.Publish(new GroupAssignedToRole(
-						this.TenantId,
-						this.Name,
+						TenantId,
+						Name,
 						group.Name));
 		}
 
 		public void AssignUser(User user)
 		{
 			AssertionConcern.AssertArgumentNotNull(user, "User must not be null.");
-			AssertionConcern.AssertArgumentEquals(this.TenantId, user.TenantId, "Wrong tenant for this user.");
+			AssertionConcern.AssertArgumentEquals(TenantId, user.TenantId, "Wrong tenant for this user.");
 
-			this.internalGroup.AddUser(user);
+			_internalGroup.AddUser(user);
 
 			DomainEventPublisher
 				.Instance
 				.Publish(new UserAssignedToRole(
-						this.TenantId,
-						this.Name,
+						TenantId,
+						Name,
 						user.Username,
 						user.Person.Name.FirstName,
 						user.Person.Name.LastName,
@@ -143,32 +143,32 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Access
 
 		public void UnassignGroup(Group group)
 		{
-			AssertionConcern.AssertStateTrue(this.SupportsNesting, "This role does not support group nesting.");
+			AssertionConcern.AssertStateTrue(SupportsNesting, "This role does not support group nesting.");
 			AssertionConcern.AssertArgumentNotNull(group, "Group must not be null.");
-			AssertionConcern.AssertArgumentEquals(this.TenantId, group.TenantId, "Wrong tenant for this group.");
+			AssertionConcern.AssertArgumentEquals(TenantId, group.TenantId, "Wrong tenant for this group.");
 
-			this.internalGroup.RemoveGroup(group);
+			_internalGroup.RemoveGroup(group);
 
 			DomainEventPublisher
 				.Instance
 				.Publish(new GroupUnassignedFromRole(
-						this.TenantId,
-						this.Name,
+						TenantId,
+						Name,
 						group.Name));
 		}
 
 		public void UnassignUser(User user)
 		{
 			AssertionConcern.AssertArgumentNotNull(user, "User must not be null.");
-			AssertionConcern.AssertArgumentEquals(this.TenantId, user.TenantId, "Wrong tenant for this user.");
+			AssertionConcern.AssertArgumentEquals(TenantId, user.TenantId, "Wrong tenant for this user.");
 
-			this.internalGroup.RemoveUser(user);
+			_internalGroup.RemoveUser(user);
 
 			DomainEventPublisher
 				.Instance
 				.Publish(new UserUnassignedFromRole(
-						this.TenantId,
-						this.Name,
+						TenantId,
+						Name,
 						user.Username));
 		}
 
@@ -194,7 +194,7 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Access
 		/// </returns>
 		public bool IsInRole(User user, GroupMemberService groupMemberService)
 		{
-			return this.internalGroup.IsMember(user, groupMemberService);
+			return _internalGroup.IsMember(user, groupMemberService);
 		}
 
 		/// <summary>
@@ -205,8 +205,8 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Access
 		/// </returns>
 		public override string ToString()
 		{
-			const string Format = "Role [tenantId={0}, name={1}, description={2}, supportsNesting={3}, group={4}]";
-			return string.Format(Format, this.TenantId, this.Name, this.Description, this.SupportsNesting, this.internalGroup);
+			const string format = "Role [tenantId={0}, name={1}, description={2}, supportsNesting={3}, group={4}]";
+			return string.Format(format, TenantId, Name, Description, SupportsNesting, _internalGroup);
 		}
 
 		/// <summary>
@@ -218,14 +218,14 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Access
 		/// </returns>
 		protected override IEnumerable<object> GetIdentityComponents()
 		{
-			yield return this.TenantId;
-			yield return this.Name;
+			yield return TenantId;
+			yield return Name;
 		}
 
 		private Group CreateInternalGroup()
 		{
 			string groupName = string.Concat(Group.RoleGroupPrefix, Guid.NewGuid());
-			return new Group(this.TenantId, groupName, string.Concat("Role backing group for: ", this.Name));
+			return new Group(TenantId, groupName, string.Concat("Role backing group for: ", Name));
 		}
 
 		#endregion

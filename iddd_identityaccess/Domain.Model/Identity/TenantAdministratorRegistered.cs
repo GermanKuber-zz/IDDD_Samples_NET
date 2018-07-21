@@ -15,7 +15,7 @@
 namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 {
     using System;
-    using SaaSOvation.Common.Domain.Model;
+    using Common.Domain.Model;
 
     public class TenantAdministratorRegistered : IDomainEvent
     {
@@ -27,12 +27,12 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
             string username,
             string temporaryPassword)
         {
-            this.AdministorName = administorName;
-            this.EventVersion = 1;
-            this.Name = name;
-            this.OccurredOn = DateTime.Now;
-            this.TemporaryPassword = temporaryPassword;
-            this.TenantId = tenantId.Id;
+            AdministorName = administorName;
+            EventVersion = 1;
+            Name = name;
+            OccurredOn = DateTime.Now;
+            TemporaryPassword = temporaryPassword;
+            TenantId = tenantId.Id;
         }
 
         public FullName AdministorName { get; private set; }

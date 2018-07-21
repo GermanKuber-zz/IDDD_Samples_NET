@@ -15,17 +15,16 @@
 namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 {
     using System;
-    using SaaSOvation.Common.Domain.Model;
 
     public class InvitationDescriptor
     {
         public InvitationDescriptor(TenantId tenantId, string invitationId, string description, DateTime startingOn, DateTime until)
         {
-            this.Description = description;
-            this.InvitationId = invitationId;
-            this.StartingOn = startingOn;
-            this.TenantId = tenantId.Id;
-            this.Until = until;
+            Description = description;
+            InvitationId = invitationId;
+            StartingOn = startingOn;
+            TenantId = tenantId.Id;
+            Until = until;
         }
 
         public string Description { get; private set; }

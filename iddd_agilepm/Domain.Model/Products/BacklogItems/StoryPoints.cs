@@ -14,8 +14,6 @@
 
 namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
 {
-    using System;
-
     public enum StoryPoints
     {
         Zero,

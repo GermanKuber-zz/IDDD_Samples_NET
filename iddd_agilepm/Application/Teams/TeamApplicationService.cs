@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SaaSOvation.AgilePM.Domain.Model.Teams;
 using SaaSOvation.AgilePM.Domain.Model.Tenants;
 
@@ -12,12 +8,12 @@ namespace SaaSOvation.AgilePM.Application.Teams
     {
         public TeamApplicationService(ITeamMemberRepository teamMemberRepository, IProductOwnerRepository productOwnerRepository)
         {
-            this.teamMemberRepository = teamMemberRepository;
-            this.productOwnerRepository = productOwnerRepository;
+            this._teamMemberRepository = teamMemberRepository;
+            this._productOwnerRepository = productOwnerRepository;
         }
 
-        readonly ITeamMemberRepository teamMemberRepository;
-        readonly IProductOwnerRepository productOwnerRepository;
+        private readonly ITeamMemberRepository _teamMemberRepository;
+        private readonly IProductOwnerRepository _productOwnerRepository;
 
         public void EnableProductOwner(EnableProductOwnerCommand command)
         {
@@ -25,7 +21,7 @@ namespace SaaSOvation.AgilePM.Application.Teams
             ApplicationServiceLifeCycle.Begin();
             try
             {
-                var productOwner = this.productOwnerRepository.Get(tenantId, command.Username);
+                var productOwner = _productOwnerRepository.Get(tenantId, command.Username);
                 if (productOwner != null)
                 {
                     productOwner.Enable(command.OccurredOn);
@@ -33,7 +29,7 @@ namespace SaaSOvation.AgilePM.Application.Teams
                 else
                 {
                     productOwner = new ProductOwner(tenantId, command.Username, command.FirstName, command.LastName, command.EmailAddress, command.OccurredOn);
-                    this.productOwnerRepository.Save(productOwner);
+                    _productOwnerRepository.Save(productOwner);
                 }
                 ApplicationServiceLifeCycle.Success();
             }
@@ -49,7 +45,7 @@ namespace SaaSOvation.AgilePM.Application.Teams
             ApplicationServiceLifeCycle.Begin();
             try
             {
-                var teamMember = this.teamMemberRepository.Get(tenantId, command.Username);
+                var teamMember = _teamMemberRepository.Get(tenantId, command.Username);
                 if (teamMember != null)
                 {
                     teamMember.Enable(command.OccurredOn);
@@ -57,7 +53,7 @@ namespace SaaSOvation.AgilePM.Application.Teams
                 else
                 {
                     teamMember = new TeamMember(tenantId, command.Username, command.FirstName, command.LastName, command.EmailAddress, command.OccurredOn);
-                    this.teamMemberRepository.Save(teamMember);
+                    _teamMemberRepository.Save(teamMember);
                 }
                 ApplicationServiceLifeCycle.Success();
             }
@@ -73,18 +69,18 @@ namespace SaaSOvation.AgilePM.Application.Teams
             ApplicationServiceLifeCycle.Begin();
             try
             {
-                var productOwner = this.productOwnerRepository.Get(tenantId, command.Username);
+                var productOwner = _productOwnerRepository.Get(tenantId, command.Username);
                 if (productOwner != null)
                 {
                     productOwner.ChangeEmailAddress(command.EmailAddress, command.OccurredOn);
-                    this.productOwnerRepository.Save(productOwner);
+                    _productOwnerRepository.Save(productOwner);
                 }
 
-                var teamMember = this.teamMemberRepository.Get(tenantId, command.Username);
+                var teamMember = _teamMemberRepository.Get(tenantId, command.Username);
                 if (teamMember != null)
                 {
                     teamMember.ChangeEmailAddress(command.EmailAddress, command.OccurredOn);
-                    this.teamMemberRepository.Save(teamMember);
+                    _teamMemberRepository.Save(teamMember);
                 }
 
                 ApplicationServiceLifeCycle.Success();
@@ -101,18 +97,18 @@ namespace SaaSOvation.AgilePM.Application.Teams
             ApplicationServiceLifeCycle.Begin();
             try
             {
-                var productOwner = this.productOwnerRepository.Get(tenantId, command.Username);
+                var productOwner = _productOwnerRepository.Get(tenantId, command.Username);
                 if (productOwner != null)
                 {
                     productOwner.ChangeName(command.FirstName, command.LastName, command.OccurredOn);
-                    this.productOwnerRepository.Save(productOwner);
+                    _productOwnerRepository.Save(productOwner);
                 }
 
-                var teamMember = this.teamMemberRepository.Get(tenantId, command.Username);
+                var teamMember = _teamMemberRepository.Get(tenantId, command.Username);
                 if (teamMember != null)
                 {
                     teamMember.ChangeName(command.FirstName, command.LastName, command.OccurredOn);
-                    this.teamMemberRepository.Save(teamMember);
+                    _teamMemberRepository.Save(teamMember);
                 }
 
                 ApplicationServiceLifeCycle.Success();
@@ -129,11 +125,11 @@ namespace SaaSOvation.AgilePM.Application.Teams
             ApplicationServiceLifeCycle.Begin();
             try
             {
-                var productOwner = this.productOwnerRepository.Get(tenantId, command.Username);
+                var productOwner = _productOwnerRepository.Get(tenantId, command.Username);
                 if (productOwner != null)
                 {
                     productOwner.Disable(command.OccurredOn);
-                    this.productOwnerRepository.Save(productOwner);
+                    _productOwnerRepository.Save(productOwner);
                 }
                 ApplicationServiceLifeCycle.Success();
             }
@@ -149,11 +145,11 @@ namespace SaaSOvation.AgilePM.Application.Teams
             ApplicationServiceLifeCycle.Begin();
             try
             {
-                var teamMember = this.teamMemberRepository.Get(tenantId, command.Username);
+                var teamMember = _teamMemberRepository.Get(tenantId, command.Username);
                 if (teamMember != null)
                 {
                     teamMember.Disable(command.OccurredOn);
-                    this.teamMemberRepository.Save(teamMember);
+                    _teamMemberRepository.Save(teamMember);
                 }
                 ApplicationServiceLifeCycle.Success();
             }

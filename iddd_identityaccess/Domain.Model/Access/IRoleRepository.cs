@@ -16,7 +16,7 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Access
 {
 	using System;
 
-	using SaaSOvation.IdentityAccess.Domain.Model.Identity;
+	using Identity;
 
 	/// <summary>
 	/// Contract for a collection-oriented repository of <see cref="Role"/> entities.

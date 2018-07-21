@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Data;
+﻿using System.Data;
 
 namespace SaaSOvation.Common.Port.Adapters.Persistence
 {
@@ -13,19 +10,19 @@ namespace SaaSOvation.Common.Port.Adapters.Persistence
 
         public JoinOn(string leftKey, string rightKey)
         {
-            this.leftKey = leftKey;
-            this.rightKey = rightKey;
+            this._leftKey = leftKey;
+            this._rightKey = rightKey;
         }
 
-        object currentLeftQualifier;
-        string leftKey;
-        string rightKey;
+        private object _currentLeftQualifier;
+        private string _leftKey;
+        private string _rightKey;
 
         public bool IsSpecified
         {
             get
             {
-                return this.leftKey != null && this.rightKey != null;
+                return _leftKey != null && _rightKey != null;
             }
         }
 
@@ -33,12 +30,12 @@ namespace SaaSOvation.Common.Port.Adapters.Persistence
         {
             try
             {
-                var columnValue = dataReader.GetValue(dataReader.GetOrdinal(this.leftKey));
+                var columnValue = dataReader.GetValue(dataReader.GetOrdinal(_leftKey));
                 if (columnValue == null)
                 {
                     return false;
                 }
-                return columnValue.Equals(this.currentLeftQualifier);
+                return columnValue.Equals(_currentLeftQualifier);
             }
             catch
             {
@@ -52,10 +49,10 @@ namespace SaaSOvation.Common.Port.Adapters.Persistence
             var rightColumn = default(object);
             try
             {
-                if (this.IsSpecified)
+                if (IsSpecified)
                 {
-                    leftColumn = dataReader.GetValue(dataReader.GetOrdinal(this.leftKey));
-                    rightColumn = dataReader.GetValue(dataReader.GetOrdinal(this.rightKey));
+                    leftColumn = dataReader.GetValue(dataReader.GetOrdinal(_leftKey));
+                    rightColumn = dataReader.GetValue(dataReader.GetOrdinal(_rightKey));
                 }
             }
             catch
@@ -67,9 +64,9 @@ namespace SaaSOvation.Common.Port.Adapters.Persistence
 
         public void SaveCurrentLeftQualifier(string columnName, object columnValue)
         {
-            if (columnName.Equals(this.leftKey))
+            if (columnName.Equals(_leftKey))
             {
-                this.currentLeftQualifier = columnValue;
+                _currentLeftQualifier = columnValue;
             }
         }
     }

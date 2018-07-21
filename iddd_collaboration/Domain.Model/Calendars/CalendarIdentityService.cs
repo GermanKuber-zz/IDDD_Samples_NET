@@ -1,29 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace SaaSOvation.Collaboration.Domain.Model.Calendars
+﻿namespace SaaSOvation.Collaboration.Domain.Model.Calendars
 {
     public class CalendarIdentityService
     {
         public CalendarIdentityService(ICalendarRepository calendarRepository, ICalendarEntryRepository calendarEntryRepository)
         {
-            this.calendarRepository = calendarRepository;
-            this.calendarEntryRepository = calendarEntryRepository;
+            this._calendarRepository = calendarRepository;
+            this._calendarEntryRepository = calendarEntryRepository;
         }
 
-        readonly ICalendarRepository calendarRepository;
-        readonly ICalendarEntryRepository calendarEntryRepository;
+        private readonly ICalendarRepository _calendarRepository;
+        private readonly ICalendarEntryRepository _calendarEntryRepository;
 
         public CalendarId GetNextCalendarId()
         {
-            return this.calendarRepository.GetNextIdentity();
+            return _calendarRepository.GetNextIdentity();
         }
 
         public CalendarEntryId GetNextCalendarEntryId()
         {
-            return this.calendarEntryRepository.GetNextIdentity();
+            return _calendarEntryRepository.GetNextIdentity();
         }
     }
 }

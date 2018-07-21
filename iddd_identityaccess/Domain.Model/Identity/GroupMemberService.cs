@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Linq;
+
 namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 {
 	using System;
 
-	using System.Linq;
-
-	/// <summary>
+    /// <summary>
 	/// A domain service providing methods to determine
 	/// whether a <see cref="User"/> or <see cref="Group"/>
 	/// is a member of a group or of a nested group.
@@ -31,8 +31,8 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 		// The maximum value of a signed byte should be 127.
 		private const int MaxGroupNestingRecursion = sbyte.MaxValue;
 
-		private readonly IGroupRepository groupRepository;
-		private readonly IUserRepository userRepository;
+		private readonly IGroupRepository _groupRepository;
+		private readonly IUserRepository _userRepository;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="GroupMemberService"/> class.
@@ -47,8 +47,8 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 			IUserRepository userRepository,
 			IGroupRepository groupRepository)
 		{
-			this.groupRepository = groupRepository;
-			this.userRepository = userRepository;
+			this._groupRepository = groupRepository;
+			this._userRepository = userRepository;
 		}
 
 		#endregion
@@ -76,7 +76,7 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 		/// </returns>
 		public bool ConfirmUser(Group group, User user)
 		{
-			User confirmedUser = this.userRepository.UserWithUsername(group.TenantId, user.Username);
+			User confirmedUser = _userRepository.UserWithUsername(group.TenantId, user.Username);
 
 			return ((confirmedUser == null) || (!confirmedUser.IsEnabled));
 		}
@@ -102,7 +102,7 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 		/// </returns>
 		public bool IsMemberGroup(Group group, GroupMember memberGroup)
 		{
-			return this.IsMemberGroup(group, memberGroup, 0);
+			return IsMemberGroup(group, memberGroup, 0);
 		}
 
 		/// <summary>
@@ -126,7 +126,7 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 		{
 			foreach (GroupMember member in group.GroupMembers.Where(x => x.IsGroup))
 			{
-				Group nestedGroup = this.groupRepository.GroupNamed(member.TenantId, member.Name);
+				Group nestedGroup = _groupRepository.GroupNamed(member.TenantId, member.Name);
 				if (nestedGroup != null)
 				{
 					bool isInNestedGroup = nestedGroup.IsMember(user, this);
@@ -160,12 +160,12 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 				}
 				else
 				{
-					Group nestedGroup = this.groupRepository.GroupNamed(member.TenantId, member.Name);
+					Group nestedGroup = _groupRepository.GroupNamed(member.TenantId, member.Name);
 					if (nestedGroup != null)
 					{
 						int nextRecursionCount = (recursionCount + 1);
 
-						isMember = this.IsMemberGroup(nestedGroup, memberGroup, nextRecursionCount);
+						isMember = IsMemberGroup(nestedGroup, memberGroup, nextRecursionCount);
 					}
 				}
 

@@ -29,8 +29,8 @@ namespace SaaSOvation.Common.Domain.Model
 
         public override bool Equals(object obj)
         {
-            if (object.ReferenceEquals(this, obj)) return true;
-            if (object.ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (ReferenceEquals(null, obj)) return false;
             if (GetType() != obj.GetType()) return false;
             var other = obj as EntityWithCompositeId;
             return GetIdentityComponents().SequenceEqual(other.GetIdentityComponents());

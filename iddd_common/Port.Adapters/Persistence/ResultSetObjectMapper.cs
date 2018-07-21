@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Data;
+using System.Text;
 
 namespace SaaSOvation.Common.Port.Adapters.Persistence
 {
@@ -11,14 +10,14 @@ namespace SaaSOvation.Common.Port.Adapters.Persistence
     {
         public ResultSetObjectMapper(IDataReader dataReader, JoinOn joinOn, string columnPrefix = null)
         {
-            this.dataReader = dataReader;
-            this.joinOn = joinOn;
-            this.columnPrefix = columnPrefix;
+            this._dataReader = dataReader;
+            this._joinOn = joinOn;
+            this._columnPrefix = columnPrefix;
         }
 
-        readonly IDataReader dataReader;
-        readonly JoinOn joinOn;
-        readonly string columnPrefix;
+        private readonly IDataReader _dataReader;
+        private readonly JoinOn _joinOn;
+        private readonly string _columnPrefix;
 
         public T MapResultToType()
         {
@@ -31,12 +30,12 @@ namespace SaaSOvation.Common.Port.Adapters.Persistence
             foreach (var field in fields)
             {
                 var columnName = FieldNameToColumnName(field.Name);
-                var columnIndex = this.dataReader.GetOrdinal(columnName);
+                var columnIndex = _dataReader.GetOrdinal(columnName);
                 if (columnIndex >= 0)
                 {
                     var columnValue = ColumnValueFrom(columnIndex, field.FieldType);
 
-                    this.joinOn.SaveCurrentLeftQualifier(columnName, columnValue);
+                    _joinOn.SaveCurrentLeftQualifier(columnName, columnValue);
 
                     field.SetValue(obj, columnValue);
                 }
@@ -58,10 +57,10 @@ namespace SaaSOvation.Common.Port.Adapters.Persistence
             return obj;
         }
 
-        void MapAssociations(object obj, ISet<string> associationsToMap)
+        private void MapAssociations(object obj, ISet<string> associationsToMap)
         {
             var mappedCollections = new Dictionary<string, ICollection<object>>();
-            while (this.dataReader.NextResult())
+            while (_dataReader.NextResult())
             {
                 foreach (var fieldName in associationsToMap)
                 {
@@ -88,7 +87,7 @@ namespace SaaSOvation.Common.Port.Adapters.Persistence
 
                     var columnName = FieldNameToColumnName(fieldName);
 
-                    var mapper = new ResultSetObjectMapper<object>(this.dataReader, this.joinOn, ToObjectPrefix(columnName));
+                    var mapper = new ResultSetObjectMapper<object>(_dataReader, _joinOn, ToObjectPrefix(columnName));
 
                     var associationObject = mapper.MapResultToType();
 
@@ -110,7 +109,7 @@ namespace SaaSOvation.Common.Port.Adapters.Persistence
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        ICollection<object> CreateCollectionFrom(Type type)
+        private ICollection<object> CreateCollectionFrom(Type type)
         {
             var genericType = type.GetGenericTypeDefinition();
             if (typeof(IList<>).IsAssignableFrom(genericType))
@@ -127,13 +126,13 @@ namespace SaaSOvation.Common.Port.Adapters.Persistence
             }
         }
 
-        bool HasAssociation(string objectPrefix)
+        private bool HasAssociation(string objectPrefix)
         {
-            var fieldCount = this.dataReader.FieldCount;
+            var fieldCount = _dataReader.FieldCount;
             for (var i = 0; i < fieldCount; i++)
             {
-                var columnName = this.dataReader.GetName(i);
-                if (columnName.StartsWith(objectPrefix) && this.joinOn.IsJoinedOn(this.dataReader))
+                var columnName = _dataReader.GetName(i);
+                if (columnName.StartsWith(objectPrefix) && _joinOn.IsJoinedOn(_dataReader))
                 {
 
                     return true;
@@ -142,47 +141,47 @@ namespace SaaSOvation.Common.Port.Adapters.Persistence
             return false;
         }
 
-        string ToObjectPrefix(string columnName)
+        private string ToObjectPrefix(string columnName)
         {
             return "o_" + columnName + "_";
         }
 
-        object ColumnValueFrom(int columnIndex, Type columnType)
+        private object ColumnValueFrom(int columnIndex, Type columnType)
         {
             switch (Type.GetTypeCode(columnType))
             {
                 case TypeCode.Int32:
-                    return this.dataReader.GetInt32(columnIndex);
+                    return _dataReader.GetInt32(columnIndex);
                 case TypeCode.Int64:
-                    return this.dataReader.GetInt64(columnIndex);
+                    return _dataReader.GetInt64(columnIndex);
                 case TypeCode.Boolean:
-                    return this.dataReader.GetBoolean(columnIndex);
+                    return _dataReader.GetBoolean(columnIndex);
                 case TypeCode.Int16:
-                    return this.dataReader.GetInt16(columnIndex);
+                    return _dataReader.GetInt16(columnIndex);
                 case TypeCode.Single:
-                    return this.dataReader.GetFloat(columnIndex);
+                    return _dataReader.GetFloat(columnIndex);
                 case TypeCode.Double:
-                    return this.dataReader.GetDouble(columnIndex);
+                    return _dataReader.GetDouble(columnIndex);
                 case TypeCode.Byte:
-                    return this.dataReader.GetByte(columnIndex);
+                    return _dataReader.GetByte(columnIndex);
                 case TypeCode.Char:
-                    return this.dataReader.GetChar(columnIndex);
+                    return _dataReader.GetChar(columnIndex);
                 case TypeCode.String:
-                    return this.dataReader.GetString(columnIndex);
+                    return _dataReader.GetString(columnIndex);
                 case TypeCode.DateTime:
-                    return this.dataReader.GetDateTime(columnIndex);
+                    return _dataReader.GetDateTime(columnIndex);
                 default:
                     throw new InvalidOperationException("Unsupported type.");
             }
         }
 
-        string FieldNameToColumnName(string fieldName)
+        private string FieldNameToColumnName(string fieldName)
         {
             var sb = new StringBuilder();
 
-            if (this.columnPrefix != null)
+            if (_columnPrefix != null)
             {
-                sb.Append(this.columnPrefix);
+                sb.Append(_columnPrefix);
             }
 
             foreach (var ch in fieldName)

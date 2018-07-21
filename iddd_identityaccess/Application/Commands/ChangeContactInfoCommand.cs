@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace SaaSOvation.IdentityAccess.Application.Commands
+﻿namespace SaaSOvation.IdentityAccess.Application.Commands
 {
     public class ChangeContactInfoCommand
     {
@@ -16,16 +11,16 @@ namespace SaaSOvation.IdentityAccess.Application.Commands
             string addressCity, string addressStateProvince, string addressPostalCode, 
             string addressCountryCode)
         {
-            this.TenantId = tenantId;
-            this.Username = username;
-            this.EmailAddress = emailAddress;
-            this.PrimaryTelephone = primaryTelephone;
-            this.SecondaryTelephone = secondaryTelephone;
-            this.AddressStreetAddress = addressStreetAddress;
-            this.AddressCity = addressCity;
-            this.AddressStateProvince = addressStateProvince;
-            this.AddressPostalCode = addressPostalCode;
-            this.AddressCountryCode = addressCountryCode;
+            TenantId = tenantId;
+            Username = username;
+            EmailAddress = emailAddress;
+            PrimaryTelephone = primaryTelephone;
+            SecondaryTelephone = secondaryTelephone;
+            AddressStreetAddress = addressStreetAddress;
+            AddressCity = addressCity;
+            AddressStateProvince = addressStateProvince;
+            AddressPostalCode = addressPostalCode;
+            AddressCountryCode = addressCountryCode;
         }
 
         public string TenantId { get; set; }

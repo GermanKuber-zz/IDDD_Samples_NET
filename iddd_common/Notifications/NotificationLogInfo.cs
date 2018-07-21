@@ -1,30 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace SaaSOvation.Common.Notifications
+﻿namespace SaaSOvation.Common.Notifications
 {
     public class NotificationLogInfo
     {
         public NotificationLogInfo(NotificationLogId notificationLogId, long totalLogged)
         {
-            this.notificationLogId = notificationLogId;
-            this.totalLogged = totalLogged;
+            this._notificationLogId = notificationLogId;
+            this._totalLogged = totalLogged;
         }
 
-        readonly NotificationLogId notificationLogId;
+        private readonly NotificationLogId _notificationLogId;
 
         public NotificationLogId NotificationLogId
         {
-            get { return notificationLogId; }
+            get { return _notificationLogId; }
         }
 
-        readonly long totalLogged;
+        private readonly long _totalLogged;
 
         public long TotalLogged
         {
-            get { return totalLogged; }
+            get { return _totalLogged; }
         } 
 
     }

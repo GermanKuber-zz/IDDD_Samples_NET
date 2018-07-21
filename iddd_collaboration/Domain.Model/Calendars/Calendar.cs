@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-
 using SaaSOvation.Common.Domain.Model;
 using SaaSOvation.Collaboration.Domain.Model.Tenants;
 using SaaSOvation.Collaboration.Domain.Model.Collaborators;
@@ -22,13 +19,13 @@ namespace SaaSOvation.Collaboration.Domain.Model.Calendars
             Apply(new CalendarCreated(tenant, calendarId, name, description, owner, sharedWith));
         }
 
-        void When(CalendarCreated e)
+        private void When(CalendarCreated e)
         {
-            this.tenant = e.Tenant;
-            this.calendarId = e.CalendarId;
-            this.name = e.Name;
-            this.description = e.Description;
-            this.sharedWith = new HashSet<CalendarSharer>(e.SharedWith ?? Enumerable.Empty<CalendarSharer>());
+            _tenant = e.Tenant;
+            _calendarId = e.CalendarId;
+            _name = e.Name;
+            _description = e.Description;
+            _sharedWith = new HashSet<CalendarSharer>(e.SharedWith ?? Enumerable.Empty<CalendarSharer>());
         }
 
         public Calendar(IEnumerable<IDomainEvent> eventStream, int streamVersion)
@@ -36,42 +33,42 @@ namespace SaaSOvation.Collaboration.Domain.Model.Calendars
         {
         }
 
-        Tenant tenant;
-        CalendarId calendarId;
-        string name;
-        string description;
-        HashSet<CalendarSharer> sharedWith;
+        private Tenant _tenant;
+        private CalendarId _calendarId;
+        private string _name;
+        private string _description;
+        private HashSet<CalendarSharer> _sharedWith;
 
         public CalendarId CalendarId
         {
-            get { return this.calendarId; }
+            get { return _calendarId; }
         }
 
         public ReadOnlyCollection<CalendarSharer> AllSharedWith
         {
-            get { return new ReadOnlyCollection<CalendarSharer>(this.sharedWith.ToArray()); }
+            get { return new ReadOnlyCollection<CalendarSharer>(_sharedWith.ToArray()); }
         }
 
         public void ChangeDescription(string description)
         {
             AssertionConcern.AssertArgumentNotEmpty(description, "The description must be provided.");
-            Apply(new CalendarDescriptionChanged(this.tenant, this.calendarId, this.name, description));
+            Apply(new CalendarDescriptionChanged(_tenant, _calendarId, _name, description));
         }
 
-        void When(CalendarDescriptionChanged e)
+        private void When(CalendarDescriptionChanged e)
         {
-            this.description = e.Description;
+            _description = e.Description;
         }
 
         public void Rename(string name)
         {
             AssertionConcern.AssertArgumentNotEmpty(name, "The name must be provided.");
-            Apply(new CalendarRenamed(this.tenant, this.calendarId, name, this.description));
+            Apply(new CalendarRenamed(_tenant, _calendarId, name, _description));
         }
 
-        void When(CalendarRenamed e)
+        private void When(CalendarRenamed e)
         {
-            this.name = e.Name;
+            _name = e.Name;
         }
 
 
@@ -86,8 +83,8 @@ namespace SaaSOvation.Collaboration.Domain.Model.Calendars
             IEnumerable<Participant> invitees = null)
         {
             return new CalendarEntry(
-                this.tenant,
-                this.calendarId,
+                _tenant,
+                _calendarId,
                 calendarIdService.GetNextCalendarEntryId(),
                 description,
                 location,
@@ -101,37 +98,37 @@ namespace SaaSOvation.Collaboration.Domain.Model.Calendars
         public void ShareCalendarWith(CalendarSharer calendarSharer)
         {
             AssertionConcern.AssertArgumentNotNull(calendarSharer, "The calendar sharer must be provided.");
-            if (!this.sharedWith.Contains(calendarSharer))
+            if (!_sharedWith.Contains(calendarSharer))
             {
-                Apply(new CalendarShared(this.tenant, this.calendarId, this.name, calendarSharer));
+                Apply(new CalendarShared(_tenant, _calendarId, _name, calendarSharer));
             }
         }
 
-        void When(CalendarShared e)
+        private void When(CalendarShared e)
         {
-            this.sharedWith.Add(e.SharedWith);
+            _sharedWith.Add(e.SharedWith);
         }
 
 
         public void UnshareCalendarWith(CalendarSharer calendarSharer)
         {
             AssertionConcern.AssertArgumentNotNull(calendarSharer, "The calendar sharer must be provided.");
-            if (this.sharedWith.Contains(calendarSharer))
+            if (_sharedWith.Contains(calendarSharer))
             {
-                Apply(new CalendarUnshared(this.tenant, this.calendarId, this.name, calendarSharer));
+                Apply(new CalendarUnshared(_tenant, _calendarId, _name, calendarSharer));
             }
         }
 
-        void When(CalendarUnshared e)
+        private void When(CalendarUnshared e)
         {
-            this.sharedWith.Remove(e.UnsharedWith);
+            _sharedWith.Remove(e.UnsharedWith);
         }
 
 
         protected override IEnumerable<object> GetIdentityComponents()
         {
-            yield return this.tenant;
-            yield return this.calendarId;
+            yield return _tenant;
+            yield return _calendarId;
         }
     }
 }

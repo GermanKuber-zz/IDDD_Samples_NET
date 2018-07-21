@@ -17,14 +17,14 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 	using System;
 	using System.Collections.Generic;
 
-	using SaaSOvation.Common.Domain.Model;
+	using Common.Domain.Model;
 
 	[CLSCompliant(true)]
 	public class User : EntityWithCompositeId
 	{
 		#region [ Fields and Constructor Overloads ]
 
-		private Enablement userEnablement;
+		private Enablement _userEnablement;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="User"/> class
@@ -58,12 +58,12 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 			AssertionConcern.AssertArgumentLength(username, 3, 250, "The username must be 3 to 250 characters.");
 
 			// Defer validation to the property setters.
-			this.Enablement = enablement;
-			this.Person = person;
-			this.TenantId = tenantId;
-			this.Username = username;
+			Enablement = enablement;
+			Person = person;
+			TenantId = tenantId;
+			Username = username;
 
-			this.ProtectPassword(string.Empty, password);
+			ProtectPassword(string.Empty, password);
 
 			person.User = this;
 
@@ -92,21 +92,21 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 
 		public bool IsEnabled
 		{
-			get { return this.Enablement.IsEnablementEnabled(); }
+			get { return Enablement.IsEnablementEnabled(); }
 		}
 
 		public Enablement Enablement
 		{
 			get
 			{
-				return this.userEnablement;
+				return _userEnablement;
 			}
 
 			private set
 			{
 				AssertionConcern.AssertArgumentNotNull(value, "The enablement is required.");
 
-				this.userEnablement = value;
+				_userEnablement = value;
 			}
 		}
 
@@ -119,9 +119,9 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 			get
 			{
 				return new UserDescriptor(
-					this.TenantId,
-					this.Username,
-					this.Person.EmailAddress.Address);
+					TenantId,
+					Username,
+					Person.EmailAddress.Address);
 			}
 		}
 
@@ -137,37 +137,37 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 				currentPassword, "Current and new password must be provided.");
 
 			AssertionConcern.AssertArgumentEquals(
-				this.Password, AsEncryptedValue(currentPassword), "Current password not confirmed.");
+				Password, AsEncryptedValue(currentPassword), "Current password not confirmed.");
 
-			this.ProtectPassword(currentPassword, changedPassword);
+			ProtectPassword(currentPassword, changedPassword);
 
 			DomainEventPublisher
 				.Instance
 				.Publish(new UserPasswordChanged(
-						this.TenantId,
-						this.Username));
+						TenantId,
+						Username));
 		}
 
 		public void ChangePersonalContactInformation(ContactInformation contactInformation)
 		{
-			this.Person.ChangeContactInformation(contactInformation);
+			Person.ChangeContactInformation(contactInformation);
 		}
 
 		public void ChangePersonalName(FullName personalName)
 		{
-			this.Person.ChangeName(personalName);
+			Person.ChangeName(personalName);
 		}
 
 		public void DefineEnablement(Enablement enablement)
 		{
-			this.Enablement = enablement;
+			Enablement = enablement;
 
 			DomainEventPublisher
 				.Instance
 				.Publish(new UserEnablementChanged(
-						this.TenantId,
-						this.Username,
-						this.Enablement));
+						TenantId,
+						Username,
+						Enablement));
 		}
 
 		#endregion
@@ -182,8 +182,8 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 		/// </returns>
 		public override string ToString()
 		{
-			const string Format = "User [tenantId={0}, username={1}, person={2}, enablement={3}]";
-			return string.Format(Format, this.TenantId, this.Username, this.Person, this.Enablement);
+			const string format = "User [tenantId={0}, username={1}, person={2}, enablement={3}]";
+			return string.Format(format, TenantId, Username, Person, Enablement);
 		}
 
 		/// <summary>
@@ -198,7 +198,7 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 		/// </returns>
 		internal GroupMember ToGroupMember()
 		{
-			return new GroupMember(this.TenantId, this.Username, GroupMemberType.User);
+			return new GroupMember(TenantId, Username, GroupMemberType.User);
 		}
 
 		/// <summary>
@@ -210,8 +210,8 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 		/// </returns>
 		protected override IEnumerable<object> GetIdentityComponents()
 		{
-			yield return this.TenantId;
-			yield return this.Username;
+			yield return TenantId;
+			yield return Username;
 		}
 
 		private static string AsEncryptedValue(string plainTextPassword)
@@ -223,9 +223,9 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 		{
 			AssertionConcern.AssertArgumentNotEquals(currentPassword, changedPassword, "The password is unchanged.");
 			AssertionConcern.AssertArgumentFalse(DomainRegistry.PasswordService.IsWeak(changedPassword), "The password must be stronger.");
-			AssertionConcern.AssertArgumentNotEquals(this.Username, changedPassword, "The username and password must not be the same.");
+			AssertionConcern.AssertArgumentNotEquals(Username, changedPassword, "The username and password must not be the same.");
 
-			this.Password = AsEncryptedValue(changedPassword);
+			Password = AsEncryptedValue(changedPassword);
 		}
 
 		#endregion

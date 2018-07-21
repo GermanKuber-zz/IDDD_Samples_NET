@@ -14,7 +14,7 @@
 
 namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 {
-    using SaaSOvation.Common.Domain.Model;
+    using Common.Domain.Model;
 
     public class UserDescriptor : ValueObject
     {
@@ -25,12 +25,12 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 
         public UserDescriptor(TenantId tenantId, string username, string emailAddress)
         {
-            this.EmailAddress = emailAddress;
-            this.TenantId = tenantId;
-            this.Username = username;
+            EmailAddress = emailAddress;
+            TenantId = tenantId;
+            Username = username;
         }
 
-        UserDescriptor() { }
+        private UserDescriptor() { }
 
         public string EmailAddress { get; private set; }
 
@@ -40,9 +40,9 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 
         protected override System.Collections.Generic.IEnumerable<object> GetEqualityComponents()
         {
-            yield return this.EmailAddress;
-            yield return this.TenantId;
-            yield return this.Username;
+            yield return EmailAddress;
+            yield return TenantId;
+            yield return Username;
         }
 
         public override string ToString()

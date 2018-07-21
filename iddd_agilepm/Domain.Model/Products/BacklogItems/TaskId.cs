@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SaaSOvation.Common.Domain.Model;
 
 namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
@@ -18,14 +15,14 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
         {
             AssertionConcern.AssertArgumentNotEmpty(id, "The id must be provided.");
             AssertionConcern.AssertArgumentLength(id, 8, "The id must be 8 characters or less.");
-            this.Id = id;
+            Id = id;
         }
 
         public string Id { get; private set; }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return this.Id;
+            yield return Id;
         }
     }
 }

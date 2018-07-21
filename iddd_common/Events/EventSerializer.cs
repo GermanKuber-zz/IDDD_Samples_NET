@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Newtonsoft.Json;
-
 using SaaSOvation.Common.Domain.Model;
 
 namespace SaaSOvation.Common.Events
 {
     public class EventSerializer
     {
-        readonly static Lazy<EventSerializer> instance = new Lazy<EventSerializer>(() => new EventSerializer(), true);
+        private readonly static Lazy<EventSerializer> instance = new Lazy<EventSerializer>(() => new EventSerializer(), true);
 
         public static EventSerializer Instance
         {
@@ -20,10 +15,10 @@ namespace SaaSOvation.Common.Events
 
         public EventSerializer(bool isPretty = false)
         {
-            this.isPretty = isPretty;
+            this._isPretty = isPretty;
         }
 
-        readonly bool isPretty;
+        private readonly bool _isPretty;
 
         public T Deserialize<T>(string serialization)
         {
@@ -37,7 +32,7 @@ namespace SaaSOvation.Common.Events
 
         public string Serialize(IDomainEvent domainEvent)
         {
-            return JsonConvert.SerializeObject(domainEvent, this.isPretty ? Formatting.Indented : Formatting.None);
+            return JsonConvert.SerializeObject(domainEvent, _isPretty ? Formatting.Indented : Formatting.None);
         }
     }
 }

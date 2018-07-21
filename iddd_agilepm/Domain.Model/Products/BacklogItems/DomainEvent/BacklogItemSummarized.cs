@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SaaSOvation.Common.Domain.Model;
 
 namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
@@ -11,11 +7,11 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
     {
         public BacklogItemSummarized(Tenants.TenantId tenantId, BacklogItemId backlogItemId, string summary)
         {
-            this.TenantId = tenantId;
-            this.EventVersion = 1;
-            this.OccurredOn = DateTime.UtcNow;
-            this.BacklogItemId = backlogItemId;
-            this.Summary = summary;
+            TenantId = tenantId;
+            EventVersion = 1;
+            OccurredOn = DateTime.UtcNow;
+            BacklogItemId = backlogItemId;
+            Summary = summary;
         }
 
         public Tenants.TenantId TenantId { get; private set; }

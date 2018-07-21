@@ -1,19 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 {
-    public class GroupGroupRemoved : SaaSOvation.Common.Domain.Model.IDomainEvent
+    public class GroupGroupRemoved : Common.Domain.Model.IDomainEvent
     {
         public GroupGroupRemoved(TenantId tenantId, string groupName, string nestedGroupName)
         {
-            this.EventVersion = 1;
-            this.GroupName = groupName;
-            this.NestedGroupName = nestedGroupName;
-            this.OccurredOn = DateTime.Now;
-            this.TenantId = tenantId.Id;
+            EventVersion = 1;
+            GroupName = groupName;
+            NestedGroupName = nestedGroupName;
+            OccurredOn = DateTime.Now;
+            TenantId = tenantId.Id;
         }
 
         public int EventVersion { get; set; }

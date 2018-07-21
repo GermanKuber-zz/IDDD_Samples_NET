@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SaaSOvation.Common.Domain.Model;
 using SaaSOvation.Collaboration.Domain.Model.Tenants;
 using SaaSOvation.Collaboration.Domain.Model.Collaborators;
@@ -17,10 +13,10 @@ namespace SaaSOvation.Collaboration.Domain.Model.Calendars
             CalendarEntryId calendarEntryId,
             Participant participant)
         {
-            this.Tenant = tenant;
-            this.CalendarId = calendarId;
-            this.CalendarEntryId = calendarEntryId;
-            this.Participant = participant;
+            Tenant = tenant;
+            CalendarId = calendarId;
+            CalendarEntryId = calendarEntryId;
+            Participant = participant;
         }
 
         public Tenant Tenant { get; private set; }

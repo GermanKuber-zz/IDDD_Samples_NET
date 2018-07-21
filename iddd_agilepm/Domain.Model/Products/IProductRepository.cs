@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace SaaSOvation.AgilePM.Domain.Model.Products
 {
@@ -13,7 +10,7 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products
 
         Product GetByDiscussionInitiationId(Tenants.TenantId tenantId, string discussionInitiationId);
 
-        Product Get(Tenants.TenantId tenantId, Products.ProductId productId);
+        Product Get(Tenants.TenantId tenantId, ProductId productId);
 
         void Remove(Product product);
 

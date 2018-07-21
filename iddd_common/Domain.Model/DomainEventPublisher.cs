@@ -19,8 +19,7 @@ namespace SaaSOvation.Common.Domain.Model
 
     public class DomainEventPublisher
     {
-        [ThreadStatic]
-        static DomainEventPublisher _instance;
+        [ThreadStatic] private static DomainEventPublisher _instance;
         
         public static DomainEventPublisher Instance
         {
@@ -34,42 +33,43 @@ namespace SaaSOvation.Common.Domain.Model
             }
         }
 
-        DomainEventPublisher()
+        private DomainEventPublisher()
         {
-            this.publishing = false;
+            _publishing = false;
         }
 
-        bool publishing;
+        private bool _publishing;
 
-        List<IDomainEventSubscriber<IDomainEvent>> _subscribers;
-        List<IDomainEventSubscriber<IDomainEvent>> Subscribers
+        private List<IDomainEventSubscriber<IDomainEvent>> _subscribers;
+
+        private List<IDomainEventSubscriber<IDomainEvent>> Subscribers
         {
             get
             {
-                if (this._subscribers == null)
+                if (_subscribers == null)
                 {
-                    this._subscribers = new List<IDomainEventSubscriber<IDomainEvent>>();
+                    _subscribers = new List<IDomainEventSubscriber<IDomainEvent>>();
                 }
 
-                return this._subscribers;
+                return _subscribers;
             }
             set
             {
-                this._subscribers = value;
+                _subscribers = value;
             }
         }
 
         public void Publish<T>(T domainEvent) where T : IDomainEvent
         {
-            if (!this.publishing && this.HasSubscribers())
+            if (!_publishing && HasSubscribers())
             {
                 try
                 {
-                    this.publishing = true;
+                    _publishing = true;
 
                     var eventType = domainEvent.GetType();
 
-                    foreach (var subscriber in this.Subscribers)
+                    foreach (var subscriber in Subscribers)
                     {
                         var subscribedToType = subscriber.SubscribedToEventType();
                         if (eventType == subscribedToType || subscribedToType == typeof(IDomainEvent))
@@ -80,7 +80,7 @@ namespace SaaSOvation.Common.Domain.Model
                 }
                 finally
                 {
-                    this.publishing = false;
+                    _publishing = false;
                 }
             }
         }
@@ -89,23 +89,23 @@ namespace SaaSOvation.Common.Domain.Model
         {
             foreach (var domainEvent in domainEvents)
             {
-                this.Publish(domainEvent);
+                Publish(domainEvent);
             }
         }
 
         public void Reset()
         {
-            if (!this.publishing)
+            if (!_publishing)
             {
-                this.Subscribers = null;
+                Subscribers = null;
             }
         }
 
         public void Subscribe(IDomainEventSubscriber<IDomainEvent> subscriber)
         {
-            if (!this.publishing)
+            if (!_publishing)
             {
-                this.Subscribers.Add(subscriber);
+                Subscribers.Add(subscriber);
             }
         }
 
@@ -114,19 +114,19 @@ namespace SaaSOvation.Common.Domain.Model
             Subscribe(new DomainEventSubscriber<IDomainEvent>(handle));
         }
 
-        class DomainEventSubscriber<TEvent> : IDomainEventSubscriber<TEvent>
+        private class DomainEventSubscriber<TEvent> : IDomainEventSubscriber<TEvent>
             where TEvent : IDomainEvent
         {
             public DomainEventSubscriber(Action<TEvent> handle)
             {
-                this.handle = handle;
+                this._handle = handle;
             }
 
-            readonly Action<TEvent> handle;
+            private readonly Action<TEvent> _handle;
 
             public void HandleEvent(TEvent domainEvent)
             {
-                this.handle(domainEvent);
+                _handle(domainEvent);
             }
 
             public Type SubscribedToEventType()
@@ -135,9 +135,9 @@ namespace SaaSOvation.Common.Domain.Model
             }
         }
 
-        bool HasSubscribers()
+        private bool HasSubscribers()
         {
-            return this._subscribers != null && this.Subscribers.Count != 0;
+            return _subscribers != null && Subscribers.Count != 0;
         }
     }
 }

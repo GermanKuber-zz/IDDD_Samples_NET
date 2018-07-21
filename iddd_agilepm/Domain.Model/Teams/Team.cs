@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-
 using SaaSOvation.AgilePM.Domain.Model.Tenants;
 using SaaSOvation.Common.Domain.Model;
 
@@ -15,59 +12,59 @@ namespace SaaSOvation.AgilePM.Domain.Model.Teams
         {
             AssertionConcern.AssertArgumentNotNull(tenantId, "The tenantId must be provided.");
 
-            this.tenantId = tenantId;
-            this.Name = name;
+            this._tenantId = tenantId;
+            Name = name;
             if (productOwner != null)
-                this.ProductOwner = productOwner;
-            this.teamMembers = new HashSet<TeamMember>();
+                ProductOwner = productOwner;
+            _teamMembers = new HashSet<TeamMember>();
         }
 
-        readonly TenantId tenantId;
-        string name;
-        ProductOwner productOwner;
-        readonly HashSet<TeamMember> teamMembers;
+        private readonly TenantId _tenantId;
+        private string _name;
+        private ProductOwner _productOwner;
+        private readonly HashSet<TeamMember> _teamMembers;
 
         public TenantId TenantId
         {
-            get { return this.tenantId; }
+            get { return _tenantId; }
         }
 
         public string Name
         {
-            get { return this.name; }
+            get { return _name; }
             private set
             {
                 AssertionConcern.AssertArgumentNotEmpty(value, "The name must be provided.");
                 AssertionConcern.AssertArgumentLength(value, 100, "The name must be 100 characters or less.");
-                this.name = value;
+                _name = value;
             }
         }
 
         public ProductOwner ProductOwner
         {
-            get { return this.productOwner; }
+            get { return _productOwner; }
             private set
             {
                 AssertionConcern.AssertArgumentNotNull(value, "The productOwner must be provided.");
-                AssertionConcern.AssertArgumentEquals(this.tenantId, value.TenantId, "The productOwner must be of the same tenant.");
-                this.productOwner = value;
+                AssertionConcern.AssertArgumentEquals(_tenantId, value.TenantId, "The productOwner must be of the same tenant.");
+                _productOwner = value;
             }
         }
 
         public ReadOnlyCollection<TeamMember> AllTeamMembers
         {
-            get { return new ReadOnlyCollection<TeamMember>(this.teamMembers.ToArray()); }
+            get { return new ReadOnlyCollection<TeamMember>(_teamMembers.ToArray()); }
         }
 
         public void AssignProductOwner(ProductOwner productOwner)
         {
-            this.ProductOwner = productOwner;
+            ProductOwner = productOwner;
         }
 
         public void AssignTeamMember(TeamMember teamMember)
         {
             AssertValidTeamMember(teamMember);
-            this.teamMembers.Add(teamMember);
+            _teamMembers.Add(teamMember);
         }
 
         public bool IsTeamMember(TeamMember teamMember)
@@ -82,19 +79,19 @@ namespace SaaSOvation.AgilePM.Domain.Model.Teams
             var existingTeamMember = GetTeamMemberByUserName(teamMember.Username);
             if (existingTeamMember != null)
             {
-                this.teamMembers.Remove(existingTeamMember);
+                _teamMembers.Remove(existingTeamMember);
             }
         }
 
-        void AssertValidTeamMember(TeamMember teamMember)
+        private void AssertValidTeamMember(TeamMember teamMember)
         {
             AssertionConcern.AssertArgumentNotNull(teamMember, "A team member must be provided.");
-            AssertionConcern.AssertArgumentEquals(this.TenantId, teamMember.TenantId, "Team member must be of the same tenant.");
+            AssertionConcern.AssertArgumentEquals(TenantId, teamMember.TenantId, "Team member must be of the same tenant.");
         }
 
-        TeamMember GetTeamMemberByUserName(string userName)
+        private TeamMember GetTeamMemberByUserName(string userName)
         {
-            return this.teamMembers.FirstOrDefault(x => x.Username.Equals(userName));
+            return _teamMembers.FirstOrDefault(x => x.Username.Equals(userName));
         }
     }
 }

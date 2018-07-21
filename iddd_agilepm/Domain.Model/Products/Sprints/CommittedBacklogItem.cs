@@ -15,18 +15,18 @@
 namespace SaaSOvation.AgilePM.Domain.Model.Products.Sprints
 {
     using System;
-    using SaaSOvation.AgilePM.Domain.Model.Tenants;
-    using SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems;
-    using SaaSOvation.Common.Domain.Model;
+    using Tenants;
+    using BacklogItems;
+    using Common.Domain.Model;
 
     public class CommittedBacklogItem : Entity, IEquatable<CommittedBacklogItem>
     {
         public CommittedBacklogItem(TenantId tenantId, SprintId sprintId, BacklogItemId backlogItemId, int ordering = 0)
         {
-            this.TenantId = tenantId;
-            this.SprintId = sprintId;
-            this.BacklogItemId = backlogItemId;
-            this.Ordering = ordering;
+            TenantId = tenantId;
+            SprintId = sprintId;
+            BacklogItemId = backlogItemId;
+            Ordering = ordering;
         }
 
         public TenantId TenantId { get; private set; }
@@ -39,13 +39,13 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.Sprints
 
         public void ReOrderFrom(BacklogItemId id, int orderOfPriority)
         {
-            if (this.BacklogItemId.Equals(id))
+            if (BacklogItemId.Equals(id))
             {
-                this.Ordering = orderOfPriority;
+                Ordering = orderOfPriority;
             }
-            else if (this.Ordering >= orderOfPriority)
+            else if (Ordering >= orderOfPriority)
             {
-                this.Ordering = this.Ordering + 1;
+                Ordering = Ordering + 1;
             }
         }
 
@@ -56,21 +56,21 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.Sprints
 
         public bool Equals(CommittedBacklogItem other)
         {
-            if (object.ReferenceEquals(this, other)) return true;
-            if (object.ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other)) return false;
 
-            return this.TenantId.Equals(other.TenantId)
-                && this.SprintId.Equals(other.SprintId)
-                && this.BacklogItemId.Equals(other.BacklogItemId);
+            return TenantId.Equals(other.TenantId)
+                && SprintId.Equals(other.SprintId)
+                && BacklogItemId.Equals(other.BacklogItemId);
         }
 
         public override int GetHashCode()
         {
             return
                 + (282891 * 53)
-                + this.TenantId.GetHashCode()
-                + this.SprintId.GetHashCode()
-                + this.BacklogItemId.GetHashCode();
+                + TenantId.GetHashCode()
+                + SprintId.GetHashCode()
+                + BacklogItemId.GetHashCode();
         }
     }
 }

@@ -16,8 +16,8 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 {
 	using System;
 
-	using SaaSOvation.Common.Domain.Model;
-	using SaaSOvation.IdentityAccess.Domain.Model.Access;
+	using Common.Domain.Model;
+	using Access;
 
 	/// <summary>
 	/// <para>
@@ -36,9 +36,9 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 	{
 		#region [ Fields and Constructor ]
 
-		private readonly IRoleRepository roleRepository;
-		private readonly ITenantRepository tenantRepository;
-		private readonly IUserRepository userRepository;
+		private readonly IRoleRepository _roleRepository;
+		private readonly ITenantRepository _tenantRepository;
+		private readonly IUserRepository _userRepository;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TenantProvisioningService"/> class.
@@ -57,9 +57,9 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 			IUserRepository userRepository,
 			IRoleRepository roleRepository)
 		{
-			this.roleRepository = roleRepository;
-			this.tenantRepository = tenantRepository;
-			this.userRepository = userRepository;
+			this._roleRepository = roleRepository;
+			this._tenantRepository = tenantRepository;
+			this._userRepository = userRepository;
 		}
 
 		#endregion
@@ -130,19 +130,19 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 			try
 			{
 				// must be active to register admin
-				Tenant tenant = new Tenant(this.tenantRepository.GetNextIdentity(), tenantName, tenantDescription, true);
+				Tenant tenant = new Tenant(_tenantRepository.GetNextIdentity(), tenantName, tenantDescription, true);
 
 				// Since this is a new entity, add it to
 				// the collection-oriented repository.
 				// Subsequent changes to the entity
 				// are implicitly persisted.
-				this.tenantRepository.Add(tenant);
+				_tenantRepository.Add(tenant);
 
 				// Creates user and role entities and stores them
 				// in their respective repositories, and publishes
 				// domain events UserRegistered, RoleProvisioned,
 				// UserAssignedToRole, and TenantAdministratorRegistered.
-				this.RegisterAdministratorFor(
+				RegisterAdministratorFor(
 					tenant,
 					administorName,
 					emailAddress,
@@ -200,7 +200,7 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 			// the collection-oriented repository.
 			// Subsequent changes to the entity
 			// are implicitly persisted.
-			this.userRepository.Add(admin);
+			_userRepository.Add(admin);
 
 			// Publishes domain event RoleProvisioned.
 			Role adminRole = tenant.ProvisionRole(
@@ -216,7 +216,7 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 			// the collection-oriented repository.
 			// Subsequent changes to the entity
 			// are implicitly persisted.
-			this.roleRepository.Add(adminRole);
+			_roleRepository.Add(adminRole);
 
 			DomainEventPublisher
 				.Instance

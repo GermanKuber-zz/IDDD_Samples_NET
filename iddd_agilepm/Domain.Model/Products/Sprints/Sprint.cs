@@ -18,10 +18,10 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.Sprints
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     
-    using SaaSOvation.Common.Domain.Model;
+    using Common.Domain.Model;
 
-    using SaaSOvation.AgilePM.Domain.Model.Tenants;
-    using SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems;
+    using Tenants;
+    using BacklogItems;
 
     public class Sprint : Entity, IEquatable<Sprint>
     {
@@ -39,17 +39,17 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.Sprints
                 throw new InvalidOperationException("Sprint must not end before it begins.");
             }
             
-            this.Begins = begins;
-            this.Goals = goals;
-            this.Ends = ends;
-            this.Name = name;
-            this.ProductId = productId;
-            this.SprintId = sprintId;
-            this.TenantId = tenantId;
-            this.backlogItems = new HashSet<CommittedBacklogItem>();
+            Begins = begins;
+            Goals = goals;
+            Ends = ends;
+            Name = name;
+            ProductId = productId;
+            SprintId = sprintId;
+            TenantId = tenantId;
+            _backlogItems = new HashSet<CommittedBacklogItem>();
         }
 
-        readonly ISet<CommittedBacklogItem> backlogItems;
+        private readonly ISet<CommittedBacklogItem> _backlogItems;
 
         public DateTime Begins { get; private set; }
 
@@ -69,56 +69,56 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.Sprints
 
         public ICollection<CommittedBacklogItem> AllCommittedBacklogItems()
         {
-            return new ReadOnlyCollection<CommittedBacklogItem>(new List<CommittedBacklogItem>(this.backlogItems));
+            return new ReadOnlyCollection<CommittedBacklogItem>(new List<CommittedBacklogItem>(_backlogItems));
         }
 
         public void AdjustGoals(string goals)
         {
-            this.Goals = goals;
+            Goals = goals;
 
             // TODO: publish event / student assignment
         }
 
         public void CaptureRetrospectiveMeetinResults(string retrospective)
         {
-            this.Retrospective = retrospective;
+            Retrospective = retrospective;
 
             // TODO: publish event / student assignment
         }
 
         public void Commit(BacklogItem backlogItem)
         {
-            var ordering = this.backlogItems.Count + 1;
+            var ordering = _backlogItems.Count + 1;
 
             var committedBacklogItem = new CommittedBacklogItem(
-                this.TenantId,
-                this.SprintId,
+                TenantId,
+                SprintId,
                 backlogItem.BacklogItemId,
                 ordering);
 
-            this.backlogItems.Add(committedBacklogItem);
+            _backlogItems.Add(committedBacklogItem);
         }
 
         public void NowBeginsOn(DateTime dt)
         {
-            this.Begins = dt;
+            Begins = dt;
         }
 
         public void NowEndsOn(DateTime dt)
         {
-            this.Ends = dt;
+            Ends = dt;
         }
 
         public void Rename(string name)
         {
-            this.Name = name;
+            Name = name;
 
             // TODO: publish event
         }
 
         public void ReOrderFrom(BacklogItemId id, int orderOfPriority)
         {
-            foreach (var committedBacklogItem in this.backlogItems)
+            foreach (var committedBacklogItem in _backlogItems)
             {
                 committedBacklogItem.ReOrderFrom(id, orderOfPriority);
             }
@@ -127,21 +127,21 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.Sprints
         public void UnCommit(BacklogItem backlogItem)
         {
             var committedBacklogItem = new CommittedBacklogItem(
-                this.TenantId,
-                this.SprintId,
+                TenantId,
+                SprintId,
                 backlogItem.BacklogItemId);
 
-            this.backlogItems.Remove(committedBacklogItem);
+            _backlogItems.Remove(committedBacklogItem);
         }
 
         public bool Equals(Sprint other)
         {
-            if (object.ReferenceEquals(this, other)) return true;
-            if (object.ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other)) return false;
 
-            return this.TenantId.Equals(other.TenantId)
-                && this.ProductId.Equals(other.ProductId)
-                && this.SprintId.Equals(other.SprintId);
+            return TenantId.Equals(other.TenantId)
+                && ProductId.Equals(other.ProductId)
+                && SprintId.Equals(other.SprintId);
         }
 
         public override bool Equals(object obj)
@@ -152,9 +152,9 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.Sprints
         public override int GetHashCode()
         {
             return (11873 * 53)
-            + this.TenantId.GetHashCode()
-            + this.ProductId.GetHashCode()
-            + this.SprintId.GetHashCode();
+            + TenantId.GetHashCode()
+            + ProductId.GetHashCode()
+            + SprintId.GetHashCode();
         }
     }
 }

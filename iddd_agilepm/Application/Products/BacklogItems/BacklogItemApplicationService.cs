@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems;
+﻿using SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems;
 
 namespace SaaSOvation.AgilePM.Application.Products.BacklogItems
 {
@@ -11,10 +6,10 @@ namespace SaaSOvation.AgilePM.Application.Products.BacklogItems
     {
         public BacklogItemApplicationService(IBacklogItemRepository backlogItemRepository)
         {
-            this.backlogItemRepository = backlogItemRepository;
+            this._backlogItemRepository = backlogItemRepository;
         }
 
-        readonly IBacklogItemRepository backlogItemRepository;
+        private readonly IBacklogItemRepository _backlogItemRepository;
 
         // TODO: APIs for student assignment
     }

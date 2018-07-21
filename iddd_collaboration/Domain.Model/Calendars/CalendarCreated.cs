@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SaaSOvation.Common.Domain.Model;
 using SaaSOvation.Collaboration.Domain.Model.Tenants;
 using SaaSOvation.Collaboration.Domain.Model.Collaborators;
@@ -13,12 +10,12 @@ namespace SaaSOvation.Collaboration.Domain.Model.Calendars
     {
         public CalendarCreated(Tenant tenant, CalendarId calendarId, string name, string description, Owner owner, IEnumerable<CalendarSharer> sharedWith)
         {
-            this.Tenant = tenant;
-            this.CalendarId = calendarId;
-            this.Name = name;
-            this.Description = description;
-            this.Owner = owner;
-            this.SharedWith = sharedWith;
+            Tenant = tenant;
+            CalendarId = calendarId;
+            Name = name;
+            Description = description;
+            Owner = owner;
+            SharedWith = sharedWith;
         }
 
         public Tenant Tenant { get; private set; }

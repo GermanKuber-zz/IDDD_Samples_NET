@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SaaSOvation.Common.Domain.Model;
 using SaaSOvation.Collaboration.Domain.Model.Tenants;
-using SaaSOvation.Collaboration.Domain.Model.Collaborators;
 
 namespace SaaSOvation.Collaboration.Domain.Model.Calendars
 {
@@ -19,12 +14,12 @@ namespace SaaSOvation.Collaboration.Domain.Model.Calendars
             Repetition repetition,
             Alarm alarm)
         {
-            this.Tenant = tenant;
-            this.CalendarId = calendarId;
-            this.CalendarEntryId = calendarEntryId;
-            this.TimeSpan = timeSpan;
-            this.Repetition = repetition;
-            this.Alarm = alarm;
+            Tenant = tenant;
+            CalendarId = calendarId;
+            CalendarEntryId = calendarEntryId;
+            TimeSpan = timeSpan;
+            Repetition = repetition;
+            Alarm = alarm;
         }
 
         public Tenant Tenant { get; private set; }

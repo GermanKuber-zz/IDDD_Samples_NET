@@ -14,8 +14,7 @@
 
 namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 {
-    using System;
-    using SaaSOvation.Common.Domain.Model;
+    using Common.Domain.Model;
 
     public class ContactInformation : ValueObject
     {
@@ -25,10 +24,10 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
                 Telephone primaryTelephone,
                 Telephone secondaryTelephone)
         {
-            this.EmailAddress = emailAddress;
-            this.PostalAddress = postalAddress;
-            this.PrimaryTelephone = primaryTelephone;
-            this.SecondaryTelephone = secondaryTelephone;
+            EmailAddress = emailAddress;
+            PostalAddress = postalAddress;
+            PrimaryTelephone = primaryTelephone;
+            SecondaryTelephone = secondaryTelephone;
         }
 
         public ContactInformation(ContactInformation contactInformation)
@@ -55,35 +54,35 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
         {
             return new ContactInformation(
                     emailAddress,
-                    this.PostalAddress,
-                    this.PrimaryTelephone,
-                    this.SecondaryTelephone);
+                    PostalAddress,
+                    PrimaryTelephone,
+                    SecondaryTelephone);
         }
 
         public ContactInformation ChangePostalAddress(PostalAddress postalAddress)
         {
             return new ContactInformation(
-                   this.EmailAddress,
+                   EmailAddress,
                    postalAddress,
-                   this.PrimaryTelephone,
-                   this.SecondaryTelephone);
+                   PrimaryTelephone,
+                   SecondaryTelephone);
         }
 
         public ContactInformation ChangePrimaryTelephone(Telephone telephone)
         {
             return new ContactInformation(
-                   this.EmailAddress,
-                   this.PostalAddress,
+                   EmailAddress,
+                   PostalAddress,
                    telephone,
-                   this.SecondaryTelephone);
+                   SecondaryTelephone);
         }
 
         public ContactInformation ChangeSecondaryTelephone(Telephone telephone)
         {
             return new ContactInformation(
-                   this.EmailAddress,
-                   this.PostalAddress,
-                   this.PrimaryTelephone,
+                   EmailAddress,
+                   PostalAddress,
+                   PrimaryTelephone,
                    telephone);
         }
 
@@ -97,10 +96,10 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 
         protected override System.Collections.Generic.IEnumerable<object> GetEqualityComponents()
         {
-            yield return this.EmailAddress;
-            yield return this.PostalAddress;
-            yield return this.PrimaryTelephone;
-            yield return this.SecondaryTelephone;
+            yield return EmailAddress;
+            yield return PostalAddress;
+            yield return PrimaryTelephone;
+            yield return SecondaryTelephone;
         }
     }
 }

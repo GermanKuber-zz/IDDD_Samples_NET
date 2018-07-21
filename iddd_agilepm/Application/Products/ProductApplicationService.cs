@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SaaSOvation.Common.Domain.Model.LongRunningProcess;
 
 using SaaSOvation.AgilePM.Domain.Model.Products;
@@ -16,36 +12,36 @@ namespace SaaSOvation.AgilePM.Application.Products
     {
         public ProductApplicationService(IProductRepository productRepository, IProductOwnerRepository productOwnerRepository, ITimeConstrainedProcessTrackerRepository processTrackerRepository)
         {
-            this.productRepository = productRepository;
-            this.productOwnerRepository = productOwnerRepository;
-            this.processTrackerRepository = processTrackerRepository;
+            this._productRepository = productRepository;
+            this._productOwnerRepository = productOwnerRepository;
+            this._processTrackerRepository = processTrackerRepository;
         }
 
-        readonly IProductRepository productRepository;
-        readonly IProductOwnerRepository productOwnerRepository;
-        readonly ITimeConstrainedProcessTrackerRepository processTrackerRepository;
+        private readonly IProductRepository _productRepository;
+        private readonly IProductOwnerRepository _productOwnerRepository;
+        private readonly ITimeConstrainedProcessTrackerRepository _processTrackerRepository;
 
         public void InitiateDiscussion(InitiateDiscussionCommand command)
         {
             ApplicationServiceLifeCycle.Begin();
             try
             {
-                var product = this.productRepository.Get(new TenantId(command.TenantId), new ProductId(command.ProductId));
+                var product = _productRepository.Get(new TenantId(command.TenantId), new ProductId(command.ProductId));
                 if (product == null)
                     throw new InvalidOperationException(
                         string.Format("Unknown product of tenant id: {0} and product id: {1}.", command.TenantId, command.ProductId));
 
                 product.InitiateDiscussion(new DiscussionDescriptor(command.DiscussionId));
 
-                this.productRepository.Save(product);
+                _productRepository.Save(product);
 
                 var processId = ProcessId.ExistingProcessId(product.DiscussionInitiationId);
 
-                var tracker = this.processTrackerRepository.Get(command.TenantId, processId);
+                var tracker = _processTrackerRepository.Get(command.TenantId, processId);
 
                 tracker.MarkProcessCompleted();
 
-                this.processTrackerRepository.Save(tracker);
+                _processTrackerRepository.Save(tracker);
 
                 ApplicationServiceLifeCycle.Success();
             }
@@ -67,7 +63,7 @@ namespace SaaSOvation.AgilePM.Application.Products
 
         public void RequestProductDiscussion(RequestProductDiscussionCommand command)
         {
-            var product = this.productRepository.Get(new TenantId(command.TenantId), new ProductId(command.ProductId));
+            var product = _productRepository.Get(new TenantId(command.TenantId), new ProductId(command.ProductId));
             if (product == null)
                 throw new InvalidOperationException(
                     string.Format("Unknown product of tenant id: {0} and product id: {1}.", command.TenantId, command.ProductId));
@@ -79,7 +75,7 @@ namespace SaaSOvation.AgilePM.Application.Products
         {
             var processId = ProcessId.ExistingProcessId(command.ProcessId);
             var tenantId = new TenantId(command.TenantId);
-            var product = this.productRepository.GetByDiscussionInitiationId(tenantId, processId.Id);
+            var product = _productRepository.GetByDiscussionInitiationId(tenantId, processId.Id);
             if (product == null)
                 throw new InvalidOperationException(
                     string.Format("Unknown product of tenant id: {0} and discussion initiation id: {1}.", command.TenantId, command.ProcessId));
@@ -92,7 +88,7 @@ namespace SaaSOvation.AgilePM.Application.Products
             ApplicationServiceLifeCycle.Begin();
             try
             {
-                var product = this.productRepository.Get(new TenantId(command.TenantId), new ProductId(command.ProductId));
+                var product = _productRepository.Get(new TenantId(command.TenantId), new ProductId(command.ProductId));
                 if (product == null)
                     throw new InvalidOperationException(
                         string.Format("Unknown product of tenant id: {0} and product id: {1}.", command.TenantId, command.ProductId));
@@ -108,11 +104,11 @@ namespace SaaSOvation.AgilePM.Application.Products
                     totalRetriesPermitted: 3,
                     processTimedOutEventType: timedOutEventName);
 
-                this.processTrackerRepository.Save(tracker);
+                _processTrackerRepository.Save(tracker);
 
                 product.StartDiscussionInitiation(tracker.ProcessId.Id);
 
-                this.productRepository.Save(product);
+                _productRepository.Save(product);
 
                 ApplicationServiceLifeCycle.Success();
             }
@@ -131,13 +127,13 @@ namespace SaaSOvation.AgilePM.Application.Products
 
                 var tenantId = new TenantId(command.TenantId);
 
-                var product = this.productRepository.GetByDiscussionInitiationId(tenantId, processId.Id);
+                var product = _productRepository.GetByDiscussionInitiationId(tenantId, processId.Id);
 
                 SendEmailForTimedOutProcess(product);
 
                 product.FailDiscussionInitiation();
 
-                this.productRepository.Save(product);
+                _productRepository.Save(product);
 
                 ApplicationServiceLifeCycle.Success();
             }
@@ -147,19 +143,19 @@ namespace SaaSOvation.AgilePM.Application.Products
             }
         }
 
-        void SendEmailForTimedOutProcess(Product product)
+        private void SendEmailForTimedOutProcess(Product product)
         {
             // TODO: implement
         }
 
-        void RequestProductDiscussionFor(Product product)
+        private void RequestProductDiscussionFor(Product product)
         {
             ApplicationServiceLifeCycle.Begin();
             try
             {
                 product.RequestDiscussion(RequestDiscussionIfAvailable());
 
-                this.productRepository.Save(product);
+                _productRepository.Save(product);
 
                 ApplicationServiceLifeCycle.Success();
             }
@@ -169,7 +165,7 @@ namespace SaaSOvation.AgilePM.Application.Products
             }
         }
 
-        DiscussionAvailability RequestDiscussionIfAvailable()
+        private DiscussionAvailability RequestDiscussionIfAvailable()
         {
             var availability = DiscussionAvailability.AddOnNotEnabled;
             var enabled = true; // TODO: determine add-on enabled
@@ -180,20 +176,20 @@ namespace SaaSOvation.AgilePM.Application.Products
             return availability;
         }
 
-        string NewProductWith(string tenantId, string productOwnerId, string name, string description, DiscussionAvailability discussionAvailability)
+        private string NewProductWith(string tenantId, string productOwnerId, string name, string description, DiscussionAvailability discussionAvailability)
         {
             var tid = new TenantId(tenantId);
             var productId = default(ProductId);
             ApplicationServiceLifeCycle.Begin();
             try
             {
-                productId = this.productRepository.GetNextIdentity();
+                productId = _productRepository.GetNextIdentity();
 
-                var productOwner = this.productOwnerRepository.Get(tid, productOwnerId);
+                var productOwner = _productOwnerRepository.Get(tid, productOwnerId);
 
                 var product = new Product(tid, productId, productOwner.ProductOwnerId, name, description, discussionAvailability);
 
-                this.productRepository.Save(product);
+                _productRepository.Save(product);
 
                 ApplicationServiceLifeCycle.Success();
             }

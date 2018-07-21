@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SaaSOvation.Common.Domain.Model;
 using SaaSOvation.Collaboration.Domain.Model.Tenants;
 using SaaSOvation.Collaboration.Domain.Model.Collaborators;
@@ -25,57 +22,57 @@ namespace SaaSOvation.Collaboration.Domain.Model.Forums
             AssertionConcern.AssertArgumentNotEmpty(subject, "The subject must be provided.");
 
             Apply(new DiscussionStarted(tenantId, forumId, discussionId, author, subject, exclusiveOwner));
-        }        
-
-        void When(DiscussionStarted e)
-        {
-            this.tenantId = e.TenantId;
-            this.forumId = e.ForumId;
-            this.discussionId = e.DiscussionId;
-            this.author = e.Author;
-            this.subject = e.Subject;
-            this.exclusiveOwner = e.ExclusiveOwner;
         }
 
-        Tenant tenantId;
-        ForumId forumId;
-        DiscussionId discussionId;
-        Author author;
-        string subject;
-        string exclusiveOwner;    
-        bool closed;
+        private void When(DiscussionStarted e)
+        {
+            _tenantId = e.TenantId;
+            _forumId = e.ForumId;
+            _discussionId = e.DiscussionId;
+            _author = e.Author;
+            _subject = e.Subject;
+            _exclusiveOwner = e.ExclusiveOwner;
+        }
+
+        private Tenant _tenantId;
+        private ForumId _forumId;
+        private DiscussionId _discussionId;
+        private Author _author;
+        private string _subject;
+        private string _exclusiveOwner;
+        private bool _closed;
 
         public DiscussionId DiscussionId
         {
-            get { return this.discussionId; }
+            get { return _discussionId; }
         }
 
-        void AssertClosed()
+        private void AssertClosed()
         {
-            if (!this.closed)
+            if (!_closed)
                 throw new InvalidOperationException("This discussion is already open.");
         }
 
         public void Close()
         {
-            if (this.closed)
+            if (_closed)
                 throw new InvalidOperationException("This discussion is already closed.");
 
-            Apply(new DiscussionClosed(this.tenantId, this.forumId, this.discussionId, this.exclusiveOwner));
+            Apply(new DiscussionClosed(_tenantId, _forumId, _discussionId, _exclusiveOwner));
         }
 
-        void When(DiscussionClosed e)
+        private void When(DiscussionClosed e)
         {
-            this.closed = true;
+            _closed = true;
         }
 
 
         public Post Post(ForumIdentityService forumIdService, Author author, string subject, string bodyText, PostId replyToPostId = null)
         {
             return new Post(
-                this.tenantId,
-                this.forumId,
-                this.discussionId,
+                _tenantId,
+                _forumId,
+                _discussionId,
                 forumIdService.GetNexPostId(),
                 author,
                 subject,
@@ -87,12 +84,12 @@ namespace SaaSOvation.Collaboration.Domain.Model.Forums
         public void ReOpen()
         {
             AssertClosed();
-            Apply(new DiscussionReopened(this.tenantId, this.forumId, this.discussionId, this.exclusiveOwner));
+            Apply(new DiscussionReopened(_tenantId, _forumId, _discussionId, _exclusiveOwner));
         }
 
-        void When(DiscussionReopened e)
+        private void When(DiscussionReopened e)
         {
-            this.closed = false;
+            _closed = false;
         }
 
 
@@ -100,9 +97,9 @@ namespace SaaSOvation.Collaboration.Domain.Model.Forums
 
         protected override IEnumerable<object> GetIdentityComponents()
         {
-            yield return this.tenantId;
-            yield return this.forumId;
-            yield return this.discussionId;
+            yield return _tenantId;
+            yield return _forumId;
+            yield return _discussionId;
         }
     }
 }

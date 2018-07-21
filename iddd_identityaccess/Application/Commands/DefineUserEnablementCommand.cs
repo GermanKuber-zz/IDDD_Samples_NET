@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace SaaSOvation.IdentityAccess.Application.Commands
 {
@@ -13,10 +10,10 @@ namespace SaaSOvation.IdentityAccess.Application.Commands
 
         public DefineUserEnablementCommand(string tenantId, string userName, string enabled, DateTime startDate, DateTime endDate)
         {
-            this.TenantId = tenantId;
-            this.Username = userName;
-            this.StartDate = startDate;
-            this.EndDate = endDate;
+            TenantId = tenantId;
+            Username = userName;
+            StartDate = startDate;
+            EndDate = endDate;
         }
 
         public string TenantId { get; set; }

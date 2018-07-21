@@ -17,13 +17,13 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using SaaSOvation.AgilePM.Domain.Model.Discussions;
-    using SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems;
-    using SaaSOvation.AgilePM.Domain.Model.Products.Releases;
-    using SaaSOvation.AgilePM.Domain.Model.Products.Sprints;
-    using SaaSOvation.AgilePM.Domain.Model.Teams;
-    using SaaSOvation.AgilePM.Domain.Model.Tenants;
-    using SaaSOvation.Common.Domain.Model;
+    using Discussions;
+    using BacklogItems;
+    using Releases;
+    using Sprints;
+    using Teams;
+    using Tenants;
+    using Common.Domain.Model;
 
     public class Product : Entity, IEquatable<Product>
     {
@@ -35,26 +35,26 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products
                 string description,
                 DiscussionAvailability discussionAvailability)
         {
-            this.TenantId = tenantId; // must precede productOwnerId for compare
-            this.Description = description;
-            this.Discussion = ProductDiscussion.FromAvailability(discussionAvailability);
-            this.DiscussionInitiationId = null;
-            this.Name = name;
-            this.ProductId = productId;
-            this.ProductOwnerId = productOwnerId; // TODO: validation currently missing
+            TenantId = tenantId; // must precede productOwnerId for compare
+            Description = description;
+            Discussion = ProductDiscussion.FromAvailability(discussionAvailability);
+            DiscussionInitiationId = null;
+            Name = name;
+            ProductId = productId;
+            ProductOwnerId = productOwnerId; // TODO: validation currently missing
 
             DomainEventPublisher
                 .Instance
                 .Publish(new ProductCreated(
-                        this.TenantId,
-                        this.ProductId,
-                        this.ProductOwnerId,
-                        this.Name,
-                        this.Description,
-                        this.Discussion.Availability));
+                        TenantId,
+                        ProductId,
+                        ProductOwnerId,
+                        Name,
+                        Description,
+                        Discussion.Availability));
         }
 
-        readonly ISet<ProductBacklogItem> backlogItems;
+        private readonly ISet<ProductBacklogItem> _backlogItems;
 
         public TenantId TenantId { get; private set; } 
         
@@ -74,14 +74,14 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products
 
         public ICollection<ProductBacklogItem> AllBacklogItems()
         {
-            return new ReadOnlyCollection<ProductBacklogItem>(new List<ProductBacklogItem>(this.backlogItems));
+            return new ReadOnlyCollection<ProductBacklogItem>(new List<ProductBacklogItem>(_backlogItems));
         }
 
         public void ChangeProductOwner(ProductOwner productOwner)
         {
-            if (!this.ProductOwnerId.Equals(productOwner.ProductOwnerId))
+            if (!ProductOwnerId.Equals(productOwner.ProductOwnerId))
             {
-                this.ProductOwnerId = productOwner.ProductOwnerId;
+                ProductOwnerId = productOwner.ProductOwnerId;
 
                 // TODO: publish event
             }
@@ -89,11 +89,11 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products
 
         public void FailDiscussionInitiation()
         {
-            if (this.Discussion.Availability != DiscussionAvailability.Ready)
+            if (Discussion.Availability != DiscussionAvailability.Ready)
             {
-                this.DiscussionInitiationId = null;
+                DiscussionInitiationId = null;
 
-                this.Discussion = ProductDiscussion.FromAvailability(DiscussionAvailability.Failed);
+                Discussion = ProductDiscussion.FromAvailability(DiscussionAvailability.Failed);
             }
         }
 
@@ -104,20 +104,20 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products
                 throw new InvalidOperationException("The descriptor must not be null.");
             }
 
-            if (this.Discussion.Availability == DiscussionAvailability.Requested)
+            if (Discussion.Availability == DiscussionAvailability.Requested)
             {
-                this.Discussion = this.Discussion.NowReady(descriptor);
+                Discussion = Discussion.NowReady(descriptor);
 
                 DomainEventPublisher
                     .Instance
                     .Publish(new ProductDiscussionInitiated(
-                            this.TenantId,
-                            this.ProductId,
-                            this.Discussion));
+                            TenantId,
+                            ProductId,
+                            Discussion));
             }
         }
 
-        public BacklogItems.BacklogItem PlanBacklogItem(
+        public BacklogItem PlanBacklogItem(
                 BacklogItemId newBacklogItemId,
                 String summary,
                 String category,
@@ -125,9 +125,9 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products
                 StoryPoints storyPoints)
         {
             var backlogItem =
-                new BacklogItems.BacklogItem(
-                        this.TenantId,
-                        this.ProductId,
+                new BacklogItem(
+                        TenantId,
+                        ProductId,
                         newBacklogItemId,
                         summary,
                         category,
@@ -151,24 +151,24 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products
 
         public void PlannedProductBacklogItem(BacklogItem backlogItem)
         {
-            AssertionConcern.AssertArgumentEquals(this.TenantId, backlogItem.TenantId, "The product and backlog item must have same tenant.");
-            AssertionConcern.AssertArgumentEquals(this.ProductId, backlogItem.ProductId, "The backlog item must belong to product.");
+            AssertionConcern.AssertArgumentEquals(TenantId, backlogItem.TenantId, "The product and backlog item must have same tenant.");
+            AssertionConcern.AssertArgumentEquals(ProductId, backlogItem.ProductId, "The backlog item must belong to product.");
 
-            int ordering = this.backlogItems.Count + 1;
+            int ordering = _backlogItems.Count + 1;
 
             ProductBacklogItem productBacklogItem =
                     new ProductBacklogItem(
-                            this.TenantId,
-                            this.ProductId,
+                            TenantId,
+                            ProductId,
                             backlogItem.BacklogItemId,
                             ordering);
 
-            this.backlogItems.Add(productBacklogItem);
+            _backlogItems.Add(productBacklogItem);
         }
 
         public void ReorderFrom(BacklogItemId id, int ordering)
         {
-            foreach (var productBacklogItem in this.backlogItems)
+            foreach (var productBacklogItem in _backlogItems)
             {
                 productBacklogItem.ReorderFrom(id, ordering);
             }
@@ -176,20 +176,20 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products
 
         public void RequestDiscussion(DiscussionAvailability discussionAvailability)
         {
-            if (this.Discussion.Availability != DiscussionAvailability.Ready)
+            if (Discussion.Availability != DiscussionAvailability.Ready)
             {
-                this.Discussion =
+                Discussion =
                         ProductDiscussion.FromAvailability(discussionAvailability);
 
                 DomainEventPublisher
                     .Instance
                     .Publish(new ProductDiscussionRequested(
-                            this.TenantId,
-                            this.ProductId,
-                            this.ProductOwnerId,
-                            this.Name,
-                            this.Description,
-                            this.Discussion.Availability == DiscussionAvailability.Requested));
+                            TenantId,
+                            ProductId,
+                            ProductOwnerId,
+                            Name,
+                            Description,
+                            Discussion.Availability == DiscussionAvailability.Requested));
             }
         }
 
@@ -202,8 +202,8 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products
         {
             Release release =
                 new Release(
-                        this.TenantId,
-                        this.ProductId,
+                        TenantId,
+                        ProductId,
                         newReleaseId,
                         name,
                         description,
@@ -233,8 +233,8 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products
         {
             Sprint sprint =
                 new Sprint(
-                        this.TenantId,
-                        this.ProductId,
+                        TenantId,
+                        ProductId,
                         newSprintId,
                         name,
                         goals,
@@ -257,18 +257,18 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products
 
         public void StartDiscussionInitiation(String discussionInitiationId)
         {
-            if (this.Discussion.Availability != DiscussionAvailability.Ready)
+            if (Discussion.Availability != DiscussionAvailability.Ready)
             {
-                this.DiscussionInitiationId = discussionInitiationId;
+                DiscussionInitiationId = discussionInitiationId;
             }
         }
 
         public bool Equals(Product other)
         {
-            if (object.ReferenceEquals(this, other)) return true;
-            if (object.ReferenceEquals(null, other)) return false;
-            return this.TenantId.Equals(other.TenantId)
-                && this.ProductId.Equals(other.ProductId);
+            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other)) return false;
+            return TenantId.Equals(other.TenantId)
+                && ProductId.Equals(other.ProductId);
         }
 
         public override bool Equals(object anotherObject)
@@ -280,14 +280,14 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products
         {
             return 
                 + (2335 * 3)
-                + this.TenantId.GetHashCode()
-                + this.ProductId.GetHashCode();
+                + TenantId.GetHashCode()
+                + ProductId.GetHashCode();
         }
 
         public override string ToString()
         {
             return "Product [tenantId=" + TenantId + ", productId=" + ProductId
-                    + ", backlogItems=" + backlogItems + ", description="
+                    + ", backlogItems=" + _backlogItems + ", description="
                     + Description + ", discussion=" + Discussion
                     + ", discussionInitiationId=" + DiscussionInitiationId
                     + ", name=" + Name + ", productOwnerId=" + ProductOwnerId + "]";

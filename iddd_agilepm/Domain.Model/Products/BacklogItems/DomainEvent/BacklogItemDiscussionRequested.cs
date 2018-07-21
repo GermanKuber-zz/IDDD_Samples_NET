@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SaaSOvation.Common.Domain.Model;
 
 namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
@@ -11,12 +7,12 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
     {
         public BacklogItemDiscussionRequested(Tenants.TenantId tenantId, ProductId productId, BacklogItemId backlogItemId, bool isRequested)
         {
-            this.TenantId = tenantId;
-            this.EventVersion = 1;
-            this.OccurredOn = DateTime.UtcNow;
-            this.ProductId = productId;
-            this.BacklogItemId = backlogItemId;
-            this.IsRequested = isRequested;
+            TenantId = tenantId;
+            EventVersion = 1;
+            OccurredOn = DateTime.UtcNow;
+            ProductId = productId;
+            BacklogItemId = backlogItemId;
+            IsRequested = isRequested;
         }
 
         public Tenants.TenantId TenantId { get; private set; }

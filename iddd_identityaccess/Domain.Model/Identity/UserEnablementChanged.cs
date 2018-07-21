@@ -1,22 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 {
-    public class UserEnablementChanged : SaaSOvation.Common.Domain.Model.IDomainEvent
+    public class UserEnablementChanged : Common.Domain.Model.IDomainEvent
     {
         public UserEnablementChanged(
                 TenantId tenantId,
                 String username,
                 Enablement enablement)
         {
-            this.Enablement = enablement;
-            this.EventVersion = 1;
-            this.OccurredOn = DateTime.Now;
-            this.TenantId = tenantId.Id;
-            this.Username = username;
+            Enablement = enablement;
+            EventVersion = 1;
+            OccurredOn = DateTime.Now;
+            TenantId = tenantId.Id;
+            Username = username;
         }
 
         public Enablement Enablement { get; private set; }

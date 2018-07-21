@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SaaSOvation.Common.Domain.Model;
 using SaaSOvation.Collaboration.Domain.Model.Tenants;
-using SaaSOvation.Collaboration.Domain.Model.Collaborators;
 
 namespace SaaSOvation.Collaboration.Domain.Model.Calendars
 {
@@ -13,10 +8,10 @@ namespace SaaSOvation.Collaboration.Domain.Model.Calendars
     {
         public CalendarUnshared(Tenant tenant, CalendarId calendarId, string name, CalendarSharer unsharedWith)
         {
-            this.Tenant = tenant;
-            this.CalendarId = calendarId;
-            this.Name = name;
-            this.UnsharedWith = unsharedWith;
+            Tenant = tenant;
+            CalendarId = calendarId;
+            Name = name;
+            UnsharedWith = unsharedWith;
         }
 
         public Tenant Tenant { get; private set; }

@@ -35,13 +35,13 @@ namespace SaaSOvation.Collaboration.Domain.Model.Collaborators
 
         public int CompareTo(Collaborator collaborator)
         {
-            var diff = string.Compare(this.Identity, collaborator.Identity, StringComparison.Ordinal);
+            var diff = string.Compare(Identity, collaborator.Identity, StringComparison.Ordinal);
             if (diff == 0)
             {
-                diff = string.Compare(this.EmailAddress, collaborator.EmailAddress, StringComparison.Ordinal);
+                diff = string.Compare(EmailAddress, collaborator.EmailAddress, StringComparison.Ordinal);
                 if (diff == 0)
                 {
-                    diff = string.Compare(this.Name, collaborator.Name, StringComparison.Ordinal);
+                    diff = string.Compare(Name, collaborator.Name, StringComparison.Ordinal);
                 }
             }
             return diff;
@@ -49,9 +49,9 @@ namespace SaaSOvation.Collaboration.Domain.Model.Collaborators
 
         protected override System.Collections.Generic.IEnumerable<object> GetEqualityComponents()
         {
-            yield return this.EmailAddress;
-            yield return this.Identity;
-            yield return this.Name;
+            yield return EmailAddress;
+            yield return Identity;
+            yield return Name;
         }
 
         public override string ToString()

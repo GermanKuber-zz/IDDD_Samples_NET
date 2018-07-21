@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SaaSOvation.Common.Domain.Model;
 
 namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
@@ -11,10 +7,10 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
     {
         public TaskHoursRemainingEstimated(Tenants.TenantId tenantId, BacklogItemId backlogItemId, TaskId taskId, int hoursRemaining)
         {
-            this.TenantId = tenantId;
-            this.BacklogItemId = backlogItemId;
-            this.TaskId = taskId;
-            this.HoursRemaining = hoursRemaining;
+            TenantId = tenantId;
+            BacklogItemId = backlogItemId;
+            TaskId = taskId;
+            HoursRemaining = hoursRemaining;
         }
 
         public Tenants.TenantId TenantId { get; private set; }

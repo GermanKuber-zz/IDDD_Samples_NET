@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using SaaSOvation.Common.Domain.Model.LongRunningProcess;
 
 namespace SaaSOvation.AgilePM.Application.Processes
@@ -11,22 +7,22 @@ namespace SaaSOvation.AgilePM.Application.Processes
     {
         public ProcessApplicationService(ITimeConstrainedProcessTrackerRepository processTrackerRepository)
         {
-            this.processTrackerRepository = processTrackerRepository;
+            this._processTrackerRepository = processTrackerRepository;
         }
 
-        readonly ITimeConstrainedProcessTrackerRepository processTrackerRepository;
+        private readonly ITimeConstrainedProcessTrackerRepository _processTrackerRepository;
 
         public void CheckForTimedOutProccesses()
         {
             ApplicationServiceLifeCycle.Begin();
             try
             {
-                var trackers = this.processTrackerRepository.GetAllTimedOut();
+                var trackers = _processTrackerRepository.GetAllTimedOut();
 
                 foreach (var tracker in trackers)
                 {
                     tracker.InformProcessTimedOut();
-                    this.processTrackerRepository.Save(tracker);
+                    _processTrackerRepository.Save(tracker);
                 }
 
                 ApplicationServiceLifeCycle.Success();

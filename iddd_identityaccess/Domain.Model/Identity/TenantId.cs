@@ -16,7 +16,7 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 {
 	using System;
 
-	using SaaSOvation.Common.Domain.Model;
+	using Common.Domain.Model;
 
 	/// <summary>
 	/// A value object derived from <see cref="Identity"/>

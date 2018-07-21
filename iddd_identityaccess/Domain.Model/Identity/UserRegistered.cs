@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 {
-    public class UserRegistered : SaaSOvation.Common.Domain.Model.IDomainEvent
+    public class UserRegistered : Common.Domain.Model.IDomainEvent
     {
         public UserRegistered(
                 TenantId tenantId,
@@ -13,12 +10,12 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
                 FullName name,
                 EmailAddress emailAddress)
         {
-            this.EmailAddress = emailAddress;
-            this.EventVersion = 1;
-            this.Name = name;
-            this.OccurredOn = DateTime.Now;
-            this.TenantId = tenantId.Id;
-            this.Username = username;
+            EmailAddress = emailAddress;
+            EventVersion = 1;
+            Name = name;
+            OccurredOn = DateTime.Now;
+            TenantId = tenantId.Id;
+            Username = username;
         }
 
         public EmailAddress EmailAddress { get; private set; }

@@ -1,20 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 {
-    public class UserPasswordChanged : SaaSOvation.Common.Domain.Model.IDomainEvent
+    public class UserPasswordChanged : Common.Domain.Model.IDomainEvent
     {
         public UserPasswordChanged(
                 TenantId tenantId,
                 String username)
         {
-            this.EventVersion = 1;
-            this.OccurredOn = DateTime.Now;
-            this.TenantId = tenantId.Id;
-            this.Username = username;
+            EventVersion = 1;
+            OccurredOn = DateTime.Now;
+            TenantId = tenantId.Id;
+            Username = username;
         }
 
         public int EventVersion { get; set; }

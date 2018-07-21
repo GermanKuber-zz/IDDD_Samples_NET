@@ -17,7 +17,7 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 	using System;
 	using System.Collections.Generic;
 
-	using SaaSOvation.Common.Domain.Model;
+	using Common.Domain.Model;
 
 	/// <summary>
 	/// An entity representing a person associated with
@@ -44,9 +44,9 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 	{
 		#region [ Fields and Constructor Overloads ]
 
-		private TenantId tenantId;
-		private FullName name;
-		private ContactInformation contactInformation;
+		private TenantId _tenantId;
+		private FullName _name;
+		private ContactInformation _contactInformation;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Person"/> class.
@@ -63,9 +63,9 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 		public Person(TenantId tenantId, FullName name, ContactInformation contactInformation)
 		{
 			// Defer validation to the property setters.
-			this.ContactInformation = contactInformation;
-			this.Name = name;
-			this.TenantId = tenantId;
+			ContactInformation = contactInformation;
+			Name = name;
+			TenantId = tenantId;
 		}
 
 		/// <summary>
@@ -84,13 +84,13 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 		{
 			get
 			{
-				return this.tenantId;
+				return _tenantId;
 			}
 
 			internal set
 			{
 				AssertionConcern.AssertArgumentNotNull(value, "The tenantId is required.");
-				this.tenantId = value;
+				_tenantId = value;
 			}
 		}
 
@@ -98,13 +98,13 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 		{
 			get
 			{
-				return this.name;
+				return _name;
 			}
 
 			private set
 			{
 				AssertionConcern.AssertArgumentNotNull(value, "The person name is required.");
-				this.name = value;
+				_name = value;
 			}
 		}
 
@@ -114,19 +114,19 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 		{
 			get
 			{
-				return this.contactInformation;
+				return _contactInformation;
 			}
 
 			private set
 			{
 				AssertionConcern.AssertArgumentNotNull(value, "The person contact information is required.");
-				this.contactInformation = value;
+				_contactInformation = value;
 			}
 		}
 
 		public EmailAddress EmailAddress
 		{
-			get { return this.ContactInformation.EmailAddress; }
+			get { return ContactInformation.EmailAddress; }
 		}
 
 		#endregion
@@ -136,27 +136,27 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 		public void ChangeContactInformation(ContactInformation newContactInformation)
 		{
 			// Defer validation to the property setter.
-			this.ContactInformation = newContactInformation;
+			ContactInformation = newContactInformation;
 
 			DomainEventPublisher
 				.Instance
 				.Publish(new PersonContactInformationChanged(
-						this.TenantId,
-						this.User.Username,
-						this.ContactInformation));
+						TenantId,
+						User.Username,
+						ContactInformation));
 		}
 
 		public void ChangeName(FullName newName)
 		{
 			// Defer validation to the property setter.
-			this.Name = newName;
+			Name = newName;
 
 			DomainEventPublisher
 				.Instance
 				.Publish(new PersonNameChanged(
-						this.TenantId,
-						this.User.Username,
-						this.Name));
+						TenantId,
+						User.Username,
+						Name));
 		}
 
 		#endregion
@@ -171,8 +171,8 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 		/// </returns>
 		public override string ToString()
 		{
-			const string Format = "Person [tenantId={0}, name={1}, contactInformation={2}]";
-			return string.Format(Format, this.TenantId, this.Name, this.ContactInformation);
+			const string format = "Person [tenantId={0}, name={1}, contactInformation={2}]";
+			return string.Format(format, TenantId, Name, ContactInformation);
 		}
 
 		/// <summary>
@@ -186,8 +186,8 @@ namespace SaaSOvation.IdentityAccess.Domain.Model.Identity
 		/// </returns>
 		protected override IEnumerable<object> GetIdentityComponents()
 		{
-			yield return this.TenantId;
-			yield return this.User.Username;
+			yield return TenantId;
+			yield return User.Username;
 		}
 
 		#endregion

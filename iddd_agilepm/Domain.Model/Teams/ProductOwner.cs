@@ -15,8 +15,7 @@
 namespace SaaSOvation.AgilePM.Domain.Model.Teams
 {
     using System;
-    using SaaSOvation.AgilePM.Domain.Model.Tenants;
-    using SaaSOvation.Common.Domain.Model;
+    using Tenants;
 
     public class ProductOwner : Member
     {
@@ -42,8 +41,8 @@ namespace SaaSOvation.AgilePM.Domain.Model.Teams
 
         protected override System.Collections.Generic.IEnumerable<object> GetIdentityComponents()
         {
-            yield return this.TenantId;
-            yield return this.Username;
+            yield return TenantId;
+            yield return Username;
         }
     }
 }

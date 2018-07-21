@@ -15,9 +15,9 @@
 namespace SaaSOvation.AgilePM.Domain.Model.Products
 {
     using System;
-    using SaaSOvation.AgilePM.Domain.Model.Tenants;
-    using SaaSOvation.AgilePM.Domain.Model.Products.Releases;
-    using SaaSOvation.Common.Domain.Model;
+    using Tenants;
+    using Releases;
+    using Common.Domain.Model;
 
     public class ProductReleaseScheduled : IDomainEvent
     {
@@ -30,15 +30,15 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products
             DateTime starts,
             DateTime ends)
         {
-            this.Description = description;
-            this.Ends = ends;
-            this.EventVersion = 1;
-            this.Name = name;
-            this.OccurredOn = DateTime.Now;
-            this.ProductId = productId;
-            this.ReleaseId = releaseId;
-            this.Starts = starts;
-            this.TenantId = tenantId;
+            Description = description;
+            Ends = ends;
+            EventVersion = 1;
+            Name = name;
+            OccurredOn = DateTime.Now;
+            ProductId = productId;
+            ReleaseId = releaseId;
+            Starts = starts;
+            TenantId = tenantId;
         }
 
         public string Description { get; private set; }

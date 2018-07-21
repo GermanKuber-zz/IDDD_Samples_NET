@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using System.Collections.Generic;
 using SaaSOvation.Common.Domain.Model;
 
 namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
@@ -11,11 +7,11 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
     {
         public BusinessPriorityTotals(int totalBenefit, int totalPenalty, int totalValue, int totalCost, int totalRisk)
         {
-            this.TotalBenefit = totalBenefit;
-            this.TotalPenalty = totalPenalty;
-            this.TotalValue = totalValue;
-            this.TotalCost = totalCost;
-            this.TotalRisk = totalRisk;
+            TotalBenefit = totalBenefit;
+            TotalPenalty = totalPenalty;
+            TotalValue = totalValue;
+            TotalCost = totalCost;
+            TotalRisk = totalRisk;
         }
 
         public int TotalBenefit { get; private set; }
@@ -26,11 +22,11 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products.BacklogItems
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return this.TotalBenefit;
-            yield return this.TotalPenalty;            
-            yield return this.TotalValue;
-            yield return this.TotalCost;
-            yield return this.TotalRisk;
+            yield return TotalBenefit;
+            yield return TotalPenalty;            
+            yield return TotalValue;
+            yield return TotalCost;
+            yield return TotalRisk;
         }
     }
 }

@@ -15,9 +15,9 @@
 namespace SaaSOvation.AgilePM.Domain.Model.Products
 {
     using System;
-    using SaaSOvation.AgilePM.Domain.Model.Teams;
-    using SaaSOvation.AgilePM.Domain.Model.Tenants;
-    using SaaSOvation.Common.Domain.Model;
+    using Teams;
+    using Tenants;
+    using Common.Domain.Model;
 
     public class ProductDiscussionRequested : IDomainEvent
     {
@@ -29,14 +29,14 @@ namespace SaaSOvation.AgilePM.Domain.Model.Products
             string description,
             bool requestingDiscussion)
         {
-            this.Description = description;
-            this.EventVersion = 1;
-            this.Name = name;
-            this.OccurredOn = DateTime.Now;
-            this.ProductId = productId;
-            this.ProductOwnerId = productOwnerId;
-            this.RequestingDiscussion = requestingDiscussion;
-            this.TenantId = tenantId;
+            Description = description;
+            EventVersion = 1;
+            Name = name;
+            OccurredOn = DateTime.Now;
+            ProductId = productId;
+            ProductOwnerId = productOwnerId;
+            RequestingDiscussion = requestingDiscussion;
+            TenantId = tenantId;
         }
 
         public string Description { get; private set; }
